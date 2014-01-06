@@ -1,4 +1,11 @@
-﻿namespace RssNet
+﻿using System;
+using System.Net;
+using System.ServiceModel.Syndication;
+using System.Xml;
+using Nancy.ModelBinding;
+using RssNet.Modeles;
+
+namespace RssNet
 {
     using Nancy;
 
@@ -10,6 +17,26 @@
             {
                 return View["index"];
             };
+
+            Post["/flux"] = parameters =>
+                                {
+                                    SyndicationFeed feed;
+                                    var temp = this.Bind<Flux>();
+                                    var url = temp.url;
+                                    WebClient client = new WebClient();
+                                    client.Proxy = WebRequest.DefaultWebProxy;
+                                    client.Proxy.Credentials = CredentialCache.DefaultCredentials;
+                                    client.Credentials = CredentialCache.DefaultCredentials;
+
+
+                                    // Read the feed using an XmlReader  
+                                    using (XmlReader reader = XmlReader.Create(client.OpenRead(url)))
+                                    {
+                                        feed = SyndicationFeed.Load(reader);
+
+                                    }
+                                    return View["flux",feed];
+                                };
         }
     }
 }

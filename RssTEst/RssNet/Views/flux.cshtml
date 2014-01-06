@@ -1,0 +1,24 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<System.ServiceModel.Syndication.SyndicationFeed>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>RssNet</title>
+    <style type="text/css">
+        body
+        {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    @foreach (var info in Model.Items)
+    {
+     
+        <div>
+            <div>@info.Title.Text</div>
+            <div>@info.Summary.Text</div>
+        </div>
+    }
+</body>
+</html>
