@@ -1,4 +1,5 @@
-﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<System.ServiceModel.Syndication.SyndicationFeed>
+﻿@using System
+@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<System.ServiceModel.Syndication.SyndicationFeed>
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,13 +13,30 @@
     </style>
 </head>
 <body>
-    @foreach (var info in Model.Items)
-    {
-     
-        <div>
-            <div>@info.Title.Text</div>
-            <div>@info.Summary.Text</div>
-        </div>
-    }
+    <div class="container">
+        @foreach (var info in Model.Items)
+        {
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="row clearfix">
+                        <div class="col-md-8 column">
+                            <h2>
+                                @info.Title.Text
+                            </h2>
+                            <p>
+                                @info.Summary.Text
+                            </p>
+                            <p>
+                                <a class="btn" href="@info.Links[0].GetAbsoluteUri().ToString()">View details ...</a>
+                            </p>
+                        </div>
+                        <div class="col-md-4 column">
+                            <img class="img-rounded" alt="140x140" src="@info.Links[1].GetAbsoluteUri().ToString()"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </body>
 </html>
