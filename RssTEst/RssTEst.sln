@@ -7,11 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssNet", "RssNet\RssNet.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceRssToDB", "ServiceRssToDB\ServiceRssToDB.csproj", "{F530A9F0-214C-43D2-9A03-952BA3619BED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{FFE3B085-97E9-46AB-8FC5-1738E57CCA75}"
-	ProjectSection(SolutionItems) = preProject
-		RssTEst\bin\Debug\DBTest.sqlite = RssTEst\bin\Debug\DBTest.sqlite
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

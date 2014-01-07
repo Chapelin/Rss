@@ -61,6 +61,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DB\DBTest.sqlite" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
