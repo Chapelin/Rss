@@ -29,26 +29,36 @@ namespace ServiceRssToDB
                 foreach (var elem in feed.Items)
                 {
                     var temp = new Flux()
-                    {
-                        date = elem.PublishDate.DateTime,
-                        ID = 1,
-                        image = elem.Links[1].GetAbsoluteUri().ToString(),
-                        link = elem.Links[0].GetAbsoluteUri().ToString(),
-                        title = elem.Title.Text,
-                        text = elem.Summary.Text
+                                   {
+                                       date = elem.PublishDate.DateTime,
+                                       ID = 1,
 
-                    };
+                                       title = elem.Title.Text,
+                                       text = elem.Summary.Text
+
+                                   };
+                    if (elem.Links.Count > 0)
+                    {
+                        temp.link = elem.Links[0].GetAbsoluteUri().ToString();
+                    }
+                    if (elem.Links.Count > 1)
+                    {
+                        temp.image = elem.Links[1].GetAbsoluteUri().ToString();
+
+                    }
+
                     liste.Add(temp);
                 }
-                using (var sqliteConn = new SQLiteConnection("Data Source=DBTest.sqlite;Version=3;"))
+                using (var sqliteConn = new SQLiteConnection("Data Source=DB\\DBTest.sqlite;Version=3;"))
                 {
                     sqliteConn.Open();
                     foreach (var flux in liste)
                     {
-                        new SQLiteCommand(flux.ToRequest(), sqliteConn).ExecuteNonQuery();
+                        var tempo = new SQLiteCommand(flux.ToRequest(), sqliteConn);
+                        tempo.ExecuteNonQuery();
                     }
                     sqliteConn.Close();
-             
+
                 }
 
             }
