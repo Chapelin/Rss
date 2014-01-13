@@ -21,7 +21,7 @@ namespace ServiceRssToDB
         {
             return "insert into Flux values (" + ID + ", '" + text.Replace("'", "''") + "','" + title.Replace("'", "''") +
                    "','" + image.Replace("'", "''") + "','" + link.Replace("'", "''") + "','" +
-                   date.ToString("yy-MM-dd HH:mm:ss") + "');";
+                   date.ToSqlLiteFormat() + "');";
         }
     }
 }
