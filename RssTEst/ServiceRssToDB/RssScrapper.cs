@@ -45,7 +45,8 @@ namespace ServiceRssToDB
                         ID = RssFluxId,
 
                         title = elem.Title.Text,
-                        text = elem.Summary.Text
+                        text = elem.Summary.Text,
+                        dateInsert = DateTime.Now
 
                     };
                     if (elem.Links.Count > 0)
@@ -58,27 +59,23 @@ namespace ServiceRssToDB
                     }
                     liste.Add(temp);
                 }
-                using (var sqliteConn = new SQLiteConnection("Data Source=DB\\DBTest.sqlite;Version=3;"))
+
+                liste = liste.OrderBy(x => x.date).ToList();
+                var requete =
+                    string.Format(
+                        "select date from Flux inner join ListeFlux on Flux.IdFlux = ListeFlux.IdFlux  where ListeFlux.Base_Url = '{0}' order by date desc LIMIT  1;",
+                        URL);
+
+                var last = DBManager.Manager.Select(requete);
+                if (last.Rows.Count>0)
                 {
-                    sqliteConn.Open();
-                    liste = liste.OrderBy(x => x.date).ToList();
-                    var requete =
-                        string.Format(
-                            "select date from Flux inner join ListeFlux on Flux.IdFlux = ListeFlux.IdFlux  where ListeFlux.Base_Url = '{0}' order by date desc LIMIT  1;",
-                            URL);
-                    var temp = new SQLiteCommand(requete, sqliteConn);
-                    var last = temp.ExecuteReader();
-                    if (last.HasRows)
-                    {
-                        var lastDate = DateTime.Parse(last.GetValues()["date"]);
-                        liste = liste.Where(x => x.date > lastDate).ToList();
-                    }
-                    foreach (var flux in liste)
-                    {
-                        var tempo = new SQLiteCommand(flux.ToRequest(), sqliteConn);
-                        tempo.ExecuteNonQuery();
-                    }
-                    sqliteConn.Close();
+                    var lastDate = DateTime.Parse(Convert.ToString(last.Rows[0]["date"]));
+                    liste = liste.Where(x => x.date > lastDate).ToList();
+
+                }
+                foreach (var flux in liste)
+                {
+                    DBManager.Manager.Insert(flux.ToRequest());
                 }
             }
         }
