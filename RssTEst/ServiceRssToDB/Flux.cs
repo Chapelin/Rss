@@ -13,13 +13,14 @@ namespace ServiceRssToDB
         public string image { get; set; }
         public string link { get; set; }
         public DateTime date { get; set; }
+        public DateTime dateInsert { get; set; }
 
 
 
 
         public string ToRequest()
         {
-            return "insert into Flux values (" + ID + ", '" + text.Replace("'", "''") + "','" + title.Replace("'", "''") +
+            return "insert into Flux values ('" + dateInsert.ToSqlLiteFormat() + "'," + ID + ", '" + text.Replace("'", "''") + "','" + title.Replace("'", "''") +
                    "','" + image.Replace("'", "''") + "','" + link.Replace("'", "''") + "','" +
                    date.ToSqlLiteFormat() + "');";
         }
