@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel.Syndication;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace ServiceRssToDB
@@ -14,9 +15,9 @@ namespace ServiceRssToDB
         static void Main(string[] args)
         {//"http://rss.lemonde.fr/c/205/f/3052/index.rss"  2
 
-            var temp = new RssScrapper("http://rss.lemonde.fr/c/205/f/3052/index.rss", 2);
-
-            temp.ScrapRss();
+            var temp = new RssScrapper("http://rss.lemonde.fr/c/205/f/3052/index.rss", 2,60);
+            var t =Task.Factory.StartNew(temp.Launch);
+            Task.WaitAll(t);
 
         }
     }

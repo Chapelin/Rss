@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel.Syndication;
 using System.Text;
+using System.Threading;
 using System.Xml;
 
 namespace ServiceRssToDB
@@ -14,10 +15,10 @@ namespace ServiceRssToDB
         public string URL { get; set; }
         public int RssFluxId { get; set; }
         private WebClient _client;
+        private double Delay_seconds;
 
 
-
-        public RssScrapper(string url, int id)
+        public RssScrapper(string url, int id, double delay)
         {
             this.URL = url;
             this.RssFluxId = id;
@@ -25,10 +26,22 @@ namespace ServiceRssToDB
             _client.Proxy = WebRequest.DefaultWebProxy;
             _client.Proxy.Credentials = CredentialCache.DefaultCredentials;
             _client.Credentials = CredentialCache.DefaultCredentials;
+            this.Delay_seconds = delay;
 
         }
 
 
+        public void Launch()
+        {
+            DateTime next;
+            while (true)
+            {
+                next = DateTime.Now.AddMilliseconds(Delay_seconds*1000);
+                ScrapRss();
+                var toSleep = next - DateTime.Now;
+                Thread.Sleep(toSleep);
+            }
+        }
 
         public void ScrapRss()
         {
