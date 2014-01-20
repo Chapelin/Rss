@@ -56,6 +56,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RssScrapper.cs" />
+    <Compile Include="ScrappersManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="x86\SQLite.Interop.dll">
