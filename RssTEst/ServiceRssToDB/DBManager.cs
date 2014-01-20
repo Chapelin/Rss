@@ -37,18 +37,21 @@ namespace ServiceRssToDB
             {
 
                 DataTable dt = new DataTable();
-                if (this._connexion.State == ConnectionState.Closed)
+                lock (this)
                 {
-                    this._connexion.Open();
+                    if (this._connexion.State == ConnectionState.Closed)
+                    {
+                        this._connexion.Open();
+                    }
+
+                    var temp = new SQLiteCommand(request, this._connexion);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(temp);
+                    da.Fill(dt);
                 }
-                var temp = new SQLiteCommand(request, this._connexion);
-                SQLiteDataAdapter da = new SQLiteDataAdapter(temp);
-                da.Fill(dt);
                 return dt;
             }
             finally
             {
-                this._connexion.Close();
             }
 
         }
@@ -58,18 +61,19 @@ namespace ServiceRssToDB
         {
             try
             {
-                if (this._connexion.State != ConnectionState.Closed)
+                lock (this)
                 {
-                    this._connexion.Close();
+                    if (this._connexion.State == ConnectionState.Closed)
+                    {
+                        this._connexion.Open();
+                    }
 
+                    var temp = new SQLiteCommand(request, this._connexion);
+                    temp.ExecuteScalar();
                 }
-                this._connexion.Open();
-                var temp = new SQLiteCommand(request, this._connexion);
-                temp.ExecuteScalar();
             }
             finally
             {
-                this._connexion.Close();
             }
         }
 

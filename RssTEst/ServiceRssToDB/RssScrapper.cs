@@ -41,7 +41,8 @@ namespace ServiceRssToDB
                 next = DateTime.Now.AddMilliseconds(Delay_seconds*1000);
                 ScrapRss();
                 var toSleep = next - DateTime.Now;
-                Thread.Sleep(toSleep);
+                if(toSleep.TotalMilliseconds>0)
+                    Thread.Sleep(toSleep);
             }
         }
 
@@ -57,27 +58,39 @@ namespace ServiceRssToDB
                     var feed = SyndicationFeed.Load(reader);
                     foreach (var elem in feed.Items)
                     {
-                        var temp = new Flux()
+                        try
                         {
-                            date = elem.PublishDate.DateTime,
-                            ID = RssFluxId,
+                            var temp = new Flux()
+                            {
+                                date = elem.PublishDate.DateTime,
+                                ID = RssFluxId,
 
-                            title = elem.Title==null ? string.Empty: elem.Title.Text,
-                            text = elem.Summary == null ? string.Empty : elem.Summary.Text,
-                            dateInsert = DateTime.Now
+                                title = elem.Title == null ? string.Empty : elem.Title.Text,
+                                text = elem.Summary == null ? string.Empty : elem.Summary.Text,
+                                dateInsert = DateTime.Now,
+                                link =  "",
+                            image = ""
+                               
 
-                        };
-                        if (elem.Links.Count > 0)
-                        {
-                            temp.link = elem.Links[0].GetAbsoluteUri().ToString();
+                            };
+                            if (elem.Links.Count > 0)
+                            {
+                                temp.link = elem.Links[0].GetAbsoluteUri().ToString();
+                            }
+                            if (elem.Links.Count > 1)
+                            {
+                                temp.image = elem.Links[1].GetAbsoluteUri().ToString();
+                            }
+                            liste.Add(temp);
                         }
-                        if (elem.Links.Count > 1)
+                        catch (Exception e )
                         {
-                            temp.image = elem.Links[1].GetAbsoluteUri().ToString();
+                            Logger.LogFormat("Erreur sur un element de {0}",this.URL);
+                            throw;
                         }
-                        liste.Add(temp);
+                        
                     }
-
+                    Logger.LogFormat("Info recuperées pour {0}, en attente mise en base", this.URL);
                     liste = liste.OrderBy(x => x.date).ToList();
                     var requete =
                         string.Format(
