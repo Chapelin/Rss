@@ -62,8 +62,8 @@ namespace ServiceRssToDB
                             date = elem.PublishDate.DateTime,
                             ID = RssFluxId,
 
-                            title = elem.Title.Text,
-                            text = elem.Summary.Text,
+                            title = elem.Title==null ? string.Empty: elem.Title.Text,
+                            text = elem.Summary == null ? string.Empty : elem.Summary.Text,
                             dateInsert = DateTime.Now
 
                         };
