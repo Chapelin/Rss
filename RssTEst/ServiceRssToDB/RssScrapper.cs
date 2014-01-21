@@ -38,10 +38,10 @@ namespace ServiceRssToDB
             DateTime next;
             while (true)
             {
-                next = DateTime.Now.AddMilliseconds(Delay_seconds*1000);
+                next = DateTime.Now.AddMilliseconds(Delay_seconds * 1000);
                 ScrapRss();
                 var toSleep = next - DateTime.Now;
-                if(toSleep.TotalMilliseconds>0)
+                if (toSleep.TotalMilliseconds > 0)
                     Thread.Sleep(toSleep);
             }
         }
@@ -53,7 +53,7 @@ namespace ServiceRssToDB
                 // Read the feed using an XmlReader  
                 using (XmlReader reader = XmlReader.Create(_client.OpenRead(URL)))
                 {
-                    Logger.LogFormat("RssScrapper : url OK {0}",this.URL);
+                    Logger.LogFormat("RssScrapper : url OK {0}", this.URL);
                     var liste = new List<Flux>();
                     var feed = SyndicationFeed.Load(reader);
                     foreach (var elem in feed.Items)
@@ -68,9 +68,9 @@ namespace ServiceRssToDB
                                 title = elem.Title == null ? string.Empty : elem.Title.Text,
                                 text = elem.Summary == null ? string.Empty : elem.Summary.Text,
                                 dateInsert = DateTime.Now,
-                                link =  "",
-                            image = ""
-                               
+                                link = "",
+                                image = ""
+
 
                             };
                             if (elem.Links.Count > 0)
@@ -83,12 +83,12 @@ namespace ServiceRssToDB
                             }
                             liste.Add(temp);
                         }
-                        catch (Exception e )
+                        catch (Exception e)
                         {
-                            Logger.LogFormat("Erreur sur un element de {0}",this.URL);
+                            Logger.LogFormat("Erreur sur un element de {0}", this.URL);
                             throw;
                         }
-                        
+
                     }
                     Logger.LogFormat("Info recuperées pour {0}, en attente mise en base", this.URL);
                     liste = liste.OrderBy(x => x.date).ToList();
@@ -100,11 +100,12 @@ namespace ServiceRssToDB
                     var last = DBManager.Manager.Select(requete);
                     if (last.Rows.Count > 0)
                     {
-                        
+
                         var lastDate = DateTime.Parse(Convert.ToString(last.Rows[0]["date"]));
                         liste = liste.Where(x => x.date > lastDate).ToList();
-                        Logger.LogFormat("RssScrapper : nombre d'entrée à inserer dans {0} : {1}",this.URL,liste.Count);
+
                     }
+                    Logger.LogFormat("RssScrapper : nombre d'entrée à inserer dans {0} : {1}", this.URL, liste.Count);
                     foreach (var flux in liste)
                     {
                         DBManager.Manager.Insert(flux.ToRequest());
@@ -115,9 +116,9 @@ namespace ServiceRssToDB
             }
             catch (Exception e)
             {
-                Logger.Log(string.Format("Exception RssScrapper : {0}, url : {1}",e.GetType(),this.URL));                
+                Logger.Log(string.Format("Exception RssScrapper : {0}, url : {1}", e.GetType(), this.URL));
             }
-          
+
         }
     }
 }
