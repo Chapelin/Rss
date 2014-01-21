@@ -12,9 +12,14 @@ namespace ServiceRssToDB
         private List<RssScrapper> liste_scrapper;
 
 
+        public override string ToString()
+        {
+            return "ScrappersManager : ";
+        }
+
         public ScrappersManager()
         {
-            Logger.Log("ScrapperManager : constructor");
+            Logger.Log("constructor");
             liste_scrapper = new List<RssScrapper>();
         }
 
@@ -22,7 +27,7 @@ namespace ServiceRssToDB
 
         public void  InitListeScrap()
         {
-            Logger.Log("ScrapperManager : InitListeScrap begin");
+            Logger.Log(this+"InitListeScrap begin");
             var requete = "select IdFlux, base_url, delay from ListeFlux;";
 
             var res = DBManager.Manager.Select(requete);
@@ -37,21 +42,21 @@ namespace ServiceRssToDB
                 liste_scrapper.Add(temp);
 
             }
-            Logger.LogFormat("ScrapperManager : {0} Scrappers",liste_scrapper.Count);
+            Logger.LogFormat(this + "{0} Scrappers", liste_scrapper.Count);
         }
 
         public void Scrap()
         {
-            Logger.Log("ScrapManager : beginscrap");
+            Logger.Log(this + "beginscrap");
             List<Task> listTask = new List<Task>();
             foreach (var rssScrapper in liste_scrapper)
             {
                 var tempo = rssScrapper;
                 listTask.Add(Task.Factory.StartNew(tempo.Launch));
             }
-            Logger.Log("ScrapManager : All scrapper launched");
+            Logger.Log(this + "All scrapper launched");
             Task.WaitAll(listTask.ToArray());
-            Logger.Log("ScrapMaanger : Scrap ended");
+            Logger.Log(this + "Scrap ended");
         }
 
 

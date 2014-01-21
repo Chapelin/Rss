@@ -17,9 +17,15 @@ namespace ServiceRssToDB
         private WebClient _client;
         private double Delay_seconds;
 
+        public override string ToString()
+        {
+            return String.Format(" Id : {0} - URL : {1} : ", this.RssFluxId,
+                this.URL);
+        }
 
         public RssScrapper(string url, int id, double delay)
         {
+            
             this.URL = url;
             this.RssFluxId = id;
             _client = new WebClient();
@@ -27,14 +33,14 @@ namespace ServiceRssToDB
             _client.Proxy.Credentials = CredentialCache.DefaultCredentials;
             _client.Credentials = CredentialCache.DefaultCredentials;
             this.Delay_seconds = delay;
-            Logger.Log("RssScrapper initialized");
+            Logger.Log(this+"initialized");
 
         }
 
 
         public void Launch()
         {
-            Logger.Log("Launched");
+            Logger.Log(this + "Launched");
             DateTime next;
             while (true)
             {
@@ -53,7 +59,7 @@ namespace ServiceRssToDB
                 // Read the feed using an XmlReader  
                 using (XmlReader reader = XmlReader.Create(_client.OpenRead(URL)))
                 {
-                    Logger.LogFormat("RssScrapper : url OK {0}", this.URL);
+                    Logger.LogFormat(this + "url OK", this.URL);
                     var liste = new List<Flux>();
                     var feed = SyndicationFeed.Load(reader);
                     foreach (var elem in feed.Items)
@@ -85,12 +91,12 @@ namespace ServiceRssToDB
                         }
                         catch (Exception e)
                         {
-                            Logger.LogFormat("Erreur sur un element de {0}", this.URL);
+                            Logger.Log(this + "Erreur sur un element");
                             throw;
                         }
 
                     }
-                    Logger.LogFormat("Info recuperées pour {0}, en attente mise en base", this.URL);
+                    Logger.LogFormat(this + "Info recuperées, en attente mise en base", this.URL);
                     liste = liste.OrderBy(x => x.date).ToList();
                     var requete =
                         string.Format(
@@ -105,18 +111,18 @@ namespace ServiceRssToDB
                         liste = liste.Where(x => x.date > lastDate).ToList();
 
                     }
-                    Logger.LogFormat("RssScrapper : nombre d'entrée à inserer dans {0} : {1}", this.URL, liste.Count);
+                    Logger.LogFormat(this +"nombre d'entrée à inserer {0}",  liste.Count);
                     foreach (var flux in liste)
                     {
                         DBManager.Manager.Insert(flux.ToRequest());
                     }
 
-                    Logger.LogFormat("Scrap ok : {0}", this.URL);
+                    Logger.Log(this + "Scrap ok ");
                 }
             }
             catch (Exception e)
             {
-                Logger.Log(string.Format("Exception RssScrapper : {0}, url : {1}", e.GetType(), this.URL));
+                Logger.LogFormat(this + "Exception RssScrapper : {0}", e.GetType());
             }
 
         }
