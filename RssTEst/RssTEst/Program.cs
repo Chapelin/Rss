@@ -6,6 +6,7 @@ using System.Text;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Data.SQLite;
+using Readers;
 
 namespace RssTEst
 {
@@ -13,22 +14,17 @@ namespace RssTEst
     {
         private static void Main(string[] args)
         {
-            using (var sqliteConn = new SQLiteConnection("Data Source=DBTest.sqlite;Version=3;"))
-            {
-                sqliteConn.Open();
-                string requete =
-                    "create table Flux (id int(10), text varchar(2048), title varchar(2048), image varchar (2048), link varchar(2048), date Datetime) ";
-                var sqlLiteComm = new SQLiteCommand(requete, sqliteConn);
-                sqlLiteComm.ExecuteNonQuery();
+            // Read in the RSS 1.0 feed from the specified URL
+            XmlReader reader = XmlReader.Create("http://feeds.feedburner.com/oatmealfeed?format=xml");
 
-                var comtest =
-                    "insert into Flux values (1,'Je test le contenu d''un flux lolololil les sarrasins sont dans le champs de blé, je repete lol kikoo','Titre !','http://www.google.fr/img','http://www.google.fr',date('now'))";
-                sqlLiteComm = new SQLiteCommand(comtest,sqliteConn);
-                sqlLiteComm.ExecuteNonQuery();
-                sqliteConn.Close();
+            // Create a new Rss10FeedFormatter object
+            Rss10FeedFormatter formatter = new Rss10FeedFormatter();
 
-            }
-            
+            // Parse the feed!
+            formatter.ReadFrom(reader);
+            ;
+            Console.ReadLine();
+
         }
     }
 }
