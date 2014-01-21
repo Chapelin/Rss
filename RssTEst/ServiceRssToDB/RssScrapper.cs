@@ -28,10 +28,6 @@ namespace ServiceRssToDB
             
             this.URL = url;
             this.RssFluxId = id;
-            _client = new WebClient();
-            _client.Proxy = WebRequest.DefaultWebProxy;
-            _client.Proxy.Credentials = CredentialCache.DefaultCredentials;
-            _client.Credentials = CredentialCache.DefaultCredentials;
             this.Delay_seconds = delay;
             Logger.Log(this+"initialized");
 
@@ -50,10 +46,17 @@ namespace ServiceRssToDB
                 if (toSleep.TotalMilliseconds > 0)
                     Thread.Sleep(toSleep);
             }
+
         }
 
         public void ScrapRss()
         {
+
+            _client = new WebClient();
+            _client.Proxy = WebRequest.DefaultWebProxy;
+            _client.Proxy.Credentials = CredentialCache.DefaultCredentials;
+            _client.Credentials = CredentialCache.DefaultCredentials;
+
             try
             {
                 // Read the feed using an XmlReader  
