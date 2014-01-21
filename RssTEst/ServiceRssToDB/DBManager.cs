@@ -31,6 +31,15 @@ namespace ServiceRssToDB
         }
 
 
+        public void Close()
+        {
+            lock (this)
+            {
+                this._connexion.Close();
+            }
+            
+        }
+
         public DataTable Select(string request)
         {
             try
