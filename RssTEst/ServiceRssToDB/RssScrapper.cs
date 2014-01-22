@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading;
@@ -16,19 +17,23 @@ namespace ServiceRssToDB
         public int RssFluxId { get; set; }
         private WebClient _client;
         private double Delay_seconds;
-
+        private Type FormatterType;
         public override string ToString()
         {
             return String.Format(" Id : {0} - URL : {1} : ", this.RssFluxId,
                 this.URL);
         }
 
-        public RssScrapper(string url, int id, double delay)
+        public RssScrapper(string url, int id, double delay,string formatterType = null)
         {
             
             this.URL = url;
             this.RssFluxId = id;
             this.Delay_seconds = delay;
+            if (!string.IsNullOrWhiteSpace(formatterType))
+                FormatterType = Assembly.Load("Readers").CreateInstance("Readers."+formatterType).GetType();
+
+
             Logger.Log(this+"initialized");
 
         }
@@ -56,6 +61,7 @@ namespace ServiceRssToDB
             _client.Proxy = WebRequest.DefaultWebProxy;
             _client.Proxy.Credentials = CredentialCache.DefaultCredentials;
             _client.Credentials = CredentialCache.DefaultCredentials;
+            SyndicationFeed feed = null;
 
             try
             {
@@ -64,7 +70,18 @@ namespace ServiceRssToDB
                 {
                     Logger.LogFormat(this + "url OK", this.URL);
                     var liste = new List<Flux>();
-                    var feed = SyndicationFeed.Load(reader);
+                    //formatter custom
+                    if (FormatterType != null)
+                    {
+                        var constr = FormatterType.GetConstructor(new Type[]{});
+                        SyndicationFeedFormatter tempo = (SyndicationFeedFormatter) constr.Invoke(new object[]{});
+                        if(!tempo.CanRead(reader))
+                            throw new Exception(this+" le formatter n'est pas bon : "+tempo.GetType());
+                       tempo.ReadFrom(reader);
+                        feed = tempo.Feed;
+                    }
+                    else //formatter classique
+                        feed = SyndicationFeed.Load(reader);
                     foreach (var elem in feed.Items)
                     {
                         try

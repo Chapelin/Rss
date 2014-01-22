@@ -28,7 +28,7 @@ namespace ServiceRssToDB
         public void  InitListeScrap()
         {
             Logger.Log(this+"InitListeScrap begin");
-            var requete = "select IdFlux, base_url, delay from ListeFlux;";
+            var requete = "select IdFlux, base_url, delay, Format from ListeFlux;";
 
             var res = DBManager.Manager.Select(requete);
 
@@ -37,8 +37,9 @@ namespace ServiceRssToDB
                 var id = Convert.ToInt32(row["IdFlux"]);
                 var url = Convert.ToString(row["base_url"]);
                 var delay = Convert.ToDouble(row["delay"]);
+                var format = Convert.ToString(row["Format"]);
 
-                RssScrapper temp = new RssScrapper(url,id,delay);
+                RssScrapper temp = new RssScrapper(url,id,delay,format);
                 liste_scrapper.Add(temp);
 
             }
