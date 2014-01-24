@@ -16,7 +16,6 @@ namespace ServiceRssToDB
     {
         public string URL { get; set; }
         public int RssFluxId { get; set; }
-        private WebClient _client;
         private double Delay_seconds;
         private Type FormatterType;
         public override string ToString()
@@ -47,7 +46,7 @@ namespace ServiceRssToDB
             while (true)
             {
                 next = DateTime.Now.AddMilliseconds(Delay_seconds * 1000);
-                ScrapRss();
+                Downloader.Instance.Add(this.URL,ScrapRss);
                 var toSleep = next - DateTime.Now;
                 if (toSleep.TotalMilliseconds > 0)
                     Thread.Sleep(toSleep);
@@ -55,19 +54,16 @@ namespace ServiceRssToDB
 
         }
 
-        public void ScrapRss()
+        public void ScrapRss(Stream response)
         {
 
-            _client = new WebClient();
-            _client.Proxy = WebRequest.DefaultWebProxy;
-            _client.Proxy.Credentials = CredentialCache.DefaultCredentials;
-            _client.Credentials = CredentialCache.DefaultCredentials;
+           
             SyndicationFeed feed = null;
 
             try
             {
                 // Read the feed using an XmlReader  
-                using (XmlReader reader = XmlReader.Create(OpenUrl(4)))
+                using (XmlReader reader = XmlReader.Create(response))
                 {
                     Logger.LogFormat(this + "url OK", this.URL);
                     var liste = new List<Flux>();
@@ -147,28 +143,6 @@ namespace ServiceRssToDB
             }
 
         }
-
-
-
-        public Stream OpenUrl(int trynumber)
-        {
-            Stream result = null;
-            for (int i = 0; i < trynumber; i++)
-            {
-                try
-                {
-                    result = _client.OpenRead(URL);
-                    break;
-                }
-                catch (WebException)
-                {
-                }
-            }
-            if (result == null)
-            {
-                throw new Exception(string.Format("plus de {0} erreurs lors du telechargement de {1}", trynumber, URL));
-            }
-            return result;
-        }
+      
     }
 }
