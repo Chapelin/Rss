@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServiceRssToDB
@@ -52,6 +53,7 @@ namespace ServiceRssToDB
             List<Task> listTask = new List<Task>();
             foreach (var rssScrapper in liste_scrapper)
             {
+                Thread.Sleep(50);
                 var tempo = rssScrapper;
                 listTask.Add(Task.Factory.StartNew(tempo.Launch));
             }

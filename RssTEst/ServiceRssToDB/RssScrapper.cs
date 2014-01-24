@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -24,17 +25,17 @@ namespace ServiceRssToDB
                 this.URL);
         }
 
-        public RssScrapper(string url, int id, double delay,string formatterType = null)
+        public RssScrapper(string url, int id, double delay, string formatterType = null)
         {
-            
+
             this.URL = url;
             this.RssFluxId = id;
             this.Delay_seconds = delay;
             if (!string.IsNullOrWhiteSpace(formatterType))
-                FormatterType = Assembly.Load("Readers").CreateInstance("Readers."+formatterType).GetType();
+                FormatterType = Assembly.Load("Readers").CreateInstance("Readers." + formatterType).GetType();
 
 
-            Logger.Log(this+"initialized");
+            Logger.Log(this + "initialized");
 
         }
 
@@ -66,18 +67,18 @@ namespace ServiceRssToDB
             try
             {
                 // Read the feed using an XmlReader  
-                using (XmlReader reader = XmlReader.Create(_client.OpenRead(URL)))
+                using (XmlReader reader = XmlReader.Create(OpenUrl(4)))
                 {
                     Logger.LogFormat(this + "url OK", this.URL);
                     var liste = new List<Flux>();
                     //formatter custom
                     if (FormatterType != null)
                     {
-                        var constr = FormatterType.GetConstructor(new Type[]{});
-                        SyndicationFeedFormatter tempo = (SyndicationFeedFormatter) constr.Invoke(new object[]{});
-                        if(!tempo.CanRead(reader))
-                            throw new Exception(this+" le formatter n'est pas bon : "+tempo.GetType());
-                       tempo.ReadFrom(reader);
+                        var constr = FormatterType.GetConstructor(new Type[] { });
+                        SyndicationFeedFormatter tempo = (SyndicationFeedFormatter)constr.Invoke(new object[] { });
+                        if (!tempo.CanRead(reader))
+                            throw new Exception(this + " le formatter n'est pas bon : " + tempo.GetType());
+                        tempo.ReadFrom(reader);
                         feed = tempo.Feed;
                     }
                     else //formatter classique
@@ -131,7 +132,7 @@ namespace ServiceRssToDB
                         liste = liste.Where(x => x.date > lastDate).ToList();
 
                     }
-                    Logger.LogFormat(this +"nombre d'entrée à inserer {0}",  liste.Count);
+                    Logger.LogFormat(this + "nombre d'entrée à inserer {0}", liste.Count);
                     foreach (var flux in liste)
                     {
                         DBManager.Manager.Insert(flux.ToRequest());
@@ -145,6 +146,29 @@ namespace ServiceRssToDB
                 Logger.LogFormat(this + "Exception RssScrapper : {0}", e.GetType());
             }
 
+        }
+
+
+
+        public Stream OpenUrl(int trynumber)
+        {
+            Stream result = null;
+            for (int i = 0; i < trynumber; i++)
+            {
+                try
+                {
+                    result = _client.OpenRead(URL);
+                    break;
+                }
+                catch (WebException)
+                {
+                }
+            }
+            if (result == null)
+            {
+                throw new Exception(string.Format("plus de {0} erreurs lors du telechargement de {1}", trynumber, URL));
+            }
+            return result;
         }
     }
 }
