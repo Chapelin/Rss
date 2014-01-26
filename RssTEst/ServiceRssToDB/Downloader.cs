@@ -13,7 +13,7 @@ namespace ServiceRssToDB
     public  class Downloader
     {
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
-        private static int _parellelDlnb = 1;
+        private static int _parellelDlnb = 3;
         private static int _actualDlnb = 0;
         private static Downloader _singleton;
 
@@ -87,6 +87,13 @@ namespace ServiceRssToDB
             catch (Exception e)
             {
                 logger.Info("Downloader : erreur {0} pour {1}",e.Message,dl.Url);
+                dl.retryLeft--;
+                if(dl.retryLeft>0)
+                    _queue.Enqueue(dl);
+                else
+                {
+                    Logger.LogFormat("Downloader  : plus de retry possible pour {0}",dl.Url);
+                }
             }
             
             
@@ -103,6 +110,12 @@ namespace ServiceRssToDB
     {
         public  string Url;
         public Action<Stream> CallBack;
+        public int retryLeft;
+
+        public DownloadInfo()
+        {
+            retryLeft = 3;
+        }
 
 
     }
