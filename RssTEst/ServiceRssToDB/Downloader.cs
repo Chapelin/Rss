@@ -6,12 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace ServiceRssToDB
 {
     public  class Downloader
     {
-
+        private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
         private static int _parellelDlnb = 3;
         private static int _actualDlnb = 0;
         private static Downloader _singleton;
@@ -42,7 +43,7 @@ namespace ServiceRssToDB
 
         private void TryDl()
         {
-            Logger.LogFormat("Downloader : debut TryDl : il y a {0} elements dans la queue",_queue.Count);
+            logger.Info("Debut TryDl : il y a {0} elements dans la queue",_queue.Count);
             if (_parellelDlnb > _actualDlnb && _queue.Count>0)
             {
                     _actualDlnb++;
@@ -63,7 +64,7 @@ namespace ServiceRssToDB
         {
 
             _queue.Enqueue(new DownloadInfo(){Url = url,CallBack = todo});
-            Logger.LogFormat("Downloader : ajout de {0}",url);
+            logger.Info("Ajout de {0}",url);
             dlInfoAdded();
         }
 
@@ -71,7 +72,7 @@ namespace ServiceRssToDB
 
         private void Dl(DownloadInfo dl)
         {
-            Logger.LogFormat("Downloader : Lancement dl de {0}",dl.Url);
+            logger.Info("Lancement dl de {0}",dl.Url);
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(dl.Url);
             request.Timeout = 5000;
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0";
@@ -81,17 +82,17 @@ namespace ServiceRssToDB
             {
                 var response = (HttpWebResponse)request.GetResponse();
                 Task.Factory.StartNew(() => dl.CallBack(response.GetResponseStream()));
-                Logger.LogFormat("Downloader : fin dl de {0}", dl.Url);
+                logger.Info("Fin dl de {0}", dl.Url);
             }
             catch (Exception e)
             {
-                Logger.LogFormat("Downloader : erreur {0} pour {1}",e.Message,dl.Url);
+                logger.Error("Downloader : erreur {0} pour {1}",e.Message,dl.Url);
                 dl.retryLeft--;
                 if(dl.retryLeft>0)
                     _queue.Enqueue(dl);
                 else
                 {
-                    Logger.LogFormat("Downloader  : plus de retry possible pour {0}",dl.Url);
+                    logger.Error("Plus de retry possible pour {0}", dl.Url);
                 }
             }
             

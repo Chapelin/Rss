@@ -9,11 +9,15 @@ using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading;
 using System.Xml;
+using NLog;
 
 namespace ServiceRssToDB
 {
     public class RssScrapper
     {
+
+        private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
+
         public string URL { get; set; }
         public int RssFluxId { get; set; }
         private double Delay_seconds;
@@ -34,14 +38,14 @@ namespace ServiceRssToDB
                 FormatterType = Assembly.Load("Readers").CreateInstance("Readers." + formatterType).GetType();
 
 
-            Logger.Log(this + "initialized");
+            logger.Info(this + "initialized");
 
         }
 
 
         public void Launch()
         {
-            Logger.Log(this + "Launched");
+            logger.Info(this + "Launched");
             DateTime next;
             while (true)
             {
@@ -65,13 +69,13 @@ namespace ServiceRssToDB
                 // Read the feed using an XmlReader  
                 using (XmlReader reader = XmlReader.Create(response))
                 {
-                    Logger.LogFormat(this + "url OK", this.URL);
+                    logger.Info(this + "url OK");
                     var liste = new List<Flux>();
                     //formatter custom
                     if (FormatterType != null)
                     {
                         var constr = FormatterType.GetConstructor(new Type[] { });
-                        SyndicationFeedFormatter tempo = (SyndicationFeedFormatter)constr.Invoke(new object[] { });
+                        var tempo = (SyndicationFeedFormatter)constr.Invoke(new object[] { });
                         if (!tempo.CanRead(reader))
                             throw new Exception(this + " le formatter n'est pas bon : " + tempo.GetType());
                         tempo.ReadFrom(reader);
@@ -108,12 +112,12 @@ namespace ServiceRssToDB
                         }
                         catch (Exception e)
                         {
-                            Logger.Log(this + "Erreur sur un element");
+                            logger.Info(this + "Erreur sur un element");
                             throw;
                         }
 
                     }
-                    Logger.LogFormat(this + "Info recuperées, en attente mise en base", this.URL);
+                    logger.Info(this + "Info recuperées, en attente mise en base");
                     liste = liste.OrderBy(x => x.date).ToList();
                     var requete =
                         string.Format(
@@ -128,18 +132,18 @@ namespace ServiceRssToDB
                         liste = liste.Where(x => x.date > lastDate).ToList();
 
                     }
-                    Logger.LogFormat(this + "nombre d'entrée à inserer {0}", liste.Count);
+                    logger.Info(this + "nombre d'entrée à inserer {0}", liste.Count);
                     foreach (var flux in liste)
                     {
                         DBManager.Manager.Insert(flux.ToRequest());
                     }
 
-                    Logger.Log(this + "Scrap ok ");
+                    logger.Info(this + "Scrap ok ");
                 }
             }
             catch (Exception e)
             {
-                Logger.LogFormat(this + "Exception RssScrapper : {0}", e.GetType());
+                logger.Info(this + "Exception RssScrapper : {0}", e.GetType());
             }
 
         }
