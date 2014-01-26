@@ -4,11 +4,13 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
+using NLog;
 
 namespace ServiceRssToDB
 {
     public class DBManager
     {
+        private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
         private static DBManager _manager;
         public static DBManager Manager
         {
@@ -28,6 +30,7 @@ namespace ServiceRssToDB
         private DBManager(string ConnexionString)
         {
             _connexion = new SQLiteConnection(ConnexionString);
+            logger.Info("Constructor fini avec la connexionstring {0}",this._connexion.ConnectionString);
         }
 
 
@@ -36,6 +39,7 @@ namespace ServiceRssToDB
             lock (this)
             {
                 this._connexion.Close();
+                logger.Info("Connexion fermée");
             }
             
         }
@@ -48,6 +52,7 @@ namespace ServiceRssToDB
                 DataTable dt = new DataTable();
                 lock (this)
                 {
+                    logger.Info("Select => requete : {0}",request);
                     if (this._connexion.State == ConnectionState.Closed)
                     {
                         this._connexion.Open();
@@ -56,6 +61,7 @@ namespace ServiceRssToDB
                     var temp = new SQLiteCommand(request, this._connexion);
                     SQLiteDataAdapter da = new SQLiteDataAdapter(temp);
                     da.Fill(dt);
+                    logger.Info("Select ok");
                 }
                 return dt;
             }
@@ -72,6 +78,7 @@ namespace ServiceRssToDB
             {
                 lock (this)
                 {
+                    logger.Info("Insert => requete : {0}", request);
                     if (this._connexion.State == ConnectionState.Closed)
                     {
                         this._connexion.Open();
@@ -79,6 +86,7 @@ namespace ServiceRssToDB
 
                     var temp = new SQLiteCommand(request, this._connexion);
                     temp.ExecuteScalar();
+                    logger.Info("Insert ok");
                 }
             }
             finally

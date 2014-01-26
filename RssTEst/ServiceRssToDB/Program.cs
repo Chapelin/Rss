@@ -14,7 +14,6 @@ namespace ServiceRssToDB
     {
         static void Main(string[] args)
         {
-            log4net.Config.XmlConfigurator.Configure();
             var manager = new ScrappersManager();
             manager.InitListeScrap();
             Task.Factory.StartNew(manager.Scrap);
