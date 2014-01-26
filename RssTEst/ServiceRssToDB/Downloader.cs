@@ -82,17 +82,17 @@ namespace ServiceRssToDB
             {
                 var response = (HttpWebResponse)request.GetResponse();
                 Task.Factory.StartNew(() => dl.CallBack(response.GetResponseStream()));
-                logger.Info("Downloader : fin dl de {0}", dl.Url);
+                logger.Info("Fin dl de {0}", dl.Url);
             }
             catch (Exception e)
             {
-                logger.Info("Downloader : erreur {0} pour {1}",e.Message,dl.Url);
+                logger.Error("Downloader : erreur {0} pour {1}",e.Message,dl.Url);
                 dl.retryLeft--;
                 if(dl.retryLeft>0)
                     _queue.Enqueue(dl);
                 else
                 {
-                    Logger.LogFormat("Downloader  : plus de retry possible pour {0}",dl.Url);
+                    logger.Error("Plus de retry possible pour {0}", dl.Url);
                 }
             }
             
