@@ -13,7 +13,7 @@ namespace ServiceRssToDB
     public  class Downloader
     {
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
-        private static int _parellelDlnb = 3;
+        private static int _parellelDlnb = 5;
         private static int _actualDlnb = 0;
         private static Downloader _singleton;
 
@@ -74,7 +74,7 @@ namespace ServiceRssToDB
         {
             logger.Info("Lancement dl de {0}",dl.Url);
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(dl.Url);
-            request.Timeout = 5000;
+            request.Timeout = 3000;
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0";
             request.Method = "GET";
             request.ContentLength = 0;
