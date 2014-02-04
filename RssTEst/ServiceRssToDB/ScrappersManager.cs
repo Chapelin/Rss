@@ -27,7 +27,7 @@ namespace ServiceRssToDB
         public void  InitListeScrap()
         {
             logger.Info("InitListeScrap begin");
-            var requete = "select IdFlux, base_url, delay, Format from ListeFlux where IdFlux=25;";
+            var requete = "select IdFlux, base_url, delay, Format from ListeFlux;";
 
             var res = DBManager.Manager.Select(requete);
 
