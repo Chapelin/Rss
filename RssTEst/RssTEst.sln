@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceRssToDB", "ServiceRs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Readers", "..\Readers\Readers\Readers.csproj", "{C8863E5C-3BB5-428F-8848-6D5686DE41DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssApi", "RssApi\RssApi.csproj", "{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{C8863E5C-3BB5-428F-8848-6D5686DE41DE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C8863E5C-3BB5-428F-8848-6D5686DE41DE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C8863E5C-3BB5-428F-8848-6D5686DE41DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B2914AE5-E2E4-4DA3-AC36-04C33133B3D1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
