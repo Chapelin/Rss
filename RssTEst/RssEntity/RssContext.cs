@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 
@@ -15,6 +16,24 @@ namespace RssEntity
         public RssContext()
             : base("DataContext")
         {
+            
+        }
+
+        public void Save()
+        {
+            try
+            {
+                lock (this)
+                {
+                    this.SaveChanges();
+                }
+
+            }
+            catch (DbEntityValidationException ex )
+            {
+               
+                throw;
+            }
             
         }
     }

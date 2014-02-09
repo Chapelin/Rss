@@ -25,7 +25,7 @@ namespace ServiceRssToDB
         private Type FormatterType;
         public override string ToString()
         {
-            return String.Format(" Id : {0} - Delay : {1} - URL : {2} : ", this.RssId,this.Delay_seconds,
+            return String.Format(" IdSource : {0} - Delay : {1} - URL : {2} : ", this.RssId.ID, this.Delay_seconds,
                 this.URL);
         }
 
@@ -51,7 +51,7 @@ namespace ServiceRssToDB
             while (true)
             {
                 next = DateTime.Now.AddMilliseconds(Delay_seconds * 1000);
-                Downloader.Instance.Add(this.URL,ScrapRss);
+                Downloader.Instance.Add(this.URL, ScrapRss);
                 var toSleep = next - DateTime.Now;
                 if (toSleep.TotalMilliseconds > 0)
                     Thread.Sleep(toSleep);
@@ -62,7 +62,7 @@ namespace ServiceRssToDB
         public void ScrapRss(Stream response)
         {
 
-           
+
             SyndicationFeed feed = null;
 
             try
@@ -88,13 +88,16 @@ namespace ServiceRssToDB
                     {
                         try
                         {
+                            var textemp = elem.Summary == null ? string.Empty : elem.Summary.Text;
+                            if (textemp.Count() > 3999)
+                                textemp = textemp.Substring(0, 3999);
                             var temp = new Entree()
                             {
                                 Date = elem.PublishDate.DateTime,
                                 Source = RssId,
 
                                 Titre = elem.Title == null ? string.Empty : elem.Title.Text,
-                                Texte = elem.Summary == null ? string.Empty : elem.Summary.Text,
+                                Texte = textemp,
                                 DateInsertion = DateTime.Now,
                                 Link = "",
                                 Image = ""
@@ -120,19 +123,18 @@ namespace ServiceRssToDB
                     }
                     logger.Info(this + "Info recuperées, en attente mise en base");
                     liste = liste.OrderBy(x => x.Date).ToList();
-                   
 
-                    var last = RssId.DataFlus.OrderByDescending(x => x.Date);
-                    if (last.Any())
+
+                    if (RssId.DataFlus !=null && RssId.DataFlus.Any())
                     {
 
+                        var last = RssId.DataFlus.OrderByDescending(x => x.Date);
                         var lastDate = last.First().Date;
                         liste = liste.Where(x => x.Date > lastDate).ToList();
-
                     }
                     logger.Info(this + "nombre d'entrée à inserer {0}", liste.Count);
-                        ContextManager.Rss.Datas.AddRange(liste);
-
+                    ContextManager.Rss.Datas.AddRange(liste);
+                    ContextManager.Rss.Save();
                     logger.Info(this + "Scrap ok ");
                 }
             }
@@ -142,6 +144,6 @@ namespace ServiceRssToDB
             }
 
         }
-      
+
     }
 }

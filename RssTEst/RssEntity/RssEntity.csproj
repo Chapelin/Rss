@@ -56,6 +56,19 @@
   <ItemGroup>
     <Compile Include="Categorie.cs" />
     <Compile Include="Entree.cs" />
+    <Compile Include="Migrations\201402091918043_Maj Data.cs" />
+    <Compile Include="Migrations\201402091918043_Maj Data.Designer.cs">
+      <DependentUpon>201402091918043_Maj Data.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402091937062_Maj clef autoincrment.cs" />
+    <Compile Include="Migrations\201402091937062_Maj clef autoincrment.Designer.cs">
+      <DependentUpon>201402091937062_Maj clef autoincrment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201402091958578_ClefEntree.cs" />
+    <Compile Include="Migrations\201402091958578_ClefEntree.Designer.cs">
+      <DependentUpon>201402091958578_ClefEntree.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RssContext.cs" />
     <Compile Include="Source.cs" />
@@ -63,6 +76,17 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201402091918043_Maj Data.resx">
+      <DependentUpon>201402091918043_Maj Data.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402091937062_Maj clef autoincrment.resx">
+      <DependentUpon>201402091937062_Maj clef autoincrment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201402091958578_ClefEntree.resx">
+      <DependentUpon>201402091958578_ClefEntree.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
