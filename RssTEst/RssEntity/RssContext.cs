@@ -11,5 +11,11 @@ namespace RssEntity
         public DbSet<Categorie> Categories { get; set; }
         public DbSet<SourceFlux> Sources { get; set; }
         public DbSet<DataFlux> Datas { get; set; }
+
+        public RssContext()
+            : base("DataContext")
+        {
+            
+        }
     }
 }

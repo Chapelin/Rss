@@ -7,6 +7,7 @@ using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Data.SQLite;
 using Readers;
+using RssEntity;
 
 namespace RssTEst
 {
@@ -14,16 +15,31 @@ namespace RssTEst
     {
         private static void Main(string[] args)
         {
-            // Read in the RSS 1.0 feed from the specified URL
-            XmlReader reader = XmlReader.Create("http://feeds.feedburner.com/oatmealfeed?format=xml");
+            using (var ctx = new RssContext())
+            {
+                try
+                {
+                    Categorie ct = new Categorie() { ID = 1, Description = "Test" };
 
-            // Create a new Rss10FeedFormatter object
-            Rss10FeedFormatter formatter = new Rss10FeedFormatter();
+                    ctx.Categories.Add(ct);
+                    ctx.SaveChanges();
+                    Console.WriteLine("Test");
+                }
+                catch (Exception e)
+                {
 
-            // Parse the feed!
-            formatter.ReadFrom(reader);
-            ;
-            Console.ReadLine();
+                    Console.WriteLine(e.GetType());
+                    Console.WriteLine(e.InnerException);
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+                finally
+                {
+                    Console.Read();
+                }
+               
+
+            }
 
         }
     }
