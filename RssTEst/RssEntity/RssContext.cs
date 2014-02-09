@@ -9,8 +9,8 @@ namespace RssEntity
     public class RssContext : DbContext
     {
         public DbSet<Categorie> Categories { get; set; }
-        public DbSet<SourceFlux> Sources { get; set; }
-        public DbSet<DataFlux> Datas { get; set; }
+        public DbSet<Source> Sources { get; set; }
+        public DbSet<Entree> Datas { get; set; }
 
         public RssContext()
             : base("DataContext")

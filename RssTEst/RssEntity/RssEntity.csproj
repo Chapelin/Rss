@@ -55,10 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Categorie.cs" />
-    <Compile Include="DataFlux.cs" />
+    <Compile Include="Entree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RssContext.cs" />
-    <Compile Include="SourceFlux.cs" />
+    <Compile Include="Source.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

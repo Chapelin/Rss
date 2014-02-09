@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using NLog;
+using RssEntity;
 
 namespace ServiceRssToDB
 {
@@ -19,20 +20,20 @@ namespace ServiceRssToDB
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         public string URL { get; set; }
-        public int RssFluxId { get; set; }
+        public Source RssId { get; set; }
         private double Delay_seconds;
         private Type FormatterType;
         public override string ToString()
         {
-            return String.Format(" Id : {0} - Delay : {1} - URL : {2} : ", this.RssFluxId,this.Delay_seconds,
+            return String.Format(" Id : {0} - Delay : {1} - URL : {2} : ", this.RssId,this.Delay_seconds,
                 this.URL);
         }
 
-        public RssScrapper(string url, int id, double delay, string formatterType = null)
+        public RssScrapper(string url, Source id, double delay, string formatterType = null)
         {
 
             this.URL = url;
-            this.RssFluxId = id;
+            this.RssId = id;
             this.Delay_seconds = delay;
             if (!string.IsNullOrWhiteSpace(formatterType))
                 FormatterType = Assembly.Load("Readers").CreateInstance("Readers." + formatterType).GetType();
@@ -70,7 +71,7 @@ namespace ServiceRssToDB
                 using (XmlReader reader = XmlReader.Create(response))
                 {
                     logger.Info(this + "url OK");
-                    var liste = new List<Flux>();
+                    var liste = new List<Entree>();
                     //formatter custom
                     if (FormatterType != null)
                     {
@@ -87,26 +88,26 @@ namespace ServiceRssToDB
                     {
                         try
                         {
-                            var temp = new Flux()
+                            var temp = new Entree()
                             {
-                                date = elem.PublishDate.DateTime,
-                                ID = RssFluxId,
+                                Date = elem.PublishDate.DateTime,
+                                Source = RssId,
 
-                                title = elem.Title == null ? string.Empty : elem.Title.Text,
-                                text = elem.Summary == null ? string.Empty : elem.Summary.Text,
-                                dateInsert = DateTime.Now,
-                                link = "",
-                                image = ""
+                                Titre = elem.Title == null ? string.Empty : elem.Title.Text,
+                                Texte = elem.Summary == null ? string.Empty : elem.Summary.Text,
+                                DateInsertion = DateTime.Now,
+                                Link = "",
+                                Image = ""
 
 
                             };
                             if (elem.Links.Count > 0)
                             {
-                                temp.link = elem.Links[0].GetAbsoluteUri().ToString();
+                                temp.Link = elem.Links[0].GetAbsoluteUri().ToString();
                             }
                             if (elem.Links.Count > 1)
                             {
-                                temp.image = elem.Links[1].GetAbsoluteUri().ToString();
+                                temp.Image = elem.Links[1].GetAbsoluteUri().ToString();
                             }
                             liste.Add(temp);
                         }
@@ -118,25 +119,19 @@ namespace ServiceRssToDB
 
                     }
                     logger.Info(this + "Info recuperées, en attente mise en base");
-                    liste = liste.OrderBy(x => x.date).ToList();
-                    var requete =
-                        string.Format(
-                            "select date from Flux inner join ListeFlux on Flux.IdFlux = ListeFlux.IdFlux  where ListeFlux.Base_Url = '{0}' order by date desc LIMIT  1;",
-                            URL);
+                    liste = liste.OrderBy(x => x.Date).ToList();
+                   
 
-                    var last = DBManager.Manager.Select(requete);
-                    if (last.Rows.Count > 0)
+                    var last = RssId.DataFlus.OrderByDescending(x => x.Date);
+                    if (last.Any())
                     {
 
-                        var lastDate = DateTime.Parse(Convert.ToString(last.Rows[0]["date"]));
-                        liste = liste.Where(x => x.date > lastDate).ToList();
+                        var lastDate = last.First().Date;
+                        liste = liste.Where(x => x.Date > lastDate).ToList();
 
                     }
                     logger.Info(this + "nombre d'entrée à inserer {0}", liste.Count);
-                    foreach (var flux in liste)
-                    {
-                        DBManager.Manager.Insert(flux.ToRequest());
-                    }
+                        ContextManager.Rss.Datas.AddRange(liste);
 
                     logger.Info(this + "Scrap ok ");
                 }

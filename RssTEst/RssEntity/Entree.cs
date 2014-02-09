@@ -6,7 +6,7 @@ using System.Text;
 
 namespace RssEntity
 {
-    public class DataFlux
+    public class Entree
     {
         [Key]
         public int ID { get; set; }
@@ -16,6 +16,6 @@ namespace RssEntity
         public string Link { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateInsertion { get; set; }
-        public SourceFlux Source { get; set; }
+        public Source Source { get; set; }
     }
 }

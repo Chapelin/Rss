@@ -6,7 +6,7 @@ using System.Text;
 
 namespace RssEntity
 {
-    public class SourceFlux
+    public class Source
     {
         [Key]
         public int ID { get; set; }
@@ -16,9 +16,10 @@ namespace RssEntity
         public string Description { get; set; }
         public string Formatter { get; set; }
         public DateTime DateAjout { get; set; }
-
+        [Required]
+        public int Delai { get; set; }
         public virtual List<Categorie> Categories { get; set; } 
-        public virtual IEnumerable<DataFlux> DataFlus { get; set; } 
+        public virtual IEnumerable<Entree> DataFlus { get; set; } 
 
     }
 }

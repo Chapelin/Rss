@@ -13,6 +13,6 @@ namespace RssEntity
         [Required]
         public string Description { get; set; }
 
-        public virtual List<SourceFlux> FluxAssocies { get; set; } 
+        public virtual List<Source> FluxAssocies { get; set; } 
     }
 }
