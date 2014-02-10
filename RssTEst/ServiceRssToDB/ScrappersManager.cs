@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
+using RssEntity;
 
 namespace ServiceRssToDB
 {
@@ -29,7 +30,7 @@ namespace ServiceRssToDB
             logger.Info("InitListeScrap begin");
          
 
-            foreach (var row in ContextManager.Rss.Sources)
+            foreach (var row in DBManager.Rss.GetCollection<Source>("Source").FindAll())
             {
            
 

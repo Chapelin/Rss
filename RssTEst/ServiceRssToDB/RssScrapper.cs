@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,6 +8,8 @@ using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading;
 using System.Xml;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using NLog;
 using RssEntity;
 
@@ -25,7 +26,7 @@ namespace ServiceRssToDB
         private Type FormatterType;
         public override string ToString()
         {
-            return String.Format(" IdSource : {0} - Delay : {1} - URL : {2} : ", this.RssId.ID, this.Delay_seconds,
+            return String.Format(" IdSource : {0} - Delay : {1} - URL : {2} : ", this.RssId.Id, this.Delay_seconds,
                 this.URL);
         }
 
@@ -124,17 +125,18 @@ namespace ServiceRssToDB
                     logger.Info(this + "Info recuperées, en attente mise en base");
                     liste = liste.OrderBy(x => x.Date).ToList();
 
+                    var col = DBManager.Rss.GetCollection<Entree>("Deja").Find(Query<Entree>.EQ(x=> x.Source, this.RssId));
 
-                    if (RssId.DataFlus !=null && RssId.DataFlus.Any())
+                    if (col != null && col.Any())
                     {
 
-                        var last = RssId.DataFlus.OrderByDescending(x => x.Date);
+                        var last = col.OrderByDescending(x => x.Date);
                         var lastDate = last.First().Date;
                         liste = liste.Where(x => x.Date > lastDate).ToList();
                     }
                     logger.Info(this + "nombre d'entrée à inserer {0}", liste.Count);
-                    ContextManager.Rss.Datas.AddRange(liste);
-                    ContextManager.Rss.Save();
+                    var coll = DBManager.Rss.GetCollection<Entree>("Entree");
+                    coll.InsertBatch(liste);
                     logger.Info(this + "Scrap ok ");
                 }
             }
