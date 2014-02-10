@@ -27,8 +27,7 @@ namespace ServiceRssToDB
         private Type FormatterType;
         public override string ToString()
         {
-            return String.Format(" IdSource : {0} - Delay : {1} - URL : {2} : ", this.RssId, this.Delay_seconds,
-                this.URL);
+            return String.Format(" IdSource : {0} - Delay : {1} : ", this.RssId, this.Delay_seconds);
         }
 
         public RssScrapper(string url, Source id, double delay, string formatterType = null)

@@ -4,15 +4,17 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RssEntity;
+using ServiceRssToDB;
 
 namespace RssApi.Controllers
 {
     public class ValuesController : ApiController
     {
         // GET api/values
-        public IEnumerable<string> Get()
+        public IEnumerable<Source> Get()
         {
-            return new string[] { "value1", "value2" };
+            return DBManager.Rss.GetCollection<Source>("Sources").FindAll();
         }
 
         // GET api/values/5
