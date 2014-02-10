@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Driver.Builders;
 using NLog;
 using RssEntity;
 
@@ -28,9 +29,9 @@ namespace ServiceRssToDB
         public void  InitListeScrap()
         {
             logger.Info("InitListeScrap begin");
-         
 
-            foreach (var row in DBManager.Rss.GetCollection<Source>("Source").FindAll())
+
+            foreach (var row in DBManager.Rss.GetCollection<Source>("Sources").FindAll().Take(3))
             {
            
 
