@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 
 namespace RssEntity
@@ -11,6 +12,7 @@ namespace RssEntity
         public string Formatter { get; set; }
         public DateTime DateAjout { get; set; }
         public int Delai { get; set; }
+        public List<ObjectId> CategoriesIds { get; set; }
 
     }
 }
