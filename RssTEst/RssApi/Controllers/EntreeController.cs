@@ -19,10 +19,16 @@ namespace RssApi.App_Start
             return col;
         }
 
-        public IEnumerable<Entree> Get(string id)
+        public IEnumerable<Entree> GetByID(string id)
         {
             var uid = new ObjectId(id);
             return DBManager.Rss.GetCollection<Entree>("Entree").Find(Query<Entree>.EQ(x => x.SourceId, uid));
+        }
+
+        public IEnumerable<Entree> GetLast20(string id)
+        {
+            var uid = new ObjectId(id);
+            return DBManager.Rss.GetCollection<Entree>("Entree").Find(Query<Entree>.EQ(x => x.SourceId, uid)).Take(20);
         }
     }
 }
