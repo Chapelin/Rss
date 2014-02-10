@@ -12,6 +12,6 @@ namespace RssEntity
         public string Link { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateInsertion { get; set; }
-        public Source Source { get; set; }
+        public  ObjectId SourceId { get; set; }
     }
 }

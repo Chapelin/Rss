@@ -8,6 +8,7 @@ using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading;
 using System.Xml;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using NLog;
@@ -21,7 +22,7 @@ namespace ServiceRssToDB
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         public string URL { get; set; }
-        public Source RssId { get; set; }
+        public ObjectId RssId { get; set; }
         private double Delay_seconds;
         private Type FormatterType;
         public override string ToString()
@@ -34,7 +35,7 @@ namespace ServiceRssToDB
         {
 
             this.URL = url;
-            this.RssId = id;
+            this.RssId = id.Id;
             this.Delay_seconds = delay;
             if (!string.IsNullOrWhiteSpace(formatterType))
                 FormatterType = Assembly.Load("Readers").CreateInstance("Readers." + formatterType).GetType();
@@ -95,7 +96,7 @@ namespace ServiceRssToDB
                             var temp = new Entree()
                             {
                                 Date = elem.PublishDate.DateTime,
-                                Source = RssId,
+                                SourceId = RssId,
 
                                 Titre = elem.Title == null ? string.Empty : elem.Title.Text,
                                 Texte = textemp,
@@ -125,7 +126,7 @@ namespace ServiceRssToDB
                     logger.Info(this + "Info recuperées, en attente mise en base");
                     liste = liste.OrderBy(x => x.Date).ToList();
 
-                    var col = DBManager.Rss.GetCollection<Entree>("Deja").Find(Query<Entree>.EQ(x=> x.Source, this.RssId));
+                    var col = DBManager.Rss.GetCollection<Entree>("Deja").Find(Query<Entree>.EQ(x=> x.SourceId, this.RssId));
 
                     if (col != null && col.Any())
                     {
