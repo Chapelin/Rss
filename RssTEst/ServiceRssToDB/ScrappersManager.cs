@@ -30,12 +30,12 @@ namespace ServiceRssToDB
         {
             logger.Info("InitListeScrap begin");
 
-
-            foreach (var row in DBManager.Rss.GetCollection<Source>("Sources").FindAll().Take(3))
+            var coll = DBManager.Rss.GetCollection<Source>("Sources");
+            foreach (var row in coll.FindAll())
             {
            
 
-                RssScrapper temp = new RssScrapper(row.URL,row,row.Delai,row.Formatter);
+                var temp = new RssScrapper(row.URL,row,row.Delai,row.Formatter);
                 liste_scrapper.Add(temp);
 
             }

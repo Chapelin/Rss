@@ -27,7 +27,7 @@ namespace ServiceRssToDB
         private Type FormatterType;
         public override string ToString()
         {
-            return String.Format(" IdSource : {0} - Delay : {1} - URL : {2} : ", this.RssId.Id, this.Delay_seconds,
+            return String.Format(" IdSource : {0} - Delay : {1} - URL : {2} : ", this.RssId, this.Delay_seconds,
                 this.URL);
         }
 

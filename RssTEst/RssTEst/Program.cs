@@ -20,7 +20,7 @@ namespace RssTEst
             try
             {
                 Console.WriteLine("Go !");
-               // InitSources();
+                //InitSources();
             }
             catch (Exception e)
             {
