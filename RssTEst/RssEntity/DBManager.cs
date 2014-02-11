@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using MongoDB.Driver;
-using NLog;
-using RssEntity;
+﻿using MongoDB.Driver;
 
-namespace ServiceRssToDB
+namespace RssEntity
 {
     public class DBManager
     {
-        private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
         private static MongoDatabase _rss;
         private static MongoClient _client;
         private static MongoDatabase Rss
