@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,7 +8,11 @@ using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading;
 using System.Xml;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using NLog;
+using RssEntity;
 
 namespace ServiceRssToDB
 {
@@ -19,20 +22,19 @@ namespace ServiceRssToDB
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         public string URL { get; set; }
-        public int RssFluxId { get; set; }
+        public ObjectId RssId { get; set; }
         private double Delay_seconds;
         private Type FormatterType;
         public override string ToString()
         {
-            return String.Format(" Id : {0} - Delay : {1} - URL : {2} : ", this.RssFluxId,this.Delay_seconds,
-                this.URL);
+            return String.Format(" IdSource : {0} - Delay : {1} : ", this.RssId, this.Delay_seconds);
         }
 
-        public RssScrapper(string url, int id, double delay, string formatterType = null)
+        public RssScrapper(string url, Source id, double delay, string formatterType = null)
         {
 
             this.URL = url;
-            this.RssFluxId = id;
+            this.RssId = id.Id;
             this.Delay_seconds = delay;
             if (!string.IsNullOrWhiteSpace(formatterType))
                 FormatterType = Assembly.Load("Readers").CreateInstance("Readers." + formatterType).GetType();
@@ -50,7 +52,7 @@ namespace ServiceRssToDB
             while (true)
             {
                 next = DateTime.Now.AddMilliseconds(Delay_seconds * 1000);
-                Downloader.Instance.Add(this.URL,ScrapRss);
+                Downloader.Instance.Add(this.URL, ScrapRss);
                 var toSleep = next - DateTime.Now;
                 if (toSleep.TotalMilliseconds > 0)
                     Thread.Sleep(toSleep);
@@ -61,7 +63,7 @@ namespace ServiceRssToDB
         public void ScrapRss(Stream response)
         {
 
-           
+
             SyndicationFeed feed = null;
 
             try
@@ -70,7 +72,7 @@ namespace ServiceRssToDB
                 using (XmlReader reader = XmlReader.Create(response))
                 {
                     logger.Info(this + "url OK");
-                    var liste = new List<Flux>();
+                    var liste = new List<Entree>();
                     //formatter custom
                     if (FormatterType != null)
                     {
@@ -87,26 +89,29 @@ namespace ServiceRssToDB
                     {
                         try
                         {
-                            var temp = new Flux()
+                            var textemp = elem.Summary == null ? string.Empty : elem.Summary.Text;
+                            if (textemp.Count() > 3999)
+                                textemp = textemp.Substring(0, 3999);
+                            var temp = new Entree()
                             {
-                                date = elem.PublishDate.DateTime,
-                                ID = RssFluxId,
+                                Date = elem.PublishDate.DateTime,
+                                SourceId = RssId,
 
-                                title = elem.Title == null ? string.Empty : elem.Title.Text,
-                                text = elem.Summary == null ? string.Empty : elem.Summary.Text,
-                                dateInsert = DateTime.Now,
-                                link = "",
-                                image = ""
+                                Titre = elem.Title == null ? string.Empty : elem.Title.Text,
+                                Texte = textemp,
+                                DateInsertion = DateTime.Now,
+                                Link = "",
+                                Image = ""
 
 
                             };
                             if (elem.Links.Count > 0)
                             {
-                                temp.link = elem.Links[0].GetAbsoluteUri().ToString();
+                                temp.Link = elem.Links[0].GetAbsoluteUri().ToString();
                             }
                             if (elem.Links.Count > 1)
                             {
-                                temp.image = elem.Links[1].GetAbsoluteUri().ToString();
+                                temp.Image = elem.Links[1].GetAbsoluteUri().ToString();
                             }
                             liste.Add(temp);
                         }
@@ -118,26 +123,20 @@ namespace ServiceRssToDB
 
                     }
                     logger.Info(this + "Info recuperées, en attente mise en base");
-                    liste = liste.OrderBy(x => x.date).ToList();
-                    var requete =
-                        string.Format(
-                            "select date from Flux inner join ListeFlux on Flux.IdFlux = ListeFlux.IdFlux  where ListeFlux.Base_Url = '{0}' order by date desc LIMIT  1;",
-                            URL);
+                    liste = liste.OrderBy(x => x.Date).ToList();
 
-                    var last = DBManager.Manager.Select(requete);
-                    if (last.Rows.Count > 0)
+                    var col = DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, this.RssId));
+
+                    if (col != null && col.Any())
                     {
 
-                        var lastDate = DateTime.Parse(Convert.ToString(last.Rows[0]["date"]));
-                        liste = liste.Where(x => x.date > lastDate).ToList();
-
+                        var last = col.OrderByDescending(x => x.Date);
+                        var lastDate = last.First().Date;
+                        liste = liste.Where(x => x.Date > lastDate).ToList();
                     }
                     logger.Info(this + "nombre d'entrée à inserer {0}", liste.Count);
-                    foreach (var flux in liste)
-                    {
-                        DBManager.Manager.Insert(flux.ToRequest());
-                    }
-
+                    var coll = DBManager.Entrees;
+                    coll.InsertBatch(liste);
                     logger.Info(this + "Scrap ok ");
                 }
             }
@@ -147,6 +146,6 @@ namespace ServiceRssToDB
             }
 
         }
-      
+
     }
 }

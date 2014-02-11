@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Driver.Builders;
 using NLog;
+using RssEntity;
 
 namespace ServiceRssToDB
 {
@@ -27,18 +29,13 @@ namespace ServiceRssToDB
         public void  InitListeScrap()
         {
             logger.Info("InitListeScrap begin");
-            var requete = "select IdFlux, base_url, delay, Format from ListeFlux;";
 
-            var res = DBManager.Manager.Select(requete);
-
-            foreach (DataRow row in res.Rows)
+            var coll = DBManager.Sources;
+            foreach (var row in coll.FindAll())
             {
-                var id = Convert.ToInt32(row["IdFlux"]);
-                var url = Convert.ToString(row["base_url"]);
-                var delay = Convert.ToDouble(row["delay"]);
-                var format = Convert.ToString(row["Format"]);
+           
 
-                RssScrapper temp = new RssScrapper(url,id,delay,format);
+                var temp = new RssScrapper(row.URL,row,row.Delai,row.Formatter);
                 liste_scrapper.Add(temp);
 
             }
