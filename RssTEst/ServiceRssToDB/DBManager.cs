@@ -14,7 +14,7 @@ namespace ServiceRssToDB
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
         private static MongoDatabase _rss;
         private static MongoClient _client;
-        public static MongoDatabase Rss
+        private static MongoDatabase Rss
         {
             get
             {
@@ -28,6 +28,21 @@ namespace ServiceRssToDB
                 }
                 return _rss;
             }
+        }
+
+        public static MongoCollection<Entree> Entrees
+        {
+            get { return Rss.GetCollection<Entree>("Entrees"); }
+        }
+
+        public static MongoCollection<Source> Sources
+        {
+            get { return Rss.GetCollection<Source>("Sources"); }
+        }
+
+        public static MongoCollection<Categorie> Categories
+        {
+            get { return Rss.GetCollection<Categorie>("Categories"); }
         }
         
     }

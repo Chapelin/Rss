@@ -30,7 +30,7 @@ namespace ServiceRssToDB
         {
             logger.Info("InitListeScrap begin");
 
-            var coll = DBManager.Rss.GetCollection<Source>("Sources");
+            var coll = DBManager.Sources;
             foreach (var row in coll.FindAll())
             {
            

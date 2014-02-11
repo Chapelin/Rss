@@ -125,7 +125,7 @@ namespace ServiceRssToDB
                     logger.Info(this + "Info recuperées, en attente mise en base");
                     liste = liste.OrderBy(x => x.Date).ToList();
 
-                    var col = DBManager.Rss.GetCollection<Entree>("Deja").Find(Query<Entree>.EQ(x=> x.SourceId, this.RssId));
+                    var col = DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, this.RssId));
 
                     if (col != null && col.Any())
                     {
@@ -135,7 +135,7 @@ namespace ServiceRssToDB
                         liste = liste.Where(x => x.Date > lastDate).ToList();
                     }
                     logger.Info(this + "nombre d'entrée à inserer {0}", liste.Count);
-                    var coll = DBManager.Rss.GetCollection<Entree>("Entree");
+                    var coll = DBManager.Entrees;
                     coll.InsertBatch(liste);
                     logger.Info(this + "Scrap ok ");
                 }

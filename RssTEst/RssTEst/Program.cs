@@ -6,6 +6,7 @@ using System.Text;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Data.SQLite;
+using MongoDB.Bson;
 using Readers;
 using RssEntity;
 using ServiceRssToDB;
@@ -21,6 +22,8 @@ namespace RssTEst
             {
                 Console.WriteLine("Go !");
                 //InitSources();
+                //InitCategories();
+                //InitCategoriesSources();
             }
             catch (Exception e)
             {
@@ -39,9 +42,50 @@ namespace RssTEst
 
         }
 
+        private static void InitCategoriesSources()
+        {
+            var catId = DBManager.Categories.FindAll().Select(x => x.Id).ToList();
+            var sources = DBManager.Sources.FindAll();
+            int i = 0;
+            var taille = catId.Count();
+            foreach (var source in sources)
+            {
+                i++;
+                source.CategoriesIds = new List<ObjectId>();
+                source.CategoriesIds.Add(catId[i%taille]);
+                source.CategoriesIds.Add(catId[(i+2)%taille]);
+                DBManager.Sources.Save(source);
+            }
+            Console.WriteLine("Ajout des categories aux sources OK");
+
+        }
+
+        private static void InitCategories()
+        {
+            var res = DBManager.Categories;
+            var temp = new List<string>();
+            temp.Add("Informatique");
+            temp.Add("Blog");
+            temp.Add("Information");
+            temp.Add("BD");
+            temp.Add("Sciences");
+            temp.Add("Bon Plans");
+            temp.Add("Humour");
+            temp.Add("Magasin");
+
+            foreach (var cat in temp)
+            {
+                Categorie c = new Categorie();
+                c.Description = cat;
+                res.Insert(c);
+
+            }
+            Console.WriteLine("Categories ajoutées");
+        }
+
         private static void InitSources()
         {
-            var res = DBManager.Rss.GetCollection<Source>("Sources");
+            var res = DBManager.Sources;
             var temp = new List<object[]>();
             temp.Add(new Object[]
             {"", "Le monde - International", 120, "http://rss.lemonde.fr/c/205/f/3050/index.rss", "2014-02-09 16:38:27.313"});
@@ -125,6 +169,7 @@ namespace RssTEst
                 };
                 res.Insert(s);
             }
+            Console.WriteLine("Sources ajoutées");
         }
     }
 }

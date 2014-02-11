@@ -15,20 +15,20 @@ namespace RssApi.App_Start
     {
         public IEnumerable<Entree> Get()
         {
-            var col = DBManager.Rss.GetCollection<Entree>("Entree").FindAll();
+            var col = DBManager.Entrees.FindAll();
             return col;
         }
 
         public IEnumerable<Entree> GetByID(string id)
         {
             var uid = new ObjectId(id);
-            return DBManager.Rss.GetCollection<Entree>("Entree").Find(Query<Entree>.EQ(x => x.SourceId, uid));
+            return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, uid));
         }
 
         public IEnumerable<Entree> GetLast20(string id)
         {
             var uid = new ObjectId(id);
-            return DBManager.Rss.GetCollection<Entree>("Entree").Find(Query<Entree>.EQ(x => x.SourceId, uid)).Take(20);
+            return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, uid)).Take(20);
         }
     }
 }
