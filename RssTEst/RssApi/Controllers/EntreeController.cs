@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
 using RssEntity;
-using ServiceRssToDB;
 
-namespace RssApi.App_Start
+namespace RssApi.Controllers
 {
     public class EntreeController : ApiController
     {
@@ -19,13 +15,13 @@ namespace RssApi.App_Start
             return col;
         }
 
-        public IEnumerable<Entree> GetByID(string id)
+        public IEnumerable<Entree> GetBySourceID(string id)
         {
             var uid = new ObjectId(id);
             return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, uid));
         }
 
-        public IEnumerable<Entree> GetLast20(string id)
+        public IEnumerable<Entree> GetLast20BySourceID(string id)
         {
             var uid = new ObjectId(id);
             return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, uid)).Take(20);
