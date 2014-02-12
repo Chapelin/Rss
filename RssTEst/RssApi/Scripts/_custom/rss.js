@@ -1,53 +1,33 @@
 ﻿
 $(document).ready(function () {
     console.log("ready §§");
-    //    RequeteLast20("52f8be4f46485e02dc1edd2d");
-    RequeteLast20("52f90d1031d5190e84aa8e65");
-    console.log($("#Cat"));
+    Appel("entree", "GetLast20", "", AfficherDonnes);
     $(document).on("click", "#Cat", function () {
-        RequeteCategories();
+        Appel("Categorie", "Get", "", AfficherCategories);
 
     });
     $(document).on("click", "#DashBoard", function () {
-        RequeteLast20();
+        Appel("entree", "GetLast20", "", AfficherDonnes);
     })
     ;
     $(document).on("click", ".categorie", function () {
         var categid = $(this).attr('id');
-        console.log(categid);
-        RequeteLast20ByCategorie(categid);
+        Appel("entree", "GetLast20ByCategorie", categid, AfficherDonnes);
     })
     ;
 });
-function RequeteLast20ByCategorie(categid) {
-    console.log("Lancement appel RequeteLast20ByCategorie");
-    $.getJSON(
-        "api/entree/GetLast20ByCategorie/" + categid,
-        AfficherDonnes
-    );
-}
 
-function RequeteLast20(categorie) {
-    console.log("Lancement appel RequeteLast20ById");
-    $.getJSON(
-        "api/entree/GetLast20bysourceid/" + source,
-        AfficherDonnes
-    );
-}
-function RequeteLast20() {
-    console.log("Lancement appel RequeteLast20");
-    $.getJSON(
-        "api/entree/GetLast20",
-        AfficherDonnes
-    );
-}
+function Appel(type, methode, valeur, callback) {
+    var url = "api/"+type + "/" + methode;
+    if (valeur != "")
+        url += "/" + valeur;
 
-function RequeteCategories() {
-    console.log("Lancement appel RequeteCategories");
+    console.log("Appel " + url);
     $.getJSON(
-        "api/categorie/get",
-        AfficherCategories
+        url,
+        callback
     );
+    
 }
 
 function AfficherCategories(data) {
