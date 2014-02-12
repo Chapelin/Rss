@@ -4,25 +4,48 @@ $(document).ready(function () {
     //    RequeteLast20("52f8be4f46485e02dc1edd2d");
     RequeteLast20("52f90d1031d5190e84aa8e65");
     console.log($("#Cat"));
-    $(document).on("click","#Cat",function () {
+    $(document).on("click", "#Cat", function () {
         RequeteCategories();
 
+    });
+    $(document).on("click", "#DashBoard", function () {
+        RequeteLast20();
+    })
+    ;
+    $(document).on("click", ".categorie", function () {
+        var categid = $(this).attr('id');
+        console.log(categid);
+        RequeteLast20ByCategorie(categid);
     })
     ;
 });
-function RequeteLast20(source) {
-    console.log("Lancement appel RequeteLast20");
+function RequeteLast20ByCategorie(categid) {
+    console.log("Lancement appel RequeteLast20ByCategorie");
     $.getJSON(
-        "api/entree/GetLast20bysourceid/"+source,
+        "api/entree/GetLast20ByCategorie/" + categid,
         AfficherDonnes
     );
 }
 
+function RequeteLast20(categorie) {
+    console.log("Lancement appel RequeteLast20ById");
+    $.getJSON(
+        "api/entree/GetLast20bysourceid/" + source,
+        AfficherDonnes
+    );
+}
+function RequeteLast20() {
+    console.log("Lancement appel RequeteLast20");
+    $.getJSON(
+        "api/entree/GetLast20",
+        AfficherDonnes
+    );
+}
 
 function RequeteCategories() {
     console.log("Lancement appel RequeteCategories");
     $.getJSON(
-        "api/source/get",
+        "api/categorie/get",
         AfficherCategories
     );
 }
@@ -35,15 +58,15 @@ function AfficherCategories(data) {
         items.push(val);
     });
     for (var i = 0; i < items.length; i++) {
-        if (i % 3 === 0) {
+        if (i % 6 === 0) {
             total += '<div class="row">';
         }
 
-        total += '<div class="col-lg-3">';
-        total += '<p>' + items[i].Description + '</p>';
+        total += '<div class="col-lg-2" >';
+        total += '<button type="button" class="btn btn-default categorie" id="'+items[i].Id+'">' + items[i].Description + '</button>';
         total += '</div>';
 
-        if (i % 3 === 2) {
+        if (i % 6 === 5) {
             total += '</div>';
         }
     }
@@ -62,7 +85,7 @@ function AfficherDonnes(data) {
     
     var total = '';
     for (var i = 0; i < items.length; i++) {
-        if(i%3===0) {
+        if(i%4===0) {
             total += '<div class="row">';
         }
 
@@ -71,7 +94,7 @@ function AfficherDonnes(data) {
         total += '<p>' + items[i].Texte+'</p>';
         total += '</div>';
 
-        if(i%3===2) {
+        if(i%4===3) {
             total += '</div>';
         }
     }
