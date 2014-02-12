@@ -17,14 +17,13 @@ namespace RssApi.Controllers
 
         public IEnumerable<Entree> GetBySourceID(string id)
         {
-            var uid = new ObjectId(id);
-            return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, uid));
+            return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, id));
         }
 
         public IEnumerable<Entree> GetLast20BySourceID(string id)
         {
-            var uid = new ObjectId(id);
-            return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, uid)).Take(20);
+            var res =  DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, id)).Take(20);
+            return res;
         }
     }
 }

@@ -1,16 +1,29 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+        <!-- Bootstrap core CSS -->
+    <link href="../../Content/bootstrap.css" rel="stylesheet" />
+
+    <!-- Add custom CSS here -->
+    <link href="../../Content/themes/simple-sidebar.css" rel="stylesheet" />
+
 </head>
 <body>
     @RenderBody()
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryCustom")
     @RenderSection("scripts", required: false)
+     <script>
+         $("#menu-toggle").click(function (e) {
+             e.preventDefault();
+             $("#wrapper").toggleClass("active");
+         });
+    </script>
 </body>
 </html>

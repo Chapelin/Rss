@@ -1,11 +1,14 @@
 ﻿
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace RssEntity
 {
     public class Categorie
     {
-        public ObjectId Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string Description { get; set; }
 
     }

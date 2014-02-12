@@ -22,7 +22,7 @@ namespace ServiceRssToDB
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         public string URL { get; set; }
-        public ObjectId RssId { get; set; }
+        public string RssId { get; set; }
         private double Delay_seconds;
         private Type FormatterType;
         public override string ToString()

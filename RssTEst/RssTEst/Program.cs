@@ -51,7 +51,7 @@ namespace RssTEst
             foreach (var source in sources)
             {
                 i++;
-                source.CategoriesIds = new List<ObjectId>();
+                source.CategoriesIds = new List<string>();
                 source.CategoriesIds.Add(catId[i%taille]);
                 source.CategoriesIds.Add(catId[(i+2)%taille]);
                 DBManager.Sources.Save(source);

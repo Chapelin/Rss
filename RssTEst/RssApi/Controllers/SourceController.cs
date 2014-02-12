@@ -20,14 +20,12 @@ namespace RssApi.Controllers
 
         public Source GetById(string id)
         {
-            var uid = new ObjectId(id);
-            return DBManager.Sources.Find(Query<Source>.EQ(x => x.Id, uid)).FirstOrDefault();
+            return DBManager.Sources.Find(Query<Source>.EQ(x => x.Id, id)).FirstOrDefault();
         }
 
         public IEnumerable<Categorie> GetCategoriesOf(string id)
         {
-            var uid = new ObjectId(id);
-            var source = DBManager.Sources.Find(Query<Source>.EQ(x => x.Id, uid)).FirstOrDefault();
+            var source = DBManager.Sources.Find(Query<Source>.EQ(x => x.Id, id)).FirstOrDefault();
             if (source == null)
                 return new List<Categorie>();
             return
@@ -36,8 +34,7 @@ namespace RssApi.Controllers
 
         public IEnumerable<Source> GetSourcesByCategorie(string id)
         {
-            var uid = new ObjectId(id);
-            var res = DBManager.Sources.Find(Query<Source>.Where(x => x.CategoriesIds.Contains(uid)));
+            var res = DBManager.Sources.Find(Query<Source>.Where(x => x.CategoriesIds.Contains(id)));
             if(res==null)
                 return  new List<Source>();
             return res;
