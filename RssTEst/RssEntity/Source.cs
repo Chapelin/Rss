@@ -16,7 +16,6 @@ namespace RssEntity
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime DateAjout { get; set; }
         public int Delai { get; set; }
-        [BsonRepresentation(BsonType.Array)]
         public List<string> CategoriesIds { get; set; }
 
     }
