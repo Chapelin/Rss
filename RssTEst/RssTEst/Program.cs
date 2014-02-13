@@ -9,6 +9,7 @@ using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Data.SQLite;
 using MongoDB.Bson;
+using MongoDB.Driver.Builders;
 using Readers;
 using RssEntity;
 using ServiceRssToDB;
@@ -27,6 +28,7 @@ namespace RssTEst
                 //InitSources();
                 //InitCategories();
                 //InitCategoriesSources();
+                //InitIndex();
             }
             catch (Exception e)
             {
@@ -43,6 +45,12 @@ namespace RssTEst
             }
 
 
+        }
+
+        private static void InitIndex()
+        {
+           DBManager.Entrees.EnsureIndex("Date");
+            Console.WriteLine("Index OK");
         }
 
         private static void Clean()
@@ -111,7 +119,7 @@ namespace RssTEst
             temp.Add(new Object[] {"", "Reflet", 21600, "http://reflets.info/feed/", "2014-02-09 16:38:27.313"});
             temp.Add(new Object[] {"", "Explosm", 21600, "http://feeds.feedburner.com/Explosm", "2014-02-09 16:38:27.313"});
             temp.Add(new Object[]
-            {"", "orben", 3600, "http://feeds.feedburner.com/KorbensBlog-UpgradeYourMind?format=xml", "2014-02-09 16:38:27.313"});
+            {"", "Korben", 3600, "http://feeds.feedburner.com/asBlog-UpgradeYourMind?format=xml", "2014-02-09 16:38:27.313"});
             temp.Add(new Object[]
             {"", "DealLabs.com - Deals nouveaux", 120, "http://www.dealabs.com/rss/new.xml", "2014-02-09 16:38:27.313"});
             temp.Add(new Object[]
@@ -127,15 +135,15 @@ namespace RssTEst
                 "2014-02-09 16:38:27.313"
             });
             temp.Add(new Object[] {"", "XKCD", 21600, "https://xkcd.com/rss.xml", "2014-02-09 16:38:27.313"});
-            temp.Add(new Object[] {"", "Direct atin", 120, "http://www.directmatin.fr/rss.xml", "2014-02-09 16:38:27.313"});
+            temp.Add(new Object[] {"", "Direct Matin", 120, "http://www.directmatin.fr/rss.xml", "2014-02-09 16:38:27.313"});
             temp.Add(new Object[]
             {"Rss10FeedFormatter", "Steam", 600, "http://store.steampowered.com/feeds/news.xml", "2014-02-09 16:38:27.313"});
             temp.Add(new Object[] {"", "V-inc", 3600, "http://widget.stagram.com/rss/n/vinc_fr/", "2014-02-09 16:38:27.313"});
-            temp.Add(new Object[]
-            {"", "google actu", 45, "http://news.google.fr/news?pz=1&cf=all&ned=fr&hl=fr&output=rss", "2014-02-09 16:38:27.313"});
+            //temp.Add(new Object[]
+            //{"", "google actu", 45, "http://news.google.fr/news?pz=1&cf=all&ned=fr&hl=fr&output=rss", "2014-02-09 16:38:27.313"});
             temp.Add(new Object[]
             {
-                "", "iberation", 120, "http://liberation.fr.feedsportal.com/c/32268/fe.ed/rss.liberation.fr/rss/9/",
+                "", "Liberation", 120, "http://liberation.fr.feedsportal.com/c/32268/fe.ed/rss.liberation.fr/rss/9/",
                 "2014-02-09 16:38:27.313"
             });
             temp.Add(new Object[]
