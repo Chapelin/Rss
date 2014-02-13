@@ -93,27 +93,17 @@ function AfficherDonnes(data) {
     var items = [];
     console.log("Reponse ok");
     $.each(data, function (key, val) {
-        items.push(val);
+        items.push(GenererContenuEntree(val));
     });
     
-    var total = '';
-    for (var i = 0; i < items.length; i++) {
-        if(i%4===0) {
-            total += '<div class="row">';
-        }
-
-        total += '<div class="col-lg-3">';
-        total += '<h2>' + items[i].Titre+'</h2>';
-        total += '<p>' + items[i].Texte+'</p>';
-        total += '</div>';
-
-        if(i%4===3) {
-            total += '</div>';
-        }
-    }
-    $("#test").html(total);
+    
+    $("#test").html(items.join(""));
 }
 
 function GenererBoutonCategorie(categorie) {
     return '<button type="button" class="btn btn-default categorie" id="' + categorie.Id + '">' + categorie.Description + '</button>';
+}
+
+function GenererContenuEntree(entree) {
+    return '<div class="row"><div class="col-lg-12"><a href="' + entree.Link + '">' +entree.Date+' - '+ entree.Titre + '</a></div></div>';
 }
