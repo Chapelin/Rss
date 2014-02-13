@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure.MappingViews;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.ServiceModel.Syndication;
 using System.Xml;
@@ -21,6 +23,7 @@ namespace RssTEst
             try
             {
                 Console.WriteLine("Go !");
+                //Clean();
                 //InitSources();
                 //InitCategories();
                 //InitCategoriesSources();
@@ -40,6 +43,14 @@ namespace RssTEst
             }
 
 
+        }
+
+        private static void Clean()
+        {
+            DBManager.Entrees.Drop();
+            DBManager.Categories.Drop();
+            DBManager.Sources.Drop();
+            Console.WriteLine("contenu droppé");
         }
 
         private static void InitCategoriesSources()
