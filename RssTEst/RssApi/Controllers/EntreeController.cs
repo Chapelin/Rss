@@ -12,24 +12,24 @@ namespace RssApi.Controllers
     {
         public IEnumerable<Entree> GetLast20()
         {
-            var col = DBManager.Entrees.FindAll().OrderByDescending(x=> x.Date).Take(20);
+            var col = DBManager.Entrees.FindAll().SetSortOrder(SortBy.Descending("Date")).Take(20);
             return col;
         }
 
         public IEnumerable<Entree> GetBySourceID(string id)
         {
-            return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, id));
+            return DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, id)).SetSortOrder(SortBy.Descending("Date"));
         }
 
         public IEnumerable<Entree> GetLast20BySourceID(string id)
         {
-            var res =  DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, id)).Take(20);
+            var res =  DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, id)).SetSortOrder(SortBy.Descending("Date")).Take(20);
             return res;
         }
 
         private IEnumerable<Entree> GetLast20BySourcesID(List<string> ids)
         {
-            var res = DBManager.Entrees.Find(Query<Entree>.Where(x => ids.Contains(x.SourceId))).OrderByDescending(x=> x.Date).Take(20);
+            var res = DBManager.Entrees.Find(Query<Entree>.Where(x => ids.Contains(x.SourceId))).SetSortOrder(SortBy.Descending("Date")).Take(20);
             return res;
         }
 
