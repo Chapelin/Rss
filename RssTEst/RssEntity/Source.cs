@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver.Builders;
 
 namespace RssEntity
 {
@@ -17,6 +19,15 @@ namespace RssEntity
         public DateTime DateAjout { get; set; }
         public int Delai { get; set; }
         public List<string> CategoriesIds { get; set; }
+
+        [BsonIgnore]
+        public List<Categorie> Categories {
+            get
+            {
+                return DBManager.Categories.Find(Query<Categorie>.Where(x => CategoriesIds.Contains(x.Id))).ToList();
+            }
+       }
+ 
 
     }
 }
