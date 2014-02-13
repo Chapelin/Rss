@@ -101,8 +101,8 @@ namespace ServiceRssToDB
                                 Texte = textemp,
                                 DateInsertion = DateTime.Now,
                                 Link = "",
-                                Image = ""
-
+                                Image = "",
+                                UniqId = elem.Id
 
                             };
                             if (elem.Links.Count > 0)
@@ -112,6 +112,15 @@ namespace ServiceRssToDB
                             if (elem.Links.Count > 1)
                             {
                                 temp.Image = elem.Links[1].GetAbsoluteUri().ToString();
+                            }
+                            if (string.IsNullOrWhiteSpace(temp.UniqId))
+                            {
+                                if (!string.IsNullOrWhiteSpace(temp.Link))
+                                    temp.UniqId = temp.Link;
+                                else
+                                {
+                                    temp.UniqId = temp.Date.ToString();
+                                }
                             }
                             liste.Add(temp);
                         }
@@ -123,20 +132,20 @@ namespace ServiceRssToDB
 
                     }
                     logger.Info(this + "Info recuperées, en attente mise en base");
-                    liste = liste.OrderBy(x => x.Date).ToList();
+                    liste = liste.OrderByDescending(x => x.Date).ToList();
 
-                    var col = DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, this.RssId));
+                    //on ne recupere que les 100 dernieres entréées
+                    MongoCursor<Entree> col = DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, this.RssId)).SetSortOrder(SortBy.Descending("Date")).SetLimit(100);
 
                     if (col != null && col.Any())
                     {
-
-                        var last = col.OrderByDescending(x => x.Date);
-                        var lastDate = last.First().Date;
-                        liste = liste.Where(x => x.Date > lastDate).ToList();
+                        //et on compare les uid
+                        var listUid = col.Select(x => x.UniqId);
+                        liste = liste.Where(x => !listUid.Contains(x.UniqId)).ToList();
                     }
                     logger.Info(this + "nombre d'entrée à inserer {0}", liste.Count);
-                    var coll = DBManager.Entrees;
-                    coll.InsertBatch(liste);
+                    if(liste.Count>0)
+                        DBManager.Entrees.InsertBatch(liste);
                     logger.Info(this + "Scrap ok ");
                 }
             }

@@ -80,6 +80,10 @@ namespace Readers
                             if(item.Summary ==null)
                               item.Summary  = new TextSyndicationContent(reader.ReadElementString());
                         }
+                        else if(reader.IsStartElement("guid"))
+                        {
+                            item.Id = reader.ReadElementString();
+                        }
                         else if (reader.IsStartElement("pubDate"))
                         {
                             DateTime res;

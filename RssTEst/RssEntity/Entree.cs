@@ -19,5 +19,8 @@ namespace RssEntity
         public DateTime DateInsertion { get; set; }
          [BsonRepresentation(BsonType.ObjectId)]
         public  string SourceId { get; set; }
+
+        //Guid OU link Ou Date
+         public string UniqId { get; set; }
     }
 }
