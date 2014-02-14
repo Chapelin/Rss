@@ -13,7 +13,7 @@ namespace RssApi.Controllers
     {
         public IEnumerable<Entree> GetLast()
         {
-            var col = DBManager.Entrees.FindAll().SetSortOrder(SortBy.Descending("Date")).Take(ConfigHelper.NumberLast);
+            var col = DBManager.Entrees.FindAll().SetSortOrder(SortBy.Descending("Date")).SetLimit(ConfigHelper.NumberLast);
             return col;
         }
 
@@ -24,13 +24,13 @@ namespace RssApi.Controllers
 
         public IEnumerable<Entree> GetLastBySourceID(string id)
         {
-            var res = DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, id)).SetSortOrder(SortBy.Descending("Date")).Take(ConfigHelper.NumberLast);
+            var res = DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, id)).SetSortOrder(SortBy.Descending("Date")).SetLimit(ConfigHelper.NumberLast);
             return res;
         }
 
         private IEnumerable<Entree> GetLastBySourcesID(List<string> ids)
         {
-            var res = DBManager.Entrees.Find(Query<Entree>.Where(x => ids.Contains(x.SourceId))).SetSortOrder(SortBy.Descending("Date")).Take(ConfigHelper.NumberLast);
+            var res = DBManager.Entrees.Find(Query<Entree>.Where(x => ids.Contains(x.SourceId))).SetSortOrder(SortBy.Descending("Date")).SetLimit(ConfigHelper.NumberLast);
             return res;
         }
 

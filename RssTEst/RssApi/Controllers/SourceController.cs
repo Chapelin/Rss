@@ -20,12 +20,12 @@ namespace RssApi.Controllers
 
         public Source GetById(string id)
         {
-            return DBManager.Sources.Find(Query<Source>.EQ(x => x.Id, id)).FirstOrDefault();
+            return DBManager.Sources.FindOne(Query<Source>.EQ(x => x.Id, id));
         }
 
         public IEnumerable<Categorie> GetCategoriesOf(string id)
         {
-            var source = DBManager.Sources.Find(Query<Source>.EQ(x => x.Id, id)).FirstOrDefault();
+            var source = DBManager.Sources.FindOne(Query<Source>.EQ(x => x.Id, id));
             if (source == null)
                 return new List<Categorie>();
             return
