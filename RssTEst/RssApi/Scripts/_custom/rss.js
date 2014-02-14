@@ -7,14 +7,14 @@ $(document).ready(function () {
 
     });
     $(document).on("click", "#DashBoard", function() {
-        Appel("entree", "GetLast20", "", AfficherDonnes);
+        Appel("entree", "GetLast", "", AfficherDonnes);
     });
     $(document).on("click", "#Sources", function () {
         Appel("source", "Get", "", AfficherSource);
     });
     $(document).on("click", ".categorie", function () {
         var categid = $(this).attr('id');
-        Appel("entree", "GetLast20ByCategorie", categid, AfficherDonnes);
+        Appel("entree", "GetLastByCategorie", categid, AfficherDonnes);
     });
     $(document).on("click", ".source", function() {
         var sourceid = $(this).attr('id');
