@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
     console.log("ready §§");
-    Appel("entree", "GetLast20", "", AfficherDonnes);
+    Appel("entree", "GetLast", "", AfficherDonnes);
     $(document).on("click", "#Cat", function () {
         Appel("Categorie", "Get", "", AfficherCategories);
 
@@ -105,5 +105,12 @@ function GenererBoutonCategorie(categorie) {
 }
 
 function GenererContenuEntree(entree) {
-    return '<div class="row"><div class="col-lg-12"><a href="' + entree.Link + '">' +entree.Date+' - '+ entree.Titre + '</a></div></div>';
+    var date = new Date(entree.Date);
+    var M = date.getMonth() + 1;
+    var d = date.getDay();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+    var dateformatee = (d <= 9 ? '0' + d : d) + "/" + (M <= 9 ? '0' + M : M) + "/" + date.getFullYear() + " - " + (h <= 9 ? '0' + h : h) + ":" + (m <= 9 ? '0' + m : m) + ":" + (s <= 9 ? '0' + s : s);
+    return '<div class="row"><div class="col-lg-12"><a href="' + entree.Link + '">' + dateformatee + ' - ' + entree.Titre + '</a></div></div>';
 }
