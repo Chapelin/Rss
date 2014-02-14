@@ -112,5 +112,5 @@ function GenererContenuEntree(entree) {
     var m = date.getMinutes();
     var s = date.getSeconds();
     var dateformatee = (d <= 9 ? '0' + d : d) + "/" + (M <= 9 ? '0' + M : M) + "/" + date.getFullYear() + " - " + (h <= 9 ? '0' + h : h) + ":" + (m <= 9 ? '0' + m : m) + ":" + (s <= 9 ? '0' + s : s);
-    return '<div class="row"><div class="col-lg-12"><a href="' + entree.Link + '">' + dateformatee + ' - ' + entree.Titre + '</a></div></div>';
+    return '<div class="row"><div class="col-lg-12"><a href="' + entree.Link + '">' + dateformatee + ' - ' + entree.Titre + '</a><img src="images/'+entree.Favicon+'"/></div></div>';
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver.Builders;
 
 namespace RssEntity
 {
@@ -20,6 +21,15 @@ namespace RssEntity
          [BsonRepresentation(BsonType.ObjectId)]
         public  string SourceId { get; set; }
 
+
+         [BsonIgnore]
+         public string Favicon
+         {
+             get
+             {
+                 return DBManager.Sources.FindOne(Query<Source>.EQ(x => x.Id,SourceId)).Favicon;
+             }
+         }
         //Guid OU link Ou Date
          public string UniqId { get; set; }
     }
