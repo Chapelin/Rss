@@ -19,7 +19,7 @@ namespace RssEntity
         public DateTime DateAjout { get; set; }
         public int Delai { get; set; }
         public List<string> CategoriesIds { get; set; }
-        public string Favicon { get; set; }
+        public bool Favicon { get; set; }
 
         [BsonIgnore]
         public List<Categorie> Categories {

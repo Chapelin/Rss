@@ -7,10 +7,12 @@ using System.Reflection;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using MongoDB.Driver.Linq;
 using NLog;
 using RssEntity;
 
@@ -21,23 +23,19 @@ namespace ServiceRssToDB
 
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
-        public string URL { get; set; }
-        public string RssId { get; set; }
-        private double Delay_seconds;
+        public Source sourceRss;
         private Type FormatterType;
         public override string ToString()
         {
-            return String.Format(" IdSource : {0} - Delay : {1} : ", this.RssId, this.Delay_seconds);
+            return String.Format(" IdSource : {0} - Delay : {1} : ", this.sourceRss.Id, this.sourceRss.Delai);
         }
 
-        public RssScrapper(string url, Source id, double delay, string formatterType = null)
+        public RssScrapper( Source id)
         {
 
-            this.URL = url;
-            this.RssId = id.Id;
-            this.Delay_seconds = delay;
-            if (!string.IsNullOrWhiteSpace(formatterType))
-                FormatterType = Assembly.Load("Readers").CreateInstance("Readers." + formatterType).GetType();
+            this.sourceRss = id;
+            if (!string.IsNullOrWhiteSpace(sourceRss.Formatter))
+                FormatterType = Assembly.Load("Readers").CreateInstance("Readers." + sourceRss.Formatter).GetType();
 
 
             logger.Info(this + "initialized");
@@ -51,8 +49,8 @@ namespace ServiceRssToDB
             DateTime next;
             while (true)
             {
-                next = DateTime.Now.AddMilliseconds(Delay_seconds * 1000);
-                Downloader.Instance.Add(this.URL, ScrapRss);
+                next = DateTime.Now.AddMilliseconds(this.sourceRss.Delai * 1000);
+                Downloader.Instance.Add(this.sourceRss.URL, ScrapRss);
                 var toSleep = next - DateTime.Now;
                 if (toSleep.TotalMilliseconds > 0)
                     Thread.Sleep(toSleep);
@@ -85,6 +83,13 @@ namespace ServiceRssToDB
                     }
                     else //formatter classique
                         feed = SyndicationFeed.Load(reader);
+                    if (!sourceRss.Favicon && feed.Links != null && feed.Links.Count > 0)
+                    {
+                        var baseurl = feed.Links[0];
+                        logger.Info(this + " Lancement du grab favicon sur " + baseurl);
+                        FavGrabber grab = new FavGrabber(sourceRss, baseurl);
+                        Task.Factory.StartNew(grab.Grab);
+                    }
                     foreach (var elem in feed.Items)
                     {
                         try
@@ -95,7 +100,7 @@ namespace ServiceRssToDB
                             var temp = new Entree()
                             {
                                 Date = elem.PublishDate.DateTime,
-                                SourceId = RssId,
+                                SourceId = sourceRss.Id,
 
                                 Titre = elem.Title == null ? string.Empty : elem.Title.Text,
                                 Texte = textemp,
@@ -135,7 +140,7 @@ namespace ServiceRssToDB
                     liste = liste.OrderByDescending(x => x.Date).ToList();
 
                     //on ne recupere que les 100 dernieres entréées
-                    MongoCursor<Entree> col = DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, this.RssId)).SetSortOrder(SortBy.Descending("Date")).SetLimit(100);
+                    MongoCursor<Entree> col = DBManager.Entrees.Find(Query<Entree>.EQ(x => x.SourceId, this.sourceRss.Id)).SetSortOrder(SortBy.Descending("Date")).SetLimit(100);
 
                     if (col != null && col.Any())
                     {

@@ -35,7 +35,7 @@ namespace ServiceRssToDB
             {
            
 
-                var temp = new RssScrapper(row.URL,row,row.Delai,row.Formatter);
+                var temp = new RssScrapper(row);
                 liste_scrapper.Add(temp);
 
             }

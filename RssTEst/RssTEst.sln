@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssApi", "RssApi\RssApi.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssEntity", "RssEntity\RssEntity.csproj", "{C222F80E-66CC-4888-9283-EF440C8973A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaviconGrabber", "FaviconGrabber\FaviconGrabber.csproj", "{FA726358-1DE2-42BA-BC48-22383877CE92}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,16 +71,6 @@ Global
 		{C222F80E-66CC-4888-9283-EF440C8973A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C222F80E-66CC-4888-9283-EF440C8973A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C222F80E-66CC-4888-9283-EF440C8973A8}.Release|x86.ActiveCfg = Release|Any CPU
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Debug|x86.ActiveCfg = Debug|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Debug|x86.Build.0 = Debug|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Release|Any CPU.ActiveCfg = Release|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Release|Mixed Platforms.Build.0 = Release|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Release|x86.ActiveCfg = Release|x86
-		{FA726358-1DE2-42BA-BC48-22383877CE92}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
