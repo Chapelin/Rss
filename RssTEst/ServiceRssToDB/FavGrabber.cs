@@ -29,28 +29,29 @@ namespace ServiceRssToDB
 
         public void Grab()
         {
-
             try
             {
-                string urlf;
+                Uri urlf;
                 logger.Info(this + " Init()");
                 var response = SendRequest(baseUrl.Uri.ToString());
                 logger.Info(this + " baseurl ok");
                 var doc = new HtmlDocument();
                 doc.Load(response.GetResponseStream());
                 var node = doc.DocumentNode.SelectSingleNode("//link[@rel='shortcut icon']");
+                UriBuilder baseUri =
+                    new UriBuilder(baseUrl.GetAbsoluteUri().ToString().Remove(baseUrl.GetAbsoluteUri().ToString().LastIndexOf(baseUrl.GetAbsoluteUri().PathAndQuery)));
                 if (node == null)
                 {
-                    urlf = baseUrl.GetAbsoluteUri().ToString().Replace(baseUrl.Uri.PathAndQuery,"") + "/favicon.ico";
+                    urlf = new Uri(baseUri.Uri,"/favicon.ico");
                     logger.Info(this + " pas de favicon sur l'url de base, on essaye " + urlf);
                 }
                 else
                 {
-                    urlf = node.Attributes["href"].Value;
+                    urlf = new Uri(baseUri.Uri, node.Attributes["href"].Value);
                     logger.Info(this + string.Format(" url favicon {0} : ", urlf));
 
                 }
-                response = SendRequest(urlf);
+                response = SendRequest(urlf.AbsoluteUri);
                 StreamToFile(response.GetResponseStream(), @"C:\PERSO_GIT\Trombi\Rss\RssTEst\RssApi\Images\fav\" + baseSource.Id + ".ico");
                 baseSource.Favicon = true;
                 DBManager.Sources.Save(baseSource);
