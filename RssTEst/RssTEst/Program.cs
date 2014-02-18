@@ -24,11 +24,11 @@ namespace RssTEst
             try
             {
                 Console.WriteLine("Go !");
-                Clean();
-                InitSources();
-                InitCategories();
-                InitCategoriesSources();
-                InitIndex();
+                //Clean();
+                //InitSources();
+                //InitCategories();
+                //InitCategoriesSources();
+                //InitIndex();
             }
             catch (Exception e)
             {
