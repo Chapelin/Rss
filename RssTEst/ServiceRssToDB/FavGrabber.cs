@@ -78,7 +78,7 @@ namespace ServiceRssToDB
             return (HttpWebResponse)request.GetResponse();
         }
 
-        public static bool StreamToFile(Stream input, string path)
+        public bool StreamToFile(Stream input, string path)
         {
             var retour = true;
             int bufferSize = 1024;
@@ -104,6 +104,7 @@ namespace ServiceRssToDB
             catch (Exception e)
             {
                 Console.WriteLine("Erreur : " + e.Message);
+                logger.Error(this+e.Message);
             }
             return retour;
         }
