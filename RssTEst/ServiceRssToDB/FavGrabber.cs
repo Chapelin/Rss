@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.ServiceModel.Syndication;
 using HtmlAgilityPack;
+using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 using NLog;
 using RssEntity;
@@ -52,7 +53,7 @@ namespace ServiceRssToDB
 
                 }
                 response = SendRequest(urlf.AbsoluteUri);
-                StreamToFile(response.GetResponseStream(), @"C:\PERSO_GIT\Trombi\Rss\RssTEst\RssApi\Images\fav\" + baseSource.Id + ".ico");
+                SaveToDB(response.GetResponseStream(), baseSource.Id);
                 baseSource.Favicon = true;
                 DBManager.Sources.Save(baseSource);
                 logger.Info(this + "favicon dl !");
@@ -78,35 +79,15 @@ namespace ServiceRssToDB
             return (HttpWebResponse)request.GetResponse();
         }
 
-        public bool StreamToFile(Stream input, string path)
+        public bool SaveToDB(Stream input, string path)
         {
-            var retour = true;
-            int bufferSize = 1024;
-            byte[] buffer = new byte[bufferSize];
-            try
-            {
-                using (FileStream fs = new FileStream(path,
-                                FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    int read;
-                    while (true)
-                    {
-                        read = input.Read(buffer, 0, buffer.Length);
-                        if (read > 0)
-                        {
-                            fs.Write(buffer, 0, read);
-                        }
-                        else
-                            break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Erreur : " + e.Message);
-                logger.Error(this+e.Message);
-            }
-            return retour;
+            var gridFsInfo = DBManager.GridFS.Upload(input, path);
+            var fileId = gridFsInfo.Id;
+            Favicon fv = new Favicon();
+            fv.SourceId = path;
+            fv.GridFSId = fileId.AsObjectId.ToString();
+            DBManager.Favicon.Insert(fv);
+            return true;
         }
 
 

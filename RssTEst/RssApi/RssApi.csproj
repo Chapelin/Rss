@@ -137,6 +137,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FaviconController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SourceController.cs" />
     <Compile Include="Global.asax.cs">
