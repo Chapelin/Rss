@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 
 namespace RssEntity
 {
@@ -35,6 +36,16 @@ namespace RssEntity
         public static MongoCollection<Categorie> Categories
         {
             get { return Rss.GetCollection<Categorie>("Categories"); }
+        }
+
+        public static MongoCollection<Favicon> Favicon
+        {
+            get { return Rss.GetCollection<Favicon>("Favicon"); }
+        }
+
+        public static MongoGridFS GridFS
+        {
+            get { return Rss.GridFS; }
         }
         
     }

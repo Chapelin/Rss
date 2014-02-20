@@ -24,11 +24,11 @@ namespace RssTEst
             try
             {
                 Console.WriteLine("Go !");
-                //Clean();
-                //InitSources();
-                //InitCategories();
-                //InitCategoriesSources();
-                //InitIndex();
+                Clean();
+                InitSources();
+                InitCategories();
+                InitCategoriesSources();
+                InitIndex();
             }
             catch (Exception e)
             {
@@ -106,10 +106,10 @@ namespace RssTEst
         {
             var res = DBManager.Sources;
             var temp = new List<object[]>();
-            temp.Add(new Object[] { "", "Le monde - International", 120, "http://rss.lemonde.fr/c/205/f/3050/index.rss", "2014-02-09 16:38:27.313" });
-            temp.Add(new Object[] { "", "SebSauvage - shaarli", 600, "http://sebsauvage.net/links/?do=rss", "2014-02-09 16:38:27.313" });
+            temp.Add(new Object[] { "", "Le monde - International", 120, "http://rss.lemonde.fr/c/205/f/3050/index.rss", "2014-02-09 16:38:27.313"});
+            temp.Add(new Object[] { "", "SebSauvage - shaarli", 600, "http://sebsauvage.net/links/?do=rss", "2014-02-09 16:38:27.313", });
             temp.Add(new Object[] { "", "PC INpact", 300, "http://www.pcinpact.com/rss/news.xml", "2014-02-09 16:38:27.313" });
-            temp.Add(new Object[] { "", "Clubic", 300, "http://com.clubic.feedsportal.com/c/33464/f/581979/index.rss", "2014-02-09 16:38:27.313" });
+            temp.Add(new Object[] { "", "Clubic", 300, "http://com.clubic.feedsportal.com/c/33464/f/581979/index.rss", "2014-02-09 16:38:27.313", "1.ico" });
             temp.Add(new Object[] { "", "CDH", 300, "http://www.comptoir-hardware.com/home.xml", "2014-02-09 16:38:27.313" });
             temp.Add(new Object[] { "", "SMBC", 21600, "http://feeds.feedburner.com/smbc-comics/PvLb?format=xml", "2014-02-09 16:38:27.313" });
             temp.Add(new Object[] { "", "Reflet", 21600, "http://reflets.info/feed/", "2014-02-09 16:38:27.313" });
@@ -173,6 +173,7 @@ namespace RssTEst
                     Formatter = (string) objectse[0],
                     URL = (string) objectse[3]
                 };
+                
                 res.Insert(s);
             }
             Console.WriteLine("Sources ajoutées");

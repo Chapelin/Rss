@@ -33,9 +33,7 @@ namespace ServiceRssToDB
             var coll = DBManager.Sources;
             foreach (var row in coll.FindAll())
             {
-           
-
-                var temp = new RssScrapper(row.URL,row,row.Delai,row.Formatter);
+                var temp = new RssScrapper(row);
                 liste_scrapper.Add(temp);
 
             }
