@@ -40,7 +40,7 @@ namespace ServiceRssToDB
                 doc.Load(response.GetResponseStream());
                 var node = doc.DocumentNode.SelectSingleNode("//link[@rel='shortcut icon']");
                 UriBuilder baseUri =
-                    new UriBuilder(baseUrl.GetAbsoluteUri().ToString().Remove(baseUrl.GetAbsoluteUri().ToString().LastIndexOf(baseUrl.GetAbsoluteUri().PathAndQuery)));
+                    new UriBuilder(baseUrl.GetAbsoluteUri().ToString().Remove(baseUrl.GetAbsoluteUri().ToString().LastIndexOf(baseUrl.GetAbsoluteUri().Query)));
                 if (node == null)
                 {
                     urlf = new Uri(baseUri.Uri,"/favicon.ico");
@@ -48,7 +48,7 @@ namespace ServiceRssToDB
                 }
                 else
                 {
-                    urlf = new Uri(baseUri.Uri, node.Attributes["href"].Value);
+                    urlf = new Uri(baseUri.Uri, baseUri.Uri.LocalPath + "/" + node.Attributes["href"].Value);
                     logger.Info(this + string.Format("url favicon {0} : ", urlf));
 
                 }
@@ -70,13 +70,23 @@ namespace ServiceRssToDB
 
         public HttpWebResponse SendRequest(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Timeout = 3000;
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0";
-            request.Method = "GET";
-            request.ContentLength = 0;
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = 3000;
+                request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0";
+                request.Method = "GET";
+                request.ContentLength = 0;
 
-            return (HttpWebResponse)request.GetResponse();
+                return (HttpWebResponse)request.GetResponse();
+            }
+            catch (Exception e )
+            {
+                
+                logger.Error(this+" url ratée : "+url);
+                throw;
+            }
+           
         }
 
         public bool SaveToDB(Stream input, string path)
