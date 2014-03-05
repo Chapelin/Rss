@@ -3,7 +3,7 @@ var app = express();
 var mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost/test");
 var db = mongoose.connection;
-
+var Grid = require("gridfs-stream");
 var Schema = mongoose.Schema;
 
 var entreeSchema = new Schema(
