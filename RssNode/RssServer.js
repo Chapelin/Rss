@@ -5,6 +5,8 @@ mongoose.connect("mongodb://localhost/test");
 var db = mongoose.connection;
 var Grid = require("gridfs-stream");
 var Schema = mongoose.Schema;
+var numberList = 20;
+
 
 var entreeSchema = new Schema(
 {
@@ -17,7 +19,6 @@ var entreeSchema = new Schema(
 	Date : Date,
 	DateInsertion : Date,
 	SourceId : Schema.Types.ObjectId
-
 })
 
 var categorieSchema = new Schema(
@@ -41,6 +42,11 @@ var Entree = mongoose.model("Entree",entreeSchema,"Entrees");
 var Categorie = mongoose.model("Categorie",categorieSchema,"Categories");
 var Source = mongoose.model("Source",sourceSchema,"Sources");
 
+var entites = [];
+entites["Entrees"] = Entree;
+entites["Categories"] = Categorie;
+entites["Sources"] = Source;
+
 db.on('error', console.error.bind(console, 'connection error:'));
 app.get('/', function(request, response)
 {
@@ -51,11 +57,11 @@ app.get("/alive",function(req, res)
 	var p = {};
 	p.Nom = "toto";
 	p.prenom = "tata";
-	res.set({'Content-Type' : 'application/json'});
+	SetContentJson(res);
 	res.end(JSON.stringify(p));
 
 });
-app.get('/last', function(req, res)
+app.get('/one', function(req, res)
 {
 	Entree.findOne().exec(function(err,entree)
 	{
@@ -64,12 +70,51 @@ app.get('/last', function(req, res)
 		else
 		{
 			console.log("Result : "+entree);
-			res.set({'Content-Type' : 'application/json'});
+			SetContentJson(res);
 			res.end(JSON.stringify(entree));
 		}
 	});
 });
 
+app.get("/:entite/GetLasts",function(req,res)
+{
+	console.log(req.params.entite);
+	if(!entites[req.params.entite])
+	{
+		res.set(404);
+		res.end();
+		return;
+	}
+	var control = entites[req.params.entite];
+	control.find().limit(numberList).exec(function(
+		err,result)
+	{
+
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			SetContentJson(res);
+			result.forEach(function(chunk)
+			{
+				console.log(JSON.stringify(chunk));
+				res.write(JSON.stringify(chunk));
+			});
+
+			res.end();
+		}
+	});
+
+
+});
+
 app.listen(5555);
 
+
+function SetContentJson(res)
+{
+	res.set({'Content-Type' : 'application/json'});
+}
 
