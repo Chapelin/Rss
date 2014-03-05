@@ -20,7 +20,26 @@ var entreeSchema = new Schema(
 
 })
 
-var Entree = mongoose.model("Entree",entreeSchema,"Entrees")
+var categorieSchema = new Schema(
+{
+	Id : Schema.Types.ObjectId,
+	Description : String
+})
+
+var sourceSchema = new Schema(
+{
+	Id : Schema.Types.ObjectId,
+	URL : String,
+	Description : String,
+	DateAjout : Date,
+	Delai : Number,
+	Favicon : Boolean,
+	CategoriesIds : [String]
+})
+
+var Entree = mongoose.model("Entree",entreeSchema,"Entrees");
+var Categorie = mongoose.model("Categorie",categorieSchema,"Categories");
+var Source = mongoose.model("Source",sourceSchema,"Sources");
 
 db.on('error', console.error.bind(console, 'connection error:'));
 app.get('/', function(request, response)
