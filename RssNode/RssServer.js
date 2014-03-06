@@ -5,7 +5,8 @@ mongoose.connect("mongodb://localhost/test");
 var db = mongoose.connection;
 var Grid = require("gridfs-stream");
 var Schema = mongoose.Schema;
-var numberList = 20;
+var numberList = 3;
+var ObjectId = require('mongoose').Types.ObjectId; 
 
 
 var entreeSchema = new Schema(
@@ -76,39 +77,144 @@ app.get('/one', function(req, res)
 	});
 });
 
-app.get("/:entite/GetLasts",function(req,res)
+app.get("/Entrees/GetLastX",function(req,res)
 {
-	console.log(req.params.entite);
-	if(!entites[req.params.entite])
+	Entree.find().sort("-DateInsertion").limit(numberList).exec(function(err,result)
 	{
-		res.set(404);
-		res.end();
-		return;
-	}
-	var control = entites[req.params.entite];
-	control.find().limit(numberList).exec(function(
-		err,result)
-	{
-
 		if(err)
-		{
-			console.log(err);
-		}
+			console.log("Error : " +err);
 		else
-		{
-			SetContentJson(res);
-			result.forEach(function(chunk)
-			{
-				console.log(JSON.stringify(chunk));
-				res.write(JSON.stringify(chunk));
-			});
-
-			res.end();
-		}
-	});
-
-
+			SendList(res,result);
+	})
 });
+
+app.get("/Entrees/GetBySourceIdAll/:id",function(req,res)
+{
+	var id;
+	try
+	{
+			id = new ObjectId(req.params.id);
+	}
+	catch(e)
+	{
+		console.log("Erreur de cast");
+		res.end();
+	}
+	if(id)
+	{
+		Entree.find({SourceId : id}).exec(function(err,result)
+		{
+			if(err)
+				console.log("Error : " +err);
+			else
+				SendList(res,result);
+		})
+	}
+});
+
+
+
+app.get("/Sources/GetCategoriebyId/:id",function(req,res)
+{
+	var id;
+	try
+	{
+			id = new ObjectId(req.params.id);
+	}
+	catch(e)
+	{
+		console.log("Erreur de cast");
+		res.end();
+	}
+	if(id)
+	{
+		Source.find({_id : id}).select("CategoriesIds").exec(function(err,result)
+		{
+			if(err)
+				console.log("Error : " +err);
+			else
+			{
+				SendList(res,result);
+			}
+		})
+	}
+});
+
+
+app.get("/Entrees/GetBySourceIdLastX/:id",function(req,res)
+{
+	var id;
+	try
+	{
+			id = new ObjectId(req.params.id);
+	}
+	catch(e)
+	{
+		console.log("Erreur de cast");
+		res.end();
+	}
+	if(id)
+	{
+		Entree.find({SourceId : id}).sort("-DateInsertion").limit(numberList).exec(function(err,result)
+		{
+			if(err)
+				console.log("Error : " +err);
+			else
+				SendList(res,result);
+		})
+	}
+});
+
+
+
+app.get("/Entrees/GetByCategoriesIdLastX/:id",function(req,res)
+{
+	var id;
+	try
+	{
+			id = new ObjectId(req.params.id);
+	}
+	catch(e)
+	{
+		console.log("Erreur de cast");
+		res.end();
+	}
+	if(id)
+	{
+		console.log("toto");
+		Source.find().$where("this.CategoriesIds.contains("+id+")",function(err,data)
+		{
+			if(err)
+				console.log("Erruer source find");
+			else
+				console.log(data);
+		});
+
+		/*Entree.find({SourceId : id}).sort("-DateInsertion").limit(numberList).exec(function(err,result)
+		{
+			if(err)
+				console.log("Error : " +err);
+			else
+				SendList(res,result);
+		})*/
+	}
+});
+
+
+
+
+
+app.get("/Categories/GetAll" ,function(req,res)
+{
+	Categorie.find().exec(function(err,result)
+	{
+		if(err)
+			console.log("Error : " +err);
+		else
+			SendList(res,result);
+	});
+})
+
 
 app.listen(5555);
 
@@ -118,3 +224,15 @@ function SetContentJson(res)
 	res.set({'Content-Type' : 'application/json'});
 }
 
+
+
+function SendList(res,result)
+{
+	SetContentJson(res);
+	result.forEach(function(chunk)
+	{
+		res.write(JSON.stringify(chunk));
+	})
+	res.end();
+	
+};
