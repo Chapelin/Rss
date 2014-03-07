@@ -94,7 +94,7 @@ app.get("/Entrees/GetBySourceIdAll/:id",function(req,res)
 	var id;
 	try
 	{
-			id = new ObjectId(req.params.id);
+		id = new ObjectId(req.params.id);
 	}
 	catch(e)
 	{
@@ -114,12 +114,12 @@ app.get("/Entrees/GetBySourceIdAll/:id",function(req,res)
 
 
 
-app.get("/Sources/GetCategoriebyId/:id",function(req,res)
+app.get("/Sources/GetCategorieofId/:id",function(req,res)
 {
 	var id;
 	try
 	{
-			id = new ObjectId(req.params.id);
+		id = new ObjectId(req.params.id);
 	}
 	catch(err)
 	{
@@ -145,7 +145,7 @@ app.get("/Entrees/GetBySourceIdLastX/:id",function(req,res)
 	var id;
 	try
 	{
-			id = new ObjectId(req.params.id);
+		id = new ObjectId(req.params.id);
 	}
 	catch(err)
 	{
@@ -170,7 +170,7 @@ app.get("/Entrees/GetByCategoriesIdLastX/:id",function(req,res)
 	var id;
 	try
 	{
-			id = new ObjectId(req.params.id);
+		id = new ObjectId(req.params.id);
 	}
 	catch(err)
 	{
@@ -184,24 +184,74 @@ app.get("/Entrees/GetByCategoriesIdLastX/:id",function(req,res)
 			if(err)
 				HandleError(err,res)
 			else
+			{
+				Entree.find().where('SourceId').in(data).sort("-DateInsertion").limit(numberList).exec(function(err,result)
 				{
-					Entree.find().where('SourceId').in(data).sort("-DateInsertion").limit(numberList).exec(function(err,result)
+					if(err)
 					{
-						if(err)
-						{
-							HandleError(err,res);
-						}
-						else
-							SendList(res,result);
-					});
-				}
+						HandleError(err,res);
+					}
+					else
+						SendList(res,result);
+				});
+			}
 		});
 		
 	};
 });
 
 
+app.get("/Sources/GetAll" ,function(req,res)
+{
+	Source.find().exec(function(err,result)
+	{
+		if(err)
+			HandleError(err,res);
+		else
+			SendList(res,result);
+	});
+});
 
+
+app.get("/Sources/GetByCategorieId/:id" ,function(req,res)
+{
+	var id;
+	try
+	{
+		id = new ObjectId(req.params.id);
+	}
+	catch(err)
+	{
+		HandleError(err,res)
+	}
+	Source.find( {CategoriesIds : id}).exec(function(err,data)
+	{
+		if(err)
+			HandleError(err,res);
+		else
+			SendList(res,result);
+	});
+})
+
+app.get("/Sources/GetById/:id" ,function(req,res)
+{
+	var id;
+	try
+	{
+		id = new ObjectId(req.params.id);
+	}
+	catch(err)
+	{
+		HandleError(err,res)
+	}
+	Source.findOne( {_id : id}).exec(function(err,data)
+	{
+		if(err)
+			HandleError(err,res);
+		else
+			SendOne(res,data);
+	});
+})
 
 
 app.get("/Categories/GetAll" ,function(req,res)
@@ -213,7 +263,7 @@ app.get("/Categories/GetAll" ,function(req,res)
 		else
 			SendList(res,result);
 	});
-})
+});
 
 
 app.listen(5555);
@@ -233,6 +283,16 @@ function SendList(res,result)
 	{
 		res.write(JSON.stringify(chunk));
 	})
+	res.end();
+	
+};
+
+
+
+function SendOne(res,result)
+{
+	SetContentJson(res);
+	res.write(JSON.stringify(result));
 	res.end();
 	
 };
