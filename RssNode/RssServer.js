@@ -20,13 +20,13 @@ var entreeSchema = new Schema(
 	Date : Date,
 	DateInsertion : Date,
 	SourceId : Schema.Types.ObjectId
-})
+});
 
 var categorieSchema = new Schema(
 {
 	Id : Schema.Types.ObjectId,
 	Description : String
-})
+});
 
 var sourceSchema = new Schema(
 {
@@ -37,7 +37,7 @@ var sourceSchema = new Schema(
 	Delai : Number,
 	Favicon : Boolean,
 	CategoriesIds : [String]
-})
+});
 
 var Entree = mongoose.model("Entree",entreeSchema,"Entrees");
 var Categorie = mongoose.model("Categorie",categorieSchema,"Categories");
@@ -51,7 +51,8 @@ entites["Sources"] = Source;
 db.on('error', console.error.bind(console, 'connection error:'));
 app.get('/', function(request, response)
 {
-	response.end("Hello ! ");
+	re
+	sponse.end("Hello ! ");
 });
 app.get("/alive",function(req, res)
 {
@@ -67,7 +68,7 @@ app.get('/one', function(req, res)
 	Entree.findOne().exec(function(err,entree)
 	{
 		if(err)
-			console.log("Error : " +err);
+			HandleError(err,res);
 		else
 		{
 			console.log("Result : "+entree);
@@ -82,7 +83,7 @@ app.get("/Entrees/GetLastX",function(req,res)
 	Entree.find().sort("-DateInsertion").limit(numberList).exec(function(err,result)
 	{
 		if(err)
-			console.log("Error : " +err);
+			HandleError(err,res);
 		else
 			SendList(res,result);
 	})
@@ -97,8 +98,7 @@ app.get("/Entrees/GetBySourceIdAll/:id",function(req,res)
 	}
 	catch(e)
 	{
-		console.log("Erreur de cast");
-		res.end();
+		HandleError(err,res);
 	}
 	if(id)
 	{
@@ -121,17 +121,16 @@ app.get("/Sources/GetCategoriebyId/:id",function(req,res)
 	{
 			id = new ObjectId(req.params.id);
 	}
-	catch(e)
+	catch(err)
 	{
-		console.log("Erreur de cast");
-		res.end();
+		HandleError(err,res);
 	}
 	if(id)
 	{
 		Source.find({_id : id}).select("CategoriesIds").exec(function(err,result)
 		{
 			if(err)
-				console.log("Error : " +err);
+				HandleError(err,res);
 			else
 			{
 				SendList(res,result);
@@ -148,17 +147,16 @@ app.get("/Entrees/GetBySourceIdLastX/:id",function(req,res)
 	{
 			id = new ObjectId(req.params.id);
 	}
-	catch(e)
+	catch(err)
 	{
-		console.log("Erreur de cast");
-		res.end();
+		HandleError(err,res);
 	}
 	if(id)
 	{
 		Entree.find({SourceId : id}).sort("-DateInsertion").limit(numberList).exec(function(err,result)
 		{
 			if(err)
-				console.log("Error : " +err);
+				HandleError(err,res);
 			else
 				SendList(res,result);
 		})
@@ -174,30 +172,32 @@ app.get("/Entrees/GetByCategoriesIdLastX/:id",function(req,res)
 	{
 			id = new ObjectId(req.params.id);
 	}
-	catch(e)
+	catch(err)
 	{
-		console.log("Erreur de cast");
-		res.end();
+		HandleError(err,res)
 	}
 	if(id)
 	{
-		console.log("toto");
-		Source.find().$where("this.CategoriesIds.contains("+id+")",function(err,data)
+		
+		Source.find( {CategoriesIds : id}).exec(function(err,data)
 		{
 			if(err)
-				console.log("Erruer source find");
+				HandleError(err,res)
 			else
-				console.log(data);
+				{
+					Entree.find().where('SourceId').in(data).sort("-DateInsertion").limit(numberList).exec(function(err,result)
+					{
+						if(err)
+						{
+							HandleError(err,res);
+						}
+						else
+							SendList(res,result);
+					});
+				}
 		});
-
-		/*Entree.find({SourceId : id}).sort("-DateInsertion").limit(numberList).exec(function(err,result)
-		{
-			if(err)
-				console.log("Error : " +err);
-			else
-				SendList(res,result);
-		})*/
-	}
+		
+	};
 });
 
 
@@ -209,7 +209,7 @@ app.get("/Categories/GetAll" ,function(req,res)
 	Categorie.find().exec(function(err,result)
 	{
 		if(err)
-			console.log("Error : " +err);
+			HandleError(err,res);
 		else
 			SendList(res,result);
 	});
@@ -236,3 +236,11 @@ function SendList(res,result)
 	res.end();
 	
 };
+
+
+
+function HandleError(err,res)
+{
+	console.error("Erreur : "+err);
+	res.end();
+}
