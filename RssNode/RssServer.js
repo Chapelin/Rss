@@ -7,7 +7,7 @@ var Grid = require("gridfs-stream");
 var Schema = mongoose.Schema;
 var numberList = 3;
 var ObjectId = require('mongoose').Types.ObjectId; 
-
+var cors = require("cors");
 
 var entreeSchema = new Schema(
 {
@@ -49,10 +49,11 @@ entites["Categories"] = Categorie;
 entites["Sources"] = Source;
 
 db.on('error', console.error.bind(console, 'connection error:'));
+
+app.use(cors());
 app.get('/', function(request, response)
 {
-	re
-	sponse.end("Hello ! ");
+	response.end("Hello ! ");
 });
 app.get("/alive",function(req, res)
 {
