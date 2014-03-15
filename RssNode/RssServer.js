@@ -280,10 +280,19 @@ function SetContentJson(res)
 function SendList(res,result)
 {
 	SetContentJson(res);
+	var total = "[";
 	result.forEach(function(chunk)
 	{
-		res.write(JSON.stringify(chunk));
+		total+=(JSON.stringify(chunk));
+		total+=",";
 	})
+	var ind = total.lastIndexOf(",");
+	if(ind!=-1)
+	{
+		total = total.substring(0,ind);
+	};
+	total+="]";
+	res.write(total);
 	res.end();
 	
 };
