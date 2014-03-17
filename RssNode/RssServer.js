@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 var numberList = 20;
 var ObjectId = require('mongoose').Types.ObjectId; 
 var cors = require("cors");
-
+var gfs = Grid(mongoose.connection.db, mongoose.mongo);
 var entreeSchema = new Schema(
 {
 	Id : Schema.Types.ObjectId,
@@ -39,9 +39,20 @@ var sourceSchema = new Schema(
 	CategoriesIds : [String]
 });
 
+
+
+var faviconSchema = new Schema(
+{
+	Id : Schema.Types.ObjectId,
+	SourceId : Schema.Types.ObjectId,
+	GridFSId : Schema.Types.ObjectId
+});
+
 var Entree = mongoose.model("Entree",entreeSchema,"Entrees");
 var Categorie = mongoose.model("Categorie",categorieSchema,"Categories");
 var Source = mongoose.model("Source",sourceSchema,"Sources");
+var Favicon = mongoose.model("Favicon",faviconSchema,"Favicon");
+
 
 var entites = [];
 entites["Entrees"] = Entree;
@@ -266,6 +277,32 @@ app.get("/Categories/GetAll" ,function(req,res)
 	});
 });
 
+app.get("/Favicons/GetIcoBySource/:id" ,function(req,res)
+{
+	var id;
+	try
+	{
+		id = new ObjectId(req.params.id);
+	}
+	catch(err)
+	{
+		HandleError(err,res)
+	}
+	Favicon.findOne({SourceId : id}).exec(function(err,result)
+	{
+		if(err)
+			HandleError(err,res);
+		else
+		{
+			console.log("Tentative lecture")
+			var readstream = gfs.createReadStream({_id: result.GridFSId});
+			SetContentIco(res);
+			readstream.pipe(res);
+			console.log("Fin lecture");
+
+		}
+	});
+});
 
 app.listen(5555);
 
@@ -273,6 +310,12 @@ app.listen(5555);
 function SetContentJson(res)
 {
 	res.set({'Content-Type' : 'application/json'});
+}
+
+
+function SetContentIco(res)
+{
+	res.set({'Content-Type' : 'image/vnd.microsoft.icon'});
 }
 
 
