@@ -12,7 +12,7 @@ rssApp.config(['$routeProvider',
 		$routeProvider.
 			when('/Entrees',
 				{
-					 templateUrl: 'partials/Entrees.html',
+					 templateUrl: 'partials/entrees.html',
 						controller: 'RssController'
 				}).
 			when('/Categories',

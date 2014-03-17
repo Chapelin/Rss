@@ -27,5 +27,21 @@ var cateContr = function($scope,$http) {
   	});
 };
 
+
+//SourcesController
+
+var sourceContr = function($scope,$http) {
+  $scope.test = "SourcesController";
+    $http.get('http://localhost:5555/Sources/GetAll').success(function(data) {
+    	console.log("reponse : "+data);
+    	$scope.Sources = data;
+  }).error(function(data, status, headers, config){
+  	console.log("error : "+data);
+  		console.log(status);
+  	});
+};
+
+
 baseRssController.controller('RssController', rssContr)
 baseRssController.controller('CategoriesController', cateContr)
+baseRssController.controller('SourcesController', sourceContr)
