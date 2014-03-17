@@ -4,7 +4,8 @@
 var baseRssController = angular.module('baseRssController',[]);
 
 
-baseRssController.controller('RssController', function($scope,$http) {
+
+var rssContr = function($scope,$http) {
   $scope.test = "RssController";
     $http.get('http://localhost:5555/Entrees/getlastX').success(function(data) {
     	console.log("reponse : "+data);
@@ -13,12 +14,9 @@ baseRssController.controller('RssController', function($scope,$http) {
   	console.log("error : "+data);
   		console.log(status);
   	});
-});
+};
 
-
-
-
-baseRssController.controller('CategoriesController', function($scope,$http) {
+var cateContr = function($scope,$http) {
   $scope.test = "CategoriesController";
     $http.get('http://localhost:5555//Categories/GetAll').success(function(data) {
     	console.log("reponse : "+data);
@@ -27,4 +25,10 @@ baseRssController.controller('CategoriesController', function($scope,$http) {
   	console.log("error : "+data);
   		console.log(status);
   	});
-});
+};
+
+
+baseRssController.controller('CategoriesController', cateContr);
+
+
+baseRssController.controller('RssController', rssContr);

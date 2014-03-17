@@ -2,8 +2,8 @@
 
 /* App Module */
 var rssApp = angular.module('rssApp',
-['ngRoute'],
-['baseRssController']);
+['ngRoute',
+'baseRssController']);
 
 
 rssApp.config(['$routeProvider',

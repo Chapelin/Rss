@@ -5,7 +5,7 @@ mongoose.connect("mongodb://localhost/test");
 var db = mongoose.connection;
 var Grid = require("gridfs-stream");
 var Schema = mongoose.Schema;
-var numberList = 3;
+var numberList = 20;
 var ObjectId = require('mongoose').Types.ObjectId; 
 var cors = require("cors");
 
