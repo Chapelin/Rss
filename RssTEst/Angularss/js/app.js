@@ -10,25 +10,25 @@ rssApp.config(['$routeProvider',
 	function($routeProvider)
 	{
 		$routeProvider.
-			when('/index',
+			when('/Entrees',
 				{
-					 templateUrl: 'index.html',
+					 templateUrl: 'partials/Entrees.html',
 						controller: 'RssController'
 				}).
 			when('/Categories',
 				{
-						 templateUrl: 'partial/categories.html',
+						 templateUrl: 'partials/categories.html',
 						controller: 'CategoriesController'
 				}).
 			when('/Sources',
 				{
-						 templateUrl: 'partial/sources.html',
+						 templateUrl: 'partials/sources.html',
 						controller: 'SourcesController'
 				}).
 			when('/Source/:sourceId',
 				{
-						 templateUrl: 'partial/source.html',
+						 templateUrl: 'partials/source.html',
 						controller: 'SpecificSourceController'
 				}).
-			otherwise({ redirectTo : "/index"});
+			otherwise({ redirectTo : "/Entrees"});
 	}]);

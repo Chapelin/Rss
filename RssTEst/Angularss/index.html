@@ -16,9 +16,12 @@
 		<script src="js/controllers.js"></script>
 		<script src="js/app.js"></script>
 
+<script type="text/ng-template" src="./partials/categories.html" id="categ"></script>	
+<script type="text/ng-template" src="./partials/Entrees.html" id="entrees"></script>
+
 	</head>
 </head>
-<body ng-controller="RssController">
+<body>
 	<div id="wrapper">
 
 		<!-- Sidebar -->
@@ -26,7 +29,7 @@
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#">Start Bootstrap</a>
 				</li>
-				<li ><a href="#/index" id="DashBoard">Lasts</a>
+				<li ><a href="#/Entrees" id="DashBoard">Lasts</a>
 				</li>
 				<li><a href="#/Categories"  id="Cat">Categories</a>
 				</li>
@@ -36,22 +39,12 @@
 		</div>
 
 		<!-- Page content -->
-		<div id="page-content-wrapper">
-{{test}}
+		<div id="page-content-wrapper"  >
+
 			<!-- Keep all page content within the page-content inset div! -->
-			<div class="page-content inset">
+			<div class="page-content inset" ng-view>
 				
-
-				<div ng-repeat="entree in Rss">
-
-					<div class="row">	
-						<div class="col-lg-12">
-						{{entree.Date | date:'HH:mm'}} - <a href="{{entree.Link}}">
-						<img  height="24" width="24" ng-src="http://localhost:5555/Favicon/geticobysource/{{entree.SourceId}}" class="source"/>{{entree.Titre}}</a>
-						</div>
-
-					</div>
-				</div>
+				
 			</div>
 		</div>
 	</div>

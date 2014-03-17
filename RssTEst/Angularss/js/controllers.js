@@ -18,7 +18,7 @@ var rssContr = function($scope,$http) {
 
 var cateContr = function($scope,$http) {
   $scope.test = "CategoriesController";
-    $http.get('http://localhost:5555//Categories/GetAll').success(function(data) {
+    $http.get('http://localhost:5555/Categories/GetAll').success(function(data) {
     	console.log("reponse : "+data);
     	$scope.Categories = data;
   }).error(function(data, status, headers, config){
@@ -27,8 +27,5 @@ var cateContr = function($scope,$http) {
   	});
 };
 
-
-baseRssController.controller('CategoriesController', cateContr);
-
-
-baseRssController.controller('RssController', rssContr);
+baseRssController.controller('RssController', rssContr)
+baseRssController.controller('CategoriesController', cateContr)
