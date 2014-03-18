@@ -56,6 +56,23 @@ namespace Readers
                     Feed.Links.Add(new SyndicationLink(new Uri(reader.ReadElementString())));
                 else if (reader.IsStartElement("description"))
                     Feed.Description = new TextSyndicationContent(reader.ReadElementString());
+                else if (reader.IsStartElement("image"))
+                {
+                    reader.ReadStartElement("image");
+                    while (reader.IsStartElement())
+                    {
+                        if (reader.IsStartElement("url"))
+                        {
+                            Feed.ImageUrl = new Uri(reader.ReadElementString());
+                        }
+                        else
+                        {
+                            reader.Skip();
+                        }
+                    }
+                    reader.ReadEndElement();
+                    
+                }
                 else if (reader.IsStartElement("item"))
                 {
                     SyndicationItem item = new SyndicationItem();
@@ -77,10 +94,10 @@ namespace Readers
                         else if (reader.IsStartElement("comments"))
                         {
                             //seulement si pas deja une description
-                            if(item.Summary ==null)
-                              item.Summary  = new TextSyndicationContent(reader.ReadElementString());
+                            if (item.Summary == null)
+                                item.Summary = new TextSyndicationContent(reader.ReadElementString());
                         }
-                        else if(reader.IsStartElement("guid"))
+                        else if (reader.IsStartElement("guid"))
                         {
                             item.Id = reader.ReadElementString();
                         }
@@ -103,7 +120,7 @@ namespace Readers
                         }
 
                     }
-                 
+
 
                     reader.ReadEndElement();
                     list.Add(item);
