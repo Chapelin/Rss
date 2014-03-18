@@ -14,33 +14,55 @@ namespace ServiceRssToDB
     {
         private static NLog.Logger logger = LogManager.GetCurrentClassLogger();
         private Source baseSource;
-        private SyndicationLink baseUrl;
+        private Uri baseUrl;
 
 
         public override string ToString()
         {
-            return string.Format("Source : {0}  - URL : {1} ", baseSource.Id, baseUrl.Uri);
+            return string.Format("Source : {0}  - URL : {1} ", baseSource.Id, baseUrl);
         }
 
-        public FavGrabber(Source baseSource, SyndicationLink baseUrl)
+        public FavGrabber(Source baseSource, Uri baseUrl)
         {
             this.baseSource = baseSource;
             this.baseUrl = baseUrl;
         }
 
-        public void Grab()
+        public void GrabFromDirectUrl()
+        {
+            try
+            {
+                logger.Info(this + "GrabFromDirectUrl()");
+                var response = SendRequest(baseUrl.ToString());
+                logger.Info(this + "baseurl ok");
+                SaveToDB(response.GetResponseStream(), baseSource.Id);
+                baseSource.Favicon = true;
+                DBManager.Sources.Save(baseSource);
+                logger.Info(this + "favicon dl direct from url!");
+            }
+            catch (Exception e)
+            {
+
+                logger.Error(this + e.Message);
+            }
+
+        }
+
+
+        public void GrabFromBase()
         {
             try
             {
                 Uri urlf;
-                logger.Info(this + "Init()");
-                var response = SendRequest(baseUrl.Uri.ToString());
+                logger.Info(this + "GrabFromBase()");
+                var response = SendRequest(baseUrl.ToString());
                 logger.Info(this + "baseurl ok");
                 var doc = new HtmlDocument();
                 doc.Load(response.GetResponseStream());
-                var node = doc.DocumentNode.SelectSingleNode("//link[@rel='shortcut icon']");
+                var node = doc.DocumentNode.SelectSingleNode("//link[lower-case(@rel)='shortcut icon']");
+
                 UriBuilder baseUri =
-                    new UriBuilder(baseUrl.GetAbsoluteUri().ToString().Remove(baseUrl.GetAbsoluteUri().ToString().LastIndexOf(baseUrl.GetAbsoluteUri().Query)));
+                    new UriBuilder(baseUrl.AbsoluteUri.Remove(baseUrl.ToString().LastIndexOf(baseUrl.Query)));
                 if (node == null)
                 {
                     urlf = new Uri(baseUri.Uri,"/favicon.ico");
