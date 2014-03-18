@@ -35,20 +35,6 @@ var sourceContr = function($scope,$http) {
     $http.get('http://localhost:5555/Sources/GetAll').success(function(data) {
     	console.log("reponse : "+data);
     	$scope.Sources = data;
-      $scope.SourcesDecoupe = [];
-      var temp = [];
-      for(var i=0;i<data.length;i++)
-      {
-          temp.push(data[i]);
-          if(i%3==2)
-          {
-            $scope.SourcesDecoupe.push(temp);
-            temp = [];
-          }
-      }
-      if(temp.length>0)
-        $scope.SourcesDecoupe.push(temp);
-      
   }).error(function(data, status, headers, config){
   	console.log("error : "+data);
   		console.log(status);
