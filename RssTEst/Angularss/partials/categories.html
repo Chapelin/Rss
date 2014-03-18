@@ -1,8 +1,14 @@
 
 				{{test}}				
 
-				<div ng-repeat="cat in Categories">
 
-					<button type="button" class="btn btn-default categorie" id="{{cat.Id}}"> {{cat.Description}}</button>
-				</div>
-		
+<div class="row">
+	<div ng-repeat="cat in Categories">
+	<div class="col-sm-4" ng-show="cat"><button type="button" class="btn btn-default categorie" id="{{cat.Id}}"> {{cat.Description}}</button></div>
+	<span ng-switch on="$index % 3">
+              <div ng-switch-when="2" class="clearfix visible-sm"></div>
+        </span>
+
+	</div>
+</div>
+			

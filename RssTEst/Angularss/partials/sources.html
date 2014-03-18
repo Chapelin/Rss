@@ -1,12 +1,12 @@
 
-				{{test}}				
+{{test}}				
+<div class="row">
 
-				<div ng-repeat="sou in Sources">
+	<div ng-repeat="sou in Sources">
+	<div class="col-sm-4" ng-show="sou"><button type="button" class="btn btn-default categorie" id="{{sou.Id}}"> {{sou.Description}}</button></div>
+	<span ng-switch on="$index % 3">
+              <div ng-switch-when="2" class="clearfix visible-sm"></div>
+        </span>
 
-<div ng-if="$index%4===0" class="row">
-				
-					<button type="button" class="btn btn-default categorie" id="{{sou.Id}}"> {{sou.Description}}</button>
-			
-			
-				</div>
-		
+	</div>
+</div>
