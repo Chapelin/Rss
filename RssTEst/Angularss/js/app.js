@@ -27,7 +27,7 @@ rssApp.config(['$routeProvider',
 				}).
 			when('/Source/:sourceId',
 				{
-						 templateUrl: 'partials/source.html',
+						 templateUrl: 'partials/entrees.html',
 						controller: 'SpecificSourceController'
 				}).
 			otherwise({ redirectTo : "/Entrees"});

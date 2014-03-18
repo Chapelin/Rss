@@ -3,7 +3,8 @@
 <div class="row">
 
 	<div ng-repeat="sou in Sources">
-	<div class="col-sm-4" ng-show="sou"><button type="button" class="btn btn-default categorie" id="{{sou.Id}}"> {{sou.Description}}</button></div>
+	<div class="col-sm-4" ng-show="sou">
+	 <a class="btn btn-default" href="#/Source/{{sou._id}}" role="button" ng-show="sou">{{sou.Description}}</a></div>
 	<span ng-switch on="$index % 3">
               <div ng-switch-when="2" class="clearfix visible-sm"></div>
         </span>
