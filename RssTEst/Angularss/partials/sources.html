@@ -4,7 +4,7 @@
 
 	<div ng-repeat="sou in Sources">
 	<div class="col-sm-4" ng-show="sou">
-	 <a class="btn btn-default" href="#/Source/{{sou._id}}" role="button" ng-show="sou">{{sou.Description}}</a></div>
+	 <a class="btn btn-default" ng-href="#/Source/{{sou._id}}" role="button" ng-show="sou"><img  height="24" width="24" ng-src="http://localhost:5555/Favicons/geticobysource/{{sou._id}}" class="source"/>{{sou.Description}}</a></div>
 	<span ng-switch on="$index % 3">
               <div ng-switch-when="2" class="clearfix visible-sm"></div>
         </span>
