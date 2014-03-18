@@ -290,15 +290,22 @@ app.get("/Favicons/GetIcoBySource/:id" ,function(req,res)
 	}
 	Favicon.findOne({SourceId : id}).exec(function(err,result)
 	{
+
 		if(err)
 			HandleError(err,res);
 		else
 		{
-			console.log("Tentative lecture")
-			var readstream = gfs.createReadStream({_id: result.GridFSId});
-			SetContentIco(res);
-			readstream.pipe(res);
-			console.log("Fin lecture");
+			if(result)
+			{
+				var readstream = gfs.createReadStream({_id: result.GridFSId});
+				SetContentIco(res);
+				readstream.pipe(res);
+			}
+			else
+			{
+				console.log("Pas de favicon pour "+id);
+				res.end();
+			}
 
 		}
 	});
