@@ -38,7 +38,7 @@ namespace ServiceRssToDB
                 SaveToDB(response.GetResponseStream(), baseSource.Id);
                 baseSource.Favicon = true;
                 DBManager.Sources.Save(baseSource);
-                logger.Info(this + "favicon dl direct from url!");
+                logger.Trace(this + "favicon dl direct from url!");
             }
             catch (Exception e)
             {
@@ -59,7 +59,7 @@ namespace ServiceRssToDB
                 logger.Info(this + "baseurl ok");
                 var doc = new HtmlDocument();
                 doc.Load(response.GetResponseStream());
-                var node = doc.DocumentNode.SelectSingleNode("//link[lower-case(@rel)='shortcut icon']");
+                var node = doc.DocumentNode.SelectSingleNode("//link[@rel='shortcut icon']");
 
                 UriBuilder baseUri =
                     new UriBuilder(baseUrl.AbsoluteUri.Remove(baseUrl.ToString().LastIndexOf(baseUrl.Query)));
@@ -78,7 +78,7 @@ namespace ServiceRssToDB
                 SaveToDB(response.GetResponseStream(), baseSource.Id);
                 baseSource.Favicon = true;
                 DBManager.Sources.Save(baseSource);
-                logger.Info(this + "favicon dl !");
+                logger.Trace(this + "favicon dl !");
             }
             catch (Exception e)
             {

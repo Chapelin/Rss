@@ -85,20 +85,28 @@ namespace ServiceRssToDB
                         feed = SyndicationFeed.Load(reader);
                     if (!sourceRss.Favicon)
                     {
+                        List<Task> listeFav = new List<Task>();
                         //s'il y a un imageurl de prévu on ta tente
                         if (feed.ImageUrl != null)
                         {
                             var baseurl = feed.ImageUrl;
                             logger.Info(this + " Lancement du grab  direct favicon sur " + baseurl);
                             FavGrabber grab = new FavGrabber(sourceRss, baseurl);
-                            Task.Factory.StartNew(grab.GrabFromDirectUrl);
+                            listeFav.Add(new Task(grab.GrabFromDirectUrl));
                         }
-                        else if (feed.Links != null && feed.Links.Count > 0) //sinon s'il y a des liens, on essaye de recuperer le favicon depuis le premier
+                        if (feed.Links != null && feed.Links.Count > 0) //sinon s'il y a des liens, on essaye de recuperer le favicon depuis le premier
                         {
                             var baseurl = feed.Links[0].Uri;
                             logger.Info(this + " Lancement du grab favicon sur " + baseurl);
                             FavGrabber grab = new FavGrabber(sourceRss, baseurl);
-                            Task.Factory.StartNew(grab.GrabFromBase);
+                            listeFav.Add(new Task(grab.GrabFromBase));
+                        }
+                        //si on a des cibles potentielles pour les favicons
+                        if (listeFav.Count > 0)
+                        {
+                            if (listeFav.Count > 1)
+                                listeFav[0].ContinueWith(task => { if (!sourceRss.Favicon) listeFav[1].Start(); }); //s'il y a deux possibilité, si la premiere ne marche pas, on déclenche la seconde
+                            listeFav[0].Start();
                         }
                     }
                     foreach (var elem in feed.Items)
