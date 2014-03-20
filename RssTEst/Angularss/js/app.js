@@ -30,5 +30,10 @@ rssApp.config(['$routeProvider',
 						 templateUrl: 'partials/entrees.html',
 						controller: 'SpecificSourceController'
 				}).
+				when('/Categorie/:catId',
+				{
+						 templateUrl: 'partials/entrees.html',
+						controller: 'SpecificCategorieController'
+				}).
 			otherwise({ redirectTo : "/Entrees"});
 	}]);
