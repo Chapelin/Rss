@@ -92,7 +92,7 @@ app.get('/one', function(req, res)
 
 app.get("/Entrees/GetLastX",function(req,res)
 {
-	Entree.find().sort("-DateInsertion").limit(numberList).exec(function(err,result)
+	Entree.find().sort("-Date").limit(numberList).exec(function(err,result)
 	{
 		if(err)
 			HandleError(err,res);
@@ -151,7 +151,7 @@ app.get("/Entrees/GetByCatIdLastX/:id",function(req,res)
 					listId.push(da._id);
 				})
 				console.log("Liste des id pour cette categorie : "+listId);
-				Entree.find({SourceId : listId}).sort("-DateInsertion").limit(numberList).exec(function(err,result)
+				Entree.find({SourceId : listId}).sort("-Date").limit(numberList).exec(function(err,result)
 				{
 					if(err)
 						HandleError(err,res);
@@ -235,7 +235,7 @@ app.get("/Entrees/GetByCategoriesIdLastX/:id",function(req,res)
 				HandleError(err,res)
 			else
 			{
-				Entree.find().where('SourceId').in(data).sort("-DateInsertion").limit(numberList).exec(function(err,result)
+				Entree.find().where('SourceId').in(data).sort("-Date").limit(numberList).exec(function(err,result)
 				{
 					if(err)
 					{
