@@ -56,7 +56,25 @@ var specificSourceContr = function($scope,$http,$routeParams) {
   	});
 }
 
+
+
+//SpecificCategorieController
+var specificCategorieContr = function($scope,$http,$routeParams) {
+  $scope.test = "SpecificCategorieController";
+  $scope.catId = $routeParams.catId;
+  console.log($scope);
+  $http.get('http://localhost:5555/Entrees/GetByCatIdLastX/'+$scope.catId).success(function(data) {
+      console.log("reponse : "+data);
+      $scope.Rss = data;
+  }).error(function(data, status, headers, config){
+    console.log("error : "+data);
+      console.log(status);
+    });
+}
+
+
 baseRssController.controller('RssController', rssContr);
 baseRssController.controller('CategoriesController', cateContr);
 baseRssController.controller('SourcesController', sourceContr);
 baseRssController.controller('SpecificSourceController', specificSourceContr);
+baseRssController.controller('SpecificCategorieController', specificCategorieContr);
