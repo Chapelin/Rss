@@ -126,6 +126,44 @@ app.get("/Entrees/GetBySourceIdAll/:id",function(req,res)
 
 
 
+app.get("/Entrees/GetByCatIdLastX/:id",function(req,res)
+{
+	var id;
+	try
+	{
+		id = new ObjectId(req.params.id);
+	}
+	catch(e)
+	{
+		HandleError(err,res);
+	}
+	if(id)
+	{
+		Source.find({CategoriesIds : id}, { _id : 1}).exec(function(err,result)
+		{
+			if(err)
+				console.log("Error : " +err);
+			else
+			{
+				var listId= [];
+				result.forEach(function(da)
+				{
+					listId.push(da._id);
+				})
+				console.log("Liste des id pour cette categorie : "+listId);
+				Entree.find({SourceId : listId}).sort("-DateInsertion").limit(numberList).exec(function(err,result)
+				{
+					if(err)
+						HandleError(err,res);
+					else
+						SendList(res,result);
+				});
+			}
+		})
+	}
+});
+
+
 app.get("/Sources/GetCategorieofId/:id",function(req,res)
 {
 	var id;
