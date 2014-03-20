@@ -70,7 +70,9 @@ namespace ServiceRssToDB
                 }
                 else
                 {
-                    urlf = new Uri(baseUri.Uri, baseUri.Uri.LocalPath + "/" + node.Attributes["href"].Value);
+                    var target = baseUri.Uri.LocalPath + node.Attributes["href"].Value;
+                    target = target.Replace("//", "/");
+                    urlf = new Uri(baseUri.Uri, target);
                     logger.Info(this + string.Format("url favicon {0} : ", urlf));
 
                 }
