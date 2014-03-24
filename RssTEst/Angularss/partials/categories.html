@@ -5,7 +5,7 @@
 <div class="row">
 	<div ng-repeat="cat in Categories">
 		<div class="col-sm-3" ng-show="cat">
-			<a class="btn btn-default" ng-href="#/Categorie/{{cat._id}}" role="button" ng-show="cat" class="categorie"/>{{cat.Description}}</a>
+			<a class="btn btn-default" ng-href="#/Categorie/{{cat._id}}" role="button" ng-show="cat" class="categorie">{{cat.Description}}</a>
 		</div>
 		<span ng-switch on="$index % 4">
 			<div ng-switch-when="3" class="clearfix visible-sm"></div>
