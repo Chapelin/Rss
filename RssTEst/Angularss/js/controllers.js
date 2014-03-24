@@ -32,6 +32,19 @@ var cateContr = function($scope,$http) {
 
 var sourceContr = function($scope,$http) {
   $scope.test = "SourcesController";
+   $http.get('http://localhost:5555/Categories/GetAll').success(function(data) {
+      console.log("reponse : "+data);
+      $scope.Categories = data;
+      $scope.CategoriesClassees = {};
+      for (var i = 0; i < $scope.Categories.length; i++) {
+        $scope.CategoriesClassees[$scope.Categories[i]._id] = $scope.Categories[i];
+        };
+      
+  }).error(function(data, status, headers, config){
+    console.log("error : "+data);
+      console.log(status);
+    });
+
     $http.get('http://localhost:5555/Sources/GetAll').success(function(data) {
     	console.log("reponse : "+data);
     	$scope.Sources = data;
