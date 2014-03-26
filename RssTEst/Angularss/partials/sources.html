@@ -4,24 +4,21 @@
 
 	<div ng-repeat="sou in Sources">
 		<div class="col-sm-3" ng-show="sou">
-			<a class="btn btn-default" ng-href="#/Source/{{sou._id}}" role="button" ng-show="sou">
-				<img  height="24" width="24" ng-src="http://localhost:5555/Favicons/geticobysource/{{sou._id}}" class="source"/>
-				<h2>{{sou.Description}}</h2>
-				<!--<div ng-repeat="cat in sou.CategoriesIds" >
-				<button type="button" class="btn btn-default categorie"
-					id="{{cat}">{{CategoriesClassees[cat].Description}}
-				</button>
-				</div>-->
-				</a>
-				<button ng-repeat="cat in sou.CategoriesIds" type="button" class="btn btn-default categorie"
-					id="{{cat}" ng-href="#/Categorie/{{cat}}">{{CategoriesClassees[cat].Description}}
-				</button>
-
-			
+			<a ng-href="#/Source/{{sou._id}}" role="button" ng-show="sou">
+				<div class="btn btn-default" >
+					<img  height="24" width="24" ng-src="http://localhost:5555/Favicons/geticobysource/{{sou._id}}" class="source"/>
+					<h2>{{sou.Description}}</h2>
+				</div>
+			</a>
+			<div class="btn-group">
+			<button ng-repeat="cat in sou.CategoriesIds" type="button" class="btn btn-default"
+				id="{{cat}" ng-href="#/Categorie/{{cat}}">{{CategoriesClassees[cat].Description}}
+			</button>
 		</div>
-		<span ng-switch on="$index % 4">
-			<div ng-switch-when="3" class="clearfix visible-sm"></div>
-		</span>
-
 	</div>
+	<span ng-switch on="$index % 4">
+		<div ng-switch-when="3" class="clearfix visible-sm"></div>
+	</span>
+
+</div>
 </div>

@@ -8,22 +8,18 @@ var baseRssController = angular.module('baseRssController',[]);
 var rssContr = function($scope,$http) {
   $scope.test = "RssController";
     $http.get('http://localhost:5555/Entrees/getlastX').success(function(data) {
-    	console.log("reponse : "+data);
     	$scope.Rss = data;
   }).error(function(data, status, headers, config){
   	console.log("error : "+data);
-  		console.log(status);
   	});
 };
 
 var cateContr = function($scope,$http) {
   $scope.test = "CategoriesController";
     $http.get('http://localhost:5555/Categories/GetAll').success(function(data) {
-    	console.log("reponse : "+data);
     	$scope.Categories = data;
   }).error(function(data, status, headers, config){
   	console.log("error : "+data);
-  		console.log(status);
   	});
 };
 
@@ -33,7 +29,6 @@ var cateContr = function($scope,$http) {
 var sourceContr = function($scope,$http) {
   $scope.test = "SourcesController";
    $http.get('http://localhost:5555/Categories/GetAll').success(function(data) {
-      console.log("reponse : "+data);
       $scope.Categories = data;
       $scope.CategoriesClassees = {};
       for (var i = 0; i < $scope.Categories.length; i++) {
@@ -42,15 +37,12 @@ var sourceContr = function($scope,$http) {
       
   }).error(function(data, status, headers, config){
     console.log("error : "+data);
-      console.log(status);
     });
 
     $http.get('http://localhost:5555/Sources/GetAll').success(function(data) {
-    	console.log("reponse : "+data);
     	$scope.Sources = data;
   }).error(function(data, status, headers, config){
   	console.log("error : "+data);
-  		console.log(status);
   	});
 };
 
@@ -59,13 +51,10 @@ var sourceContr = function($scope,$http) {
 var specificSourceContr = function($scope,$http,$routeParams) {
 	$scope.test = "SpecificSourceController";
 	$scope.sourceId = $routeParams.sourceId;
-	console.log($scope);
 	$http.get('http://localhost:5555/Entrees/GetBySourceIdLastX/'+$scope.sourceId).success(function(data) {
-    	console.log("reponse : "+data);
     	$scope.Rss = data;
   }).error(function(data, status, headers, config){
   	console.log("error : "+data);
-  		console.log(status);
   	});
 }
 
@@ -75,13 +64,10 @@ var specificSourceContr = function($scope,$http,$routeParams) {
 var specificCategorieContr = function($scope,$http,$routeParams) {
   $scope.test = "SpecificCategorieController";
   $scope.catId = $routeParams.catId;
-  console.log($scope);
   $http.get('http://localhost:5555/Entrees/GetByCatIdLastX/'+$scope.catId).success(function(data) {
-      console.log("reponse : "+data);
       $scope.Rss = data;
   }).error(function(data, status, headers, config){
     console.log("error : "+data);
-      console.log(status);
     });
 }
 
