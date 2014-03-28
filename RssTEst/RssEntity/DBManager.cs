@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using System.Configuration;
+using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 
 namespace RssEntity
@@ -15,7 +16,7 @@ namespace RssEntity
                 {
                     if (_client == null)
                     {
-                        _client = new MongoClient("mongodb://localhost");
+                        _client = new MongoClient(ConfigurationManager.AppSettings["MONGO"]);
                     }
                     _rss = _client.GetServer().GetDatabase("test");
                 }
