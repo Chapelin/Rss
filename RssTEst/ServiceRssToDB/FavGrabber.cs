@@ -70,9 +70,9 @@ namespace ServiceRssToDB
                 }
                 else
                 {
-                    var target = baseUri.Uri.LocalPath + node.Attributes["href"].Value;
+                    var target = node.Attributes["href"].Value;
                     target = target.Replace("//", "/");
-                    urlf = new Uri(baseUri.Uri, target);
+                    urlf = new Uri(Combine(baseUri.Uri.AbsoluteUri, target));
                     logger.Info(this + string.Format("url favicon {0} : ", urlf));
 
                 }
@@ -90,6 +90,14 @@ namespace ServiceRssToDB
 
 
 
+        }
+
+
+        public static string Combine(string uri1, string uri2)
+        {
+            uri1 = uri1.TrimEnd('/');
+            uri2 = uri2.TrimStart('/');
+            return string.Format("{0}/{1}", uri1, uri2);
         }
 
         public HttpWebResponse SendRequest(string url)
