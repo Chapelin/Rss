@@ -8,9 +8,10 @@ var Schema = mongoose.Schema;
 var numberList = 20;
 var ObjectId = require('mongoose').Types.ObjectId; 
 var cors = require("cors");
-var gfs = Grid(mongoose.connection.db, mongoose.mongo);
+
 var entreMod = require('./Entrees.js');
 var categorieeMod = require('./Categories.js');
+var favicMod = require("./Favicons.js");
 
 
 var temp = require("./Utils.js");
@@ -36,17 +37,9 @@ var sourceSchema = new Schema(
 
 
 
-var faviconSchema = new Schema(
-{
-	Id : Schema.Types.ObjectId,
-	SourceId : Schema.Types.ObjectId,
-	GridFSId : Schema.Types.ObjectId
-});
-
-
 
 var Source = mongoose.model("Source",sourceSchema,"Sources");
-var Favicon = mongoose.model("Favicon",faviconSchema,"Favicon");
+
 
 
 
@@ -56,6 +49,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 app.use(cors());
 entreMod(app, mongoose,numberList);
 categorieeMod(app,mongoose);
+favicMod(app,mongoose);
 app.get('/', function(request, response)
 {
 	response.end("Hello ! ");
@@ -142,40 +136,6 @@ app.get("/Sources/GetById/:id" ,function(req,res)
 })
 
 
-
-app.get("/Favicons/GetIcoBySource/:id" ,function(req,res)
-{
-	var id;
-	try
-	{
-		id = new ObjectId(req.params.id);
-	}
-	catch(err)
-	{
-		HandleError(err,res)
-	}
-	Favicon.findOne({SourceId : id}).exec(function(err,result)
-	{
-
-		if(err)
-			HandleError(err,res);
-		else
-		{
-			if(result)
-			{
-				var readstream = gfs.createReadStream({_id: result.GridFSId});
-				SetContentIco(res);
-				readstream.pipe(res);
-			}
-			else
-			{
-				console.log("Pas de favicon pour "+id);
-				res.end();
-			}
-
-		}
-	});
-});
 
 app.listen(5555);
 
