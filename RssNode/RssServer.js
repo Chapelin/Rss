@@ -9,18 +9,16 @@ var numberList = 20;
 var ObjectId = require('mongoose').Types.ObjectId; 
 var cors = require("cors");
 var gfs = Grid(mongoose.connection.db, mongoose.mongo);
-var entreeSchema = new Schema(
-{
-	Id : Schema.Types.ObjectId,
-	Texte : String,
-	Titre : String,
-	Image : String,
-	Link : String,
-	UniqId : String,
-	Date : Date,
-	DateInsertion : Date,
-	SourceId : Schema.Types.ObjectId
-});
+var entreMod = require('./Entrees.js');
+
+
+var temp = require("./Utils.js");
+var SetContentJson = temp.SetContentJson;
+var SendList = temp.SendList;
+var SendOne = temp.SendOne;
+var HandleError = temp.HandleError;
+var SetContentIco = temp.SetContentIco;
+
 
 var categorieSchema = new Schema(
 {
@@ -48,119 +46,21 @@ var faviconSchema = new Schema(
 	GridFSId : Schema.Types.ObjectId
 });
 
-var Entree = mongoose.model("Entree",entreeSchema,"Entrees");
+
 var Categorie = mongoose.model("Categorie",categorieSchema,"Categories");
 var Source = mongoose.model("Source",sourceSchema,"Sources");
 var Favicon = mongoose.model("Favicon",faviconSchema,"Favicon");
 
 
-var entites = [];
-entites["Entrees"] = Entree;
-entites["Categories"] = Categorie;
-entites["Sources"] = Source;
+
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
 app.use(cors());
+entreMod(app, mongoose,numberList);
 app.get('/', function(request, response)
 {
 	response.end("Hello ! ");
-});
-app.get("/alive",function(req, res)
-{
-	var p = {};
-	p.Nom = "toto";
-	p.prenom = "tata";
-	SetContentJson(res);
-	res.end(JSON.stringify(p));
-
-});
-app.get('/one', function(req, res)
-{
-	Entree.findOne().exec(function(err,entree)
-	{
-		if(err)
-			HandleError(err,res);
-		else
-		{
-			console.log("Result : "+entree);
-			SetContentJson(res);
-			res.end(JSON.stringify(entree));
-		}
-	});
-});
-
-app.get("/Entrees/GetLastX",function(req,res)
-{
-	Entree.find().sort("-Date").limit(numberList).exec(function(err,result)
-	{
-		if(err)
-			HandleError(err,res);
-		else
-			SendList(res,result);
-	})
-});
-
-app.get("/Entrees/GetBySourceIdAll/:id",function(req,res)
-{
-	var id;
-	try
-	{
-		id = new ObjectId(req.params.id);
-	}
-	catch(e)
-	{
-		HandleError(err,res);
-	}
-	if(id)
-	{
-		Entree.find({SourceId : id}).exec(function(err,result)
-		{
-			if(err)
-				console.log("Error : " +err);
-			else
-				SendList(res,result);
-		})
-	}
-});
-
-
-
-app.get("/Entrees/GetByCatIdLastX/:id",function(req,res)
-{
-	var id;
-	try
-	{
-		id = new ObjectId(req.params.id);
-	}
-	catch(e)
-	{
-		HandleError(err,res);
-	}
-	if(id)
-	{
-		Source.find({CategoriesIds : id}, { _id : 1}).exec(function(err,result)
-		{
-			if(err)
-				console.log("Error : " +err);
-			else
-			{
-				var listId= [];
-				result.forEach(function(da)
-				{
-					listId.push(da._id);
-				})
-				console.log("Liste des id pour cette categorie : "+listId);
-				Entree.find({SourceId : listId}).sort("-Date").limit(numberList).exec(function(err,result)
-				{
-					if(err)
-						HandleError(err,res);
-					else
-						SendList(res,result);
-				});
-			}
-		})
-	}
 });
 
 
@@ -189,66 +89,6 @@ app.get("/Sources/GetCategorieofId/:id",function(req,res)
 	}
 });
 
-
-app.get("/Entrees/GetBySourceIdLastX/:id",function(req,res)
-{
-	var id;
-	try
-	{
-		id = new ObjectId(req.params.id);
-	}
-	catch(err)
-	{
-		HandleError(err,res);
-	}
-	if(id)
-	{
-		Entree.find({SourceId : id}).sort("-DateInsertion").limit(numberList).exec(function(err,result)
-		{
-			if(err)
-				HandleError(err,res);
-			else
-				SendList(res,result);
-		})
-	}
-});
-
-
-
-app.get("/Entrees/GetByCategoriesIdLastX/:id",function(req,res)
-{
-	var id;
-	try
-	{
-		id = new ObjectId(req.params.id);
-	}
-	catch(err)
-	{
-		HandleError(err,res)
-	}
-	if(id)
-	{
-		
-		Source.find( {CategoriesIds : id}).exec(function(err,data)
-		{
-			if(err)
-				HandleError(err,res)
-			else
-			{
-				Entree.find().where('SourceId').in(data).sort("-Date").limit(numberList).exec(function(err,result)
-				{
-					if(err)
-					{
-						HandleError(err,res);
-					}
-					else
-						SendList(res,result);
-				});
-			}
-		});
-		
-	};
-});
 
 
 app.get("/Sources/GetAll" ,function(req,res)
@@ -351,54 +191,3 @@ app.get("/Favicons/GetIcoBySource/:id" ,function(req,res)
 
 app.listen(5555);
 
-
-function SetContentJson(res)
-{
-	res.set({'Content-Type' : 'application/json'});
-}
-
-
-function SetContentIco(res)
-{
-	res.set({'Content-Type' : 'image/vnd.microsoft.icon'});
-}
-
-
-
-function SendList(res,result)
-{
-	SetContentJson(res);
-	var total = "[";
-	result.forEach(function(chunk)
-	{
-		total+=(JSON.stringify(chunk));
-		total+=",";
-	})
-	var ind = total.lastIndexOf(",");
-	if(ind!=-1)
-	{
-		total = total.substring(0,ind);
-	};
-	total+="]";
-	res.write(total);
-	res.end();
-	
-};
-
-
-
-function SendOne(res,result)
-{
-	SetContentJson(res);
-	res.write(JSON.stringify(result));
-	res.end();
-	
-};
-
-
-
-function HandleError(err,res)
-{
-	console.error("Erreur : "+err);
-	res.end();
-}
