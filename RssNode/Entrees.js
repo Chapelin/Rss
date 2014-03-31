@@ -1,5 +1,5 @@
 var Utils = require("./Utils.js");
-
+var Source = require("./Sources.js").Source;
 
 module.exports = function(app, mongoose, numberList)
 {
@@ -82,7 +82,7 @@ module.exports = function(app, mongoose, numberList)
 						listId.push(da._id);
 					})
 					console.log("Liste des id pour cette categorie : "+listId);
-					Entree.find({SourceId : listId}).sort("-Date").limit(numberList).exec(function(err,result)
+					Entree.find({SourceId : {'$in' : listId}}).sort("-Date").limit(numberList).exec(function(err,result)
 					{
 						if(err)
 							Utils.HandleError(err,res);

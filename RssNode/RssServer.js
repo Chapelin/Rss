@@ -21,7 +21,7 @@ app.use(cors());
 entreMod(app, mongoose,numberList);
 categorieeMod(app,mongoose);
 favicMod(app,mongoose);
-sourceMod(app,mongoose);
+sourceMod.Register(app,mongoose);
 
 
 

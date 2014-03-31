@@ -1,11 +1,8 @@
 var Utils = require("./Utils.js");
+var mongoose = require('mongoose');
 
 
-module.exports = function(app, mongoose)
-{
-	var ObjectId = mongoose.Types.ObjectId;
-
-	var sourceSchema = new mongoose.Schema(
+var sourceSchema = new mongoose.Schema(
 	{
 		Id : mongoose.Schema.Types.ObjectId,
 		URL : String,
@@ -15,10 +12,16 @@ module.exports = function(app, mongoose)
 		Favicon : Boolean,
 		CategoriesIds : [String]
 	});
+var Source =  mongoose.model("Source",sourceSchema,"Sources");
+exports.Source = Source;
 
 
-	var Source = mongoose.model("Source",sourceSchema,"Sources");
 
+exports.Register = function(app, mongoose)
+{
+	var ObjectId = mongoose.Types.ObjectId;
+
+	
 
 	app.get("/Sources/GetCategorieofId/:id",function(req,res)
 	{
