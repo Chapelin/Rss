@@ -3,72 +3,105 @@
 /* Controllers */
 var baseRssController = angular.module('baseRssController',[]);
 
-
-
-var rssContr = function($scope,$http) {
+var rssContr = function($scope, GetFromServer) {
   $scope.test = "RssController";
-    $http.get('http://localhost:5555/Entrees/getlastX').success(function(data) {
-    	$scope.Rss = data;
-  }).error(function(data, status, headers, config){
-  	console.log("error : "+data);
-  	});
+  this.SuccessFind = function(data)
+  {
+    $scope.Rss = data;
+  };
+
+  this.ErrorFind = function(data, status, headers, config)
+  {
+    console.log("error : "+data);
+  }
+
+  GetFromServer("Entrees/getlastX", this.SuccessFind, this.ErrorFind);
+
+  
 };
 
-var cateContr = function($scope,$http) {
-  $scope.test = "CategoriesController";
-    $http.get('http://localhost:5555/Categories/GetAll').success(function(data) {
-    	$scope.Categories = data;
-  }).error(function(data, status, headers, config){
-  	console.log("error : "+data);
-  	});
-};
+var cateContr = function($scope,GetFromServer) {
+ this.ErrorFind = function(data, status, headers, config)
+ {
+  console.log("error : "+data);
+}
 
+this.SuccessFind = function(data)
+{
+  $scope.Categories = data;
+};
+$scope.test = "CategoriesController";
+GetFromServer('Categories/GetAll', this.SuccessFind, this.ErrorFind);
+
+
+};
 
 //SourcesController
 
-var sourceContr = function($scope,$http) {
+var sourceContr = function($scope, GetFromServer) {
   $scope.test = "SourcesController";
-   $http.get('http://localhost:5555/Categories/GetAll').success(function(data) {
-      $scope.Categories = data;
-      $scope.CategoriesClassees = {};
-      for (var i = 0; i < $scope.Categories.length; i++) {
-        $scope.CategoriesClassees[$scope.Categories[i]._id] = $scope.Categories[i];
-        };
-      
-  }).error(function(data, status, headers, config){
-    console.log("error : "+data);
-    });
 
-    $http.get('http://localhost:5555/Sources/GetAll').success(function(data) {
-    	$scope.Sources = data;
-  }).error(function(data, status, headers, config){
-  	console.log("error : "+data);
-  	});
+  this.ErrorFind = function(data, status, headers, config)
+  {
+    console.log("error : "+data);
+  }
+
+  this.SuccessFindCategories = function(data)
+  {
+    $scope.Categories = data;
+    $scope.CategoriesClassees = {};
+    for (var i = 0; i < $scope.Categories.length; i++) {
+      $scope.CategoriesClassees[$scope.Categories[i]._id] = $scope.Categories[i];
+    };
+  };
+
+  this.SuccessFindSources = function(data)
+  {
+    $scope.Sources = data;
+  }
+
+  GetFromServer('Categories/GetAll', this.SuccessFindCategories, this.ErrorFind);
+
+  GetFromServer('Sources/GetAll', this.SuccessFindSources, this.ErrorFind);
+  
 };
 
 //SpecificSourceController
 
-var specificSourceContr = function($scope,$http,$routeParams) {
+var specificSourceContr = function($scope,$routeParams, GetFromServer) {
 	$scope.test = "SpecificSourceController";
 	$scope.sourceId = $routeParams.sourceId;
-	$http.get('http://localhost:5555/Entrees/GetBySourceIdLastX/'+$scope.sourceId).success(function(data) {
-    	$scope.Rss = data;
-  }).error(function(data, status, headers, config){
-  	console.log("error : "+data);
-  	});
+  this.SuccessFindSources = function(data)
+  {
+    $scope.Rss = data;
+  }
+  this.ErrorFind = function(data, status, headers, config)
+  {
+    console.log("error : "+data);
+  }
+  GetFromServer('Entrees/GetBySourceIdLastX/'+$scope.sourceId,  this.SuccessFindSources, this.ErrorFind);
+
+
 }
 
 
 
 //SpecificCategorieController
-var specificCategorieContr = function($scope,$http,$routeParams) {
+var specificCategorieContr = function($scope,$routeParams, GetFromServer) {
   $scope.test = "SpecificCategorieController";
   $scope.catId = $routeParams.catId;
-  $http.get('http://localhost:5555/Entrees/GetByCatIdLastX/'+$scope.catId).success(function(data) {
-      $scope.Rss = data;
-  }).error(function(data, status, headers, config){
+
+  this.SuccessFindCat = function(data)
+  {
+    $scope.Rss = data;
+  }
+  this.ErrorFind = function(data, status, headers, config)
+  {
     console.log("error : "+data);
-    });
+  }
+
+  GetFromServer('Entrees/GetByCatIdLastX/'+$scope.catId, this.SuccessFindCat, this.ErrorFind);
+
 }
 
 
