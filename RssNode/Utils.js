@@ -27,6 +27,7 @@ exports.SendList = function(res,result)
 	};
 	total+="]";
 	res.write(total);
+	res.header('Access-Control-Allow-Origin', "*")
 	res.end();
 	
 };
@@ -36,6 +37,7 @@ exports.SendOne = function (res,result)
 {
 	SetContentJson(res);
 	res.write(JSON.stringify(result));
+	res.header('Access-Control-Allow-Origin', "*")
 	res.end();
 	
 };

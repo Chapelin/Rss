@@ -36,6 +36,7 @@ app.get("/Favicons/GetIcoBySource/:id" ,function(req,res)
 		{
 			if(result)
 			{
+				res.header('Access-Control-Allow-Origin', "*")
 				var readstream = gfs.createReadStream({_id: result.GridFSId});
 				Utils.SetContentIco(res);
 				readstream.pipe(res);

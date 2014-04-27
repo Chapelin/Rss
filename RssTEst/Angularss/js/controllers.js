@@ -12,7 +12,7 @@ var rssContr = function($scope, GetFromServer) {
 
   this.ErrorFind = function(data, status, headers, config)
   {
-    console.log("error : "+data);
+    console.log("error : "+data + " " + status);
   }
 
   GetFromServer("Entrees/getlastX", this.SuccessFind, this.ErrorFind);
@@ -23,7 +23,7 @@ var rssContr = function($scope, GetFromServer) {
 var cateContr = function($scope,GetFromServer) {
  this.ErrorFind = function(data, status, headers, config)
  {
-  console.log("error : "+data);
+   console.log("error : "+data + " " + status);
 }
 
 this.SuccessFind = function(data)
@@ -43,7 +43,7 @@ var sourceContr = function($scope, GetFromServer) {
 
   this.ErrorFind = function(data, status, headers, config)
   {
-    console.log("error : "+data);
+     console.log("error : "+data + " " + status);
   }
 
   this.SuccessFindCategories = function(data)
@@ -77,7 +77,7 @@ var specificSourceContr = function($scope,$routeParams, GetFromServer) {
   }
   this.ErrorFind = function(data, status, headers, config)
   {
-    console.log("error : "+data);
+    console.log("error : "+data + " " + status);
   }
   GetFromServer('Entrees/GetBySourceIdLastX/'+$scope.sourceId,  this.SuccessFindSources, this.ErrorFind);
 
@@ -97,7 +97,7 @@ var specificCategorieContr = function($scope,$routeParams, GetFromServer) {
   }
   this.ErrorFind = function(data, status, headers, config)
   {
-    console.log("error : "+data);
+   console.log("error : "+data + " " + status);
   }
 
   GetFromServer('Entrees/GetByCatIdLastX/'+$scope.catId, this.SuccessFindCat, this.ErrorFind);

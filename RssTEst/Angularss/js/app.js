@@ -12,7 +12,7 @@ rssApp.config(['$routeProvider',
 		$routeProvider.
 		when('/Entrees',
 		{
-			templateUrl: 'partials/entrees.html',
+			templateUrl: 'partials/Entrees.html',
 			controller: 'RssController'
 		}).
 		when('/Categories',
@@ -27,12 +27,12 @@ rssApp.config(['$routeProvider',
 		}).
 		when('/Source/:sourceId',
 		{
-			templateUrl: 'partials/entrees.html',
+			templateUrl: 'partials/Entrees.html',
 			controller: 'SpecificSourceController'
 		}).
 		when('/Categorie/:catId',
 		{
-			templateUrl: 'partials/entrees.html',
+			templateUrl: 'partials/Entrees.html',
 			controller: 'SpecificCategorieController'
 		}).
 		otherwise({ redirectTo : "/Entrees"});
