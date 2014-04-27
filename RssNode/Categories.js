@@ -13,7 +13,8 @@ module.exports = function(app, mongoose)
 
 	var Categorie = mongoose.model("Categorie",categorieSchema,"Categories");
 
-	app.get("/Categories/GetAll" ,function(req,res)
+
+	this.GetAll = function(req,res)
 	{
 		Categorie.find().exec(function(err,result)
 		{
@@ -22,5 +23,7 @@ module.exports = function(app, mongoose)
 			else
 				Utils.SendList(res,result);
 		});
-	});
+	}
+	app.get("/Categories/GetAll" ,this.GetAll);
+	app.get("//Categories/GetAll" ,this.GetAll);
 }

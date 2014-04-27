@@ -21,7 +21,8 @@ module.exports = function(app, mongoose, numberList)
 	var Entree = mongoose.model("Entree",entreeSchema,"Entrees");
 
 
-	app.get("/Entrees/GetLastX",function(req,res)
+
+	this.GetLastX = function(req,res)
 	{
 		Entree.find().sort("-Date").limit(numberList).exec(function(err,result)
 		{
@@ -30,9 +31,10 @@ module.exports = function(app, mongoose, numberList)
 			else
 				Utils.SendList(res,result);
 		})
-	});
+	};
 
-	app.get("/Entrees/GetBySourceIdAll/:id",function(req,res)
+
+	this.GetBySourceIdAll = function(req,res)
 	{
 		var id;
 		try
@@ -53,11 +55,11 @@ module.exports = function(app, mongoose, numberList)
 					Utils.SendList(res,result);
 			})
 		}
-	});
+	};
 
 
 
-	app.get("/Entrees/GetByCatIdLastX/:id",function(req,res)
+	this.GetByCatIdLastX = function(req,res)
 	{
 		var id;
 		try
@@ -92,10 +94,10 @@ module.exports = function(app, mongoose, numberList)
 				}
 			})
 		}
-	});
+	};
 
 
-	app.get("/Entrees/GetBySourceIdLastX/:id",function(req,res)
+	this.GetBySourceIdLastX = function(req,res)
 	{
 		var id;
 		try
@@ -116,11 +118,10 @@ module.exports = function(app, mongoose, numberList)
 					Utils.SendList(res,result);
 			})
 		}
-	});
+	};
 
 
-
-	app.get("/Entrees/GetByCategoriesIdLastX/:id",function(req,res)
+	this.GetByCategoriesIdLastX = function(req,res)
 	{
 		var id;
 		try
@@ -153,6 +154,27 @@ module.exports = function(app, mongoose, numberList)
 			});
 
 		};
-	});
+	};
+
+	app.get("/Entrees/GetLastX",this.GetLastX);
+	app.get("//Entrees/GetLastX",this.GetLastX);
+
+
+
+	app.get("/Entrees/GetBySourceIdAll/:id",this.GetBySourceIdAll);
+	app.get("//Entrees/GetBySourceIdAll/:id",this.GetBySourceIdAll);
+
+
+
+	app.get("/Entrees/GetByCatIdLastX/:id",this.GetByCatIdLastX);
+	app.get("//Entrees/GetByCatIdLastX/:id",this.GetByCatIdLastX);
+
+	app.get("/Entrees/GetBySourceIdLastX/:id",this.GetBySourceIdLastX);
+	app.get("//Entrees/GetBySourceIdLastX/:id",this.GetBySourceIdLastX);
+
+
+
+	app.get("/Entrees/GetByCategoriesIdLastX/:id",this.GetByCategoriesIdLastX);
+	app.get("//Entrees/GetByCategoriesIdLastX/:id",this.GetByCategoriesIdLastX);
 
 }

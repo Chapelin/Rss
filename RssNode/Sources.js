@@ -3,15 +3,15 @@ var mongoose = require('mongoose');
 
 
 var sourceSchema = new mongoose.Schema(
-	{
-		Id : mongoose.Schema.Types.ObjectId,
-		URL : String,
-		Description : String,
-		DateAjout : Date,
-		Delai : Number,
-		Favicon : Boolean,
-		CategoriesIds : [String]
-	});
+{
+	Id : mongoose.Schema.Types.ObjectId,
+	URL : String,
+	Description : String,
+	DateAjout : Date,
+	Delai : Number,
+	Favicon : Boolean,
+	CategoriesIds : [String]
+});
 var Source =  mongoose.model("Source",sourceSchema,"Sources");
 exports.Source = Source;
 
@@ -23,7 +23,7 @@ exports.Register = function(app, mongoose)
 
 	
 
-	app.get("/Sources/GetCategorieofId/:id",function(req,res)
+	this.GetCategorieofId = function(req,res)
 	{
 		var id;
 		try
@@ -46,11 +46,9 @@ exports.Register = function(app, mongoose)
 				}
 			})
 		}
-	});
+	};
 
-
-
-	app.get("/Sources/GetAll" ,function(req,res)
+	this.GetAll = function(req,res)
 	{
 		Source.find().exec(function(err,result)
 		{
@@ -59,10 +57,9 @@ exports.Register = function(app, mongoose)
 			else
 				Utils.SendList(res,result);
 		});
-	});
+	};
 
-
-	app.get("/Sources/GetByCategorieId/:id" ,function(req,res)
+	this.GetByCategorieId = function(req,res)
 	{
 		var id;
 		try
@@ -80,9 +77,9 @@ exports.Register = function(app, mongoose)
 			else
 				Utils.SendList(res,result);
 		});
-	})
+	};
 
-	app.get("/Sources/GetById/:id" ,function(req,res)
+	this.GetById = function(req,res)
 	{
 		var id;
 		try
@@ -100,5 +97,18 @@ exports.Register = function(app, mongoose)
 			else
 				Utils.SendOne(res,data);
 		});
-	})
+	};
+
+	app.get("/Sources/GetCategorieofId/:id",this.GetCategorieofId);
+	app.get("//Sources/GetCategorieofId/:id",this.GetCategorieofId);
+
+
+	app.get("/Sources/GetAll" ,this.GetAll);
+	app.get("//Sources/GetAll" ,this.GetAll);
+
+	app.get("/Sources/GetByCategorieId/:id" ,this.GetByCategorieId)
+	app.get("//Sources/GetByCategorieId/:id" ,this.GetByCategorieId)
+
+	app.get("/Sources/GetById/:id" ,this.GetById)
+	app.get("//Sources/GetById/:id" ,this.GetById)
 }

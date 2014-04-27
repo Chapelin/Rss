@@ -15,40 +15,41 @@ module.exports = function(app, mongoose)
 	var Favicon = mongoose.model("Favicon",faviconSchema,"Favicon");
 
 
-
-app.get("/Favicons/GetIcoBySource/:id" ,function(req,res)
-{
-	var id;
-	try
+	this.GetIcoBySource = function(req,res)
 	{
-		id = new ObjectId(req.params.id);
-	}
-	catch(err)
-	{
-		Utils.HandleError(err,res)
-	}
-	Favicon.findOne({SourceId : id}).exec(function(err,result)
-	{
-
-		if(err)
-			Utils.HandleError(err,res);
-		else
+		var id;
+		try
 		{
-			if(result)
-			{
-				res.header('Access-Control-Allow-Origin', "*")
-				var readstream = gfs.createReadStream({_id: result.GridFSId});
-				Utils.SetContentIco(res);
-				readstream.pipe(res);
-			}
+			id = new ObjectId(req.params.id);
+		}
+		catch(err)
+		{
+			Utils.HandleError(err,res)
+		}
+		Favicon.findOne({SourceId : id}).exec(function(err,result)
+		{
+
+			if(err)
+				Utils.HandleError(err,res);
 			else
 			{
-				console.log("Pas de favicon pour "+id);
-				res.end();
-			}
+				if(result)
+				{
+					res.header('Access-Control-Allow-Origin', "*")
+					var readstream = gfs.createReadStream({_id: result.GridFSId});
+					Utils.SetContentIco(res);
+					readstream.pipe(res);
+				}
+				else
+				{
+					console.log("Pas de favicon pour "+id);
+					res.end();
+				}
 
-		}
-	});
-});
+			}
+		});
+	};
+	app.get("/Favicons/GetIcoBySource/:id" ,this.GetIcoBySource);
+	app.get("//Favicons/GetIcoBySource/:id" ,this.GetIcoBySource);
 
 }

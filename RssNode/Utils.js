@@ -14,6 +14,7 @@ exports.SetContentIco = function (res)
 exports.SendList = function(res,result)
 {
 	SetContentJson(res);
+	res.header('Access-Control-Allow-Origin', "*")
 	var total = "[";
 	result.forEach(function(chunk)
 	{
@@ -27,7 +28,7 @@ exports.SendList = function(res,result)
 	};
 	total+="]";
 	res.write(total);
-	res.header('Access-Control-Allow-Origin', "*")
+	
 	res.end();
 	
 };
@@ -36,8 +37,9 @@ exports.SendList = function(res,result)
 exports.SendOne = function (res,result)
 {
 	SetContentJson(res);
-	res.write(JSON.stringify(result));
 	res.header('Access-Control-Allow-Origin', "*")
+	res.write(JSON.stringify(result));
+
 	res.end();
 	
 };
