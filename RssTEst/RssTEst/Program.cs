@@ -15,7 +15,7 @@ namespace RssTEst
 
             try
             {
-                bool isLimited = true;
+                bool isLimited = false;
                 Console.WriteLine("Go !");
                 Clean();
                 InitSources(isLimited);
