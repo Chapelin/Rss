@@ -60,7 +60,7 @@ namespace RssTEst
 
         private static void InitIndex()
         {
-            DBManager.Entrees.EnsureIndex("-Date");
+            DBManager.Entrees.CreateIndex("-Date");
             Console.WriteLine("Index OK");
         }
 

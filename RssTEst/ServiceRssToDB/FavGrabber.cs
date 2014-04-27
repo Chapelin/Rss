@@ -112,7 +112,7 @@ namespace ServiceRssToDB
 
                 return (HttpWebResponse)request.GetResponse();
             }
-            catch (Exception e )
+            catch (Exception)
             {
                 
                 logger.Error(this+" url ratée : "+url);

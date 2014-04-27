@@ -9,6 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Readers", "..\Readers\Reade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssEntity", "RssEntity\RssEntity.csproj", "{C222F80E-66CC-4888-9283-EF440C8973A8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{DEE13E56-AEB3-426C-90A9-A36136322C4B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Downloads\HtmlAgilityPack.1.4.6\Net40-client\HtmlAgilityPack.dll = ..\..\..\..\Downloads\HtmlAgilityPack.1.4.6\Net40-client\HtmlAgilityPack.dll
+		..\..\..\..\Downloads\HtmlAgilityPack.1.4.6\Net40-client\HtmlAgilityPack.pdb = ..\..\..\..\Downloads\HtmlAgilityPack.1.4.6\Net40-client\HtmlAgilityPack.pdb
+		..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Bson.dll = ..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Bson.dll
+		..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Bson.pdb = ..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Bson.pdb
+		..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Bson.xml = ..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Bson.xml
+		..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Driver.dll = ..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Driver.dll
+		..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Driver.pdb = ..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Driver.pdb
+		..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Driver.xml = ..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Driver.xml
+		..\..\..\..\Downloads\NLog-2.1.0\net40\NLog.dll = ..\..\..\..\Downloads\NLog-2.1.0\net40\NLog.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

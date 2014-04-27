@@ -148,7 +148,7 @@ namespace ServiceRssToDB
                             }
                             liste.Add(temp);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             logger.Info(this + "Erreur sur un element");
                             throw;
