@@ -2,7 +2,7 @@
 {{test}}				
 <div class="row">
 
-	<div ng-repeat="sou in Sources">
+	<div ng-repeat="sou in Sources track by $index">
 		<div class="col-sm-3" ng-show="sou">
 			<a ng-href="#/Source/{{sou._id}}" role="button" ng-show="sou">
 				<div class="btn btn-default" >
@@ -11,7 +11,7 @@
 				</div>
 			</a>
 			<div class="btn-group">
-			<button ng-repeat="cat in sou.CategoriesIds" type="button" class="btn btn-default"
+			<button ng-repeat="cat in sou.CategoriesIds track by $index" type="button" class="btn btn-default"
 				id="{{cat}" ng-href="#/Categorie/{{cat}}">{{CategoriesClassees[cat].Description}}
 			</button>
 		</div>

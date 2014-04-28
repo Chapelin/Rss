@@ -3,7 +3,7 @@
 
 
 <div class="row">
-	<div ng-repeat="cat in Categories">
+	<div ng-repeat="cat in Categories track by $index">
 		<div class="col-sm-4 col-md-2 col-xs-6"  ng-show="cat">
 			<a class="btn btn-default" ng-href="#/Categorie/{{cat._id}}" role="button" ng-show="cat" class="categorie">{{cat.Description}}</a>
 		</div>
