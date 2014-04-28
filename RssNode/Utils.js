@@ -14,7 +14,7 @@ exports.SetContentIco = function (res)
 exports.SendList = function(res,result)
 {
 	SetContentJson(res);
-	res.header('Access-Control-Allow-Origin', "*")
+	SetCors(res);
 	var total = "[";
 	result.forEach(function(chunk)
 	{
@@ -37,7 +37,7 @@ exports.SendList = function(res,result)
 exports.SendOne = function (res,result)
 {
 	SetContentJson(res);
-	res.header('Access-Control-Allow-Origin', "*")
+	SetCors(res);
 	res.write(JSON.stringify(result));
 
 	res.end();
@@ -49,4 +49,10 @@ exports.HandleError = function (err,res)
 {
 	console.error("Erreur : "+err);
 	res.end();
+}
+
+exports.SetCors = function(res)
+{
+	res.header('Access-Control-Allow-Origin', "*")
+	res.header('Access-Control-Allow-Methods',"GET, POST, OPTIONS");
 }

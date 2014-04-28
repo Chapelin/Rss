@@ -35,7 +35,8 @@ module.exports = function(app, mongoose)
 			{
 				if(result)
 				{
-					res.header('Access-Control-Allow-Origin', "*")
+					
+					Utils.SetCors(res);
 					var readstream = gfs.createReadStream({_id: result.GridFSId});
 					Utils.SetContentIco(res);
 					readstream.pipe(res);
