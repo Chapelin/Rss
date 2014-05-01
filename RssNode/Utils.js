@@ -10,11 +10,17 @@ exports.SetContentIco = function (res)
 	res.set({'Content-Type' : 'image/vnd.microsoft.icon'});
 }
 
+exports.SetCors = function(res)
+{
+	res.header('Access-Control-Allow-Origin', "*")
+	res.header('Access-Control-Allow-Methods',"GET, POST, OPTIONS");
+	res.header("Access-Control-Allow-Headers","X-Requested-With");
+}
 
 exports.SendList = function(res,result)
 {
 	SetContentJson(res);
-	SetCors(res);
+	this.SetCors(res);
 	var total = "[";
 	result.forEach(function(chunk)
 	{
@@ -37,7 +43,7 @@ exports.SendList = function(res,result)
 exports.SendOne = function (res,result)
 {
 	SetContentJson(res);
-	SetCors(res);
+	this.SetCors(res);
 	res.write(JSON.stringify(result));
 
 	res.end();
@@ -51,8 +57,3 @@ exports.HandleError = function (err,res)
 	res.end();
 }
 
-exports.SetCors = function(res)
-{
-	res.header('Access-Control-Allow-Origin', "*")
-	res.header('Access-Control-Allow-Methods',"GET, POST, OPTIONS");
-}
