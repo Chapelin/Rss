@@ -1,0 +1,16 @@
+{
+  "name": "AngulaRss",
+  "version": "0.0.1",
+  "description": "Angular front for my rss scrapper",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "angular",
+    "rss",
+    "WIP"
+  ],
+  "author": "Chapelin",
+  "license": "ISC"
+}
