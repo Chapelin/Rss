@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "Angular front for my rss scrapper",
   "main": "server/index.js",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-nodemon": "^0.2.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
