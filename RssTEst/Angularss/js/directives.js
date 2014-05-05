@@ -4,7 +4,7 @@
 rssApp.directive('favicon', function(env)
 {
 	return {
-		restrict : 'A',
+		restrict : 'E',
 		scope : {
 			sourceid : '@'
 		},
