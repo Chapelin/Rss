@@ -6,7 +6,7 @@
 		<div class="col-sm-3" ng-show="sou">
 			<a ng-href="#/Source/{{sou._id}}" role="button" ng-show="sou">
 				<div class="btn btn-default" >
-					<img  height="24" width="24" ng-src="http://85.68.28.131:5555/Favicons/geticobysource/{{sou._id}}" class="source"/>
+				<div favicon sourceid="{{sou._id}}"/>
 					<h2>{{sou.Description}}</h2>
 				</div>
 			</a>

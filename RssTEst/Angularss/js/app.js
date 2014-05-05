@@ -3,7 +3,7 @@
 /* App Module */
 var rssApp = angular.module('rssApp',
 	['ngRoute',
-	'baseRssController']);
+	'baseRssController','config']);
 
 
 rssApp.config(['$routeProvider',
@@ -40,10 +40,9 @@ rssApp.config(['$routeProvider',
 
 
 
-rssApp.service('GetFromServer',  function($http){
+rssApp.service('GetFromServer',  function($http,env){
 	return function(chemin, sucess, fail){
-		//$http.get("http://localhost:5555/"+chemin).success(function(data) {
-			$http.get("http://85.68.28.131:5555/"+chemin).success(function(data) {
+			$http.get(env+chemin).success(function(data) {
 			sucess(data);
 		}).error(function(data, status, headers, config){
 			fail(data, status, headers, config);
