@@ -9,21 +9,25 @@ module.exports = function(grunt) {
         dest : 'rss.js'
       }
     },
-    nodemon : {
-      dev : {
-        script : ["./server/index.js"],
+    connect: {
+      server : { 
         options : {
-          cwd: "C:\\PERSO_GIT\\Trombi\\Rss\\RssTEst\\Angularss\\"
-        }
+          port:5554,
+          base: './',
+          hostname:'*',
+          keepalive : true,
+          open : {
+            target:'http://localhost:5554'
+          }
       }
     }
-  });
+  }});
 
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   // Default task(s).
   grunt.registerTask('build', ['concat']);
-  grunt.registerTask('run', ['nodemon']);
-  grunt.registerTask('go', ['concat','nodemon']);
+  grunt.registerTask('run', ['connect']);
+  grunt.registerTask('go', ['concat','connect']);
 
 };
