@@ -15,7 +15,7 @@ namespace RssTEst
 
             try
             {
-                bool isLimited = false;
+                bool isLimited = true;
                 Console.WriteLine("Go !");
                 Clean();
                 InitSources(isLimited);
@@ -129,17 +129,29 @@ namespace RssTEst
         {
             var res = DBManager.Sources;
             var temp = new List<object[]>();
-            temp.Add(new Object[] { "", "Le monde - International", 120, "http://rss.lemonde.fr/c/205/f/3050/index.rss", "2014-02-09 16:38:27.313" });
-            temp.Add(new Object[] { "", "SebSauvage - shaarli", 600, "http://sebsauvage.net/links/?do=rss", "2014-02-09 16:38:27.313", });
-            temp.Add(new Object[] { "", "PC INpact", 300, "http://www.pcinpact.com/rss/news.xml", "2014-02-09 16:38:27.313" });
+            temp.Add(new Object[]
+                {
+                    "Rss10FeedFormatter", "Steam", 600, "http://store.steampowered.com/feeds/news.xml",
+                    "2014-02-09 16:38:27.313"
+                });
+            temp.Add(new Object[] { "", "CDH", 300, "http://www.comptoir-hardware.com/home.xml", "2014-02-09 16:38:27.313" });
+            temp.Add(new Object[]
+                {
+                    "Rss20FeedFormatter", "Monsieur le hien", 21600, "http://www.monsieur-le-chien.fr/rss.php",
+                    "2014-02-09 16:38:27.313"
+                });
             if (!isLimited)
             {
+
+                temp.Add(new Object[] { "", "Le monde - International", 120, "http://rss.lemonde.fr/c/205/f/3050/index.rss", "2014-02-09 16:38:27.313" });
+                temp.Add(new Object[] { "", "SebSauvage - shaarli", 600, "http://sebsauvage.net/links/?do=rss", "2014-02-09 16:38:27.313", });
+                temp.Add(new Object[] { "", "PC INpact", 300, "http://www.pcinpact.com/rss/news.xml", "2014-02-09 16:38:27.313" });
                 temp.Add(new Object[]
                 {
                     "", "Clubic", 300, "http://com.clubic.feedsportal.com/c/33464/f/581979/index.rss",
                     "2014-02-09 16:38:27.313", "1.ico"
                 });
-                temp.Add(new Object[] { "", "CDH", 300, "http://www.comptoir-hardware.com/home.xml", "2014-02-09 16:38:27.313" });
+                
                 temp.Add(new Object[]
                 {
                     "", "SMBC", 21600, "http://feeds.feedburner.com/smbc-comics/PvLb?format=xml", "2014-02-09 16:38:27.313"
@@ -173,11 +185,7 @@ namespace RssTEst
                 });
                 temp.Add(new Object[] { "", "XKCD", 21600, "https://xkcd.com/rss.xml", "2014-02-09 16:38:27.313" });
                 temp.Add(new Object[] { "", "Direct Matin", 120, "http://www.directmatin.fr/rss.xml", "2014-02-09 16:38:27.313" });
-                temp.Add(new Object[]
-                {
-                    "Rss10FeedFormatter", "Steam", 600, "http://store.steampowered.com/feeds/news.xml",
-                    "2014-02-09 16:38:27.313"
-                });
+               
                 temp.Add(new Object[] { "", "V-inc", 3600, "http://widget.stagram.com/rss/n/vinc_fr/", "2014-02-09 16:38:27.313" });
                 temp.Add(new Object[]
                 {

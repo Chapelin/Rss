@@ -73,6 +73,8 @@ namespace Readers
                     reader.ReadEndElement();
                     
                 }
+                else if (reader.IsStartElement("language"))
+                    Feed.Language = reader.ReadElementString();
                 else if (reader.IsStartElement("item"))
                 {
                     SyndicationItem item = new SyndicationItem();

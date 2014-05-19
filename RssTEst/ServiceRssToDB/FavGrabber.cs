@@ -62,17 +62,17 @@ namespace ServiceRssToDB
                 var node = doc.DocumentNode.SelectSingleNode("//link[@rel='shortcut icon']");
 
                 UriBuilder baseUri =
-                    new UriBuilder(baseUrl.AbsoluteUri.Remove(baseUrl.ToString().LastIndexOf(baseUrl.Query)));
+                    new UriBuilder(response.ResponseUri.ToString().Remove(response.ResponseUri.ToString().LastIndexOf(response.ResponseUri.Query)));
                 if (node == null)
                 {
-                    urlf = new Uri(baseUri.Uri,"/favicon.ico");
+                    urlf = new Uri(response.ResponseUri,"/favicon.ico");
                     logger.Info(this + "pas de favicon sur l'url de base, on essaye " + urlf);
                 }
                 else
                 {
                     var target = node.Attributes["href"].Value;
                     target = target.Replace("//", "/");
-                    urlf = new Uri(Combine(baseUri.Uri.AbsoluteUri, target));
+                    urlf = new Uri(Combine(response.ResponseUri.AbsoluteUri, target));
                     logger.Info(this + string.Format("url favicon {0} : ", urlf));
 
                 }

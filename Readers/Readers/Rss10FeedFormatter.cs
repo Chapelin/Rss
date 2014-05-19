@@ -58,6 +58,10 @@ namespace Readers
                     Feed.Links.Add(new SyndicationLink(new Uri(reader.ReadElementString())));
                 else if (reader.IsStartElement("description"))
                     Feed.Description = new TextSyndicationContent(reader.ReadElementString());
+                else if(reader.IsStartElement("generator"))
+                    Feed.Generator = reader.ReadElementString();
+                else if (reader.IsStartElement("language"))
+                    Feed.Language = reader.ReadElementString();
                 else
                     reader.Skip();
             }
@@ -80,6 +84,18 @@ namespace Readers
                     else if(reader.IsStartElement("description"))
                     {
                         item.Summary = new TextSyndicationContent(reader.ReadElementString());
+                    }
+                    else if(reader.IsStartElement("guid"))
+                    {
+                        item.Id = reader.ReadElementString();
+                    }
+                    else if (reader.IsStartElement("content:encoded"))
+                    {
+                        item.Content = new TextSyndicationContent(reader.ReadElementString());
+                    }
+                    else if (reader.IsStartElement("pubDate"))
+                    {
+                        item.PublishDate = new DateTimeOffset(DateTime.Parse(reader.ReadElementString()));
                     }
                     else
                     {
