@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssTEst", "RssTEst\RssTEst.csproj", "{F4880FBF-507E-40C1-97F1-5BDBFABD930C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceRssToDB", "ServiceRssToDB\ServiceRssToDB.csproj", "{F530A9F0-214C-43D2-9A03-952BA3619BED}"
@@ -21,6 +23,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{DEE13E56-AEB
 		..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Driver.xml = ..\..\..\..\Downloads\CSharpDriver-1.9\MongoDB.Driver.xml
 		..\..\..\..\Downloads\NLog-2.1.0\net40\NLog.dll = ..\..\..\..\Downloads\NLog-2.1.0\net40\NLog.dll
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Older", "Older", "{1A04D37E-56C8-4D8B-989E-A3DB4031C90C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss", "Rss\Rss.csproj", "{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss.Tests", "Rss.Tests\Rss.Tests.csproj", "{F3D209B9-4FFE-47E4-B7E7-C5561F277637}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,8 +80,34 @@ Global
 		{C222F80E-66CC-4888-9283-EF440C8973A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C222F80E-66CC-4888-9283-EF440C8973A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C222F80E-66CC-4888-9283-EF440C8973A8}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}.Release|x86.ActiveCfg = Release|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F3D209B9-4FFE-47E4-B7E7-C5561F277637}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F4880FBF-507E-40C1-97F1-5BDBFABD930C} = {1A04D37E-56C8-4D8B-989E-A3DB4031C90C}
+		{F530A9F0-214C-43D2-9A03-952BA3619BED} = {1A04D37E-56C8-4D8B-989E-A3DB4031C90C}
+		{C8863E5C-3BB5-428F-8848-6D5686DE41DE} = {1A04D37E-56C8-4D8B-989E-A3DB4031C90C}
+		{C222F80E-66CC-4888-9283-EF440C8973A8} = {1A04D37E-56C8-4D8B-989E-A3DB4031C90C}
 	EndGlobalSection
 EndGlobal
