@@ -8,7 +8,6 @@ namespace Rss.DTO
 {
     public class SourceCategory : BaseDTO
     {
-
         public string CategoryName { get; set; }
 
         public string CreatedOn { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rss.Services
 {
-    interface IFeedConductor
+    public interface IFeedManager
     {
         void Run();
     }

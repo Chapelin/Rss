@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rss.Services
+namespace Rss.DAL
 {
-    interface IDownloader
+    public interface IRssRepository
     {
-        Stream GetDataStream(string url);
+
     }
 }
