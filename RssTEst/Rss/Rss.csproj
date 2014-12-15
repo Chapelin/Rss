@@ -62,6 +62,11 @@
     <Compile Include="Services\IFeedGetter.cs" />
     <Compile Include="Services\IFeedManager.cs" />
     <Compile Include="Services\IFeedProcessor.cs" />
+    <Compile Include="Services\Implementation\FaviconDownloader.cs" />
+    <Compile Include="Services\Implementation\FeedDownloader.cs" />
+    <Compile Include="Services\Implementation\FeedGetter.cs" />
+    <Compile Include="Services\Implementation\Rss10FeedFormatter.cs" />
+    <Compile Include="Services\Implementation\Rss20FeedFormatter.cs" />
     <Compile Include="Services\INetDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,7 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAL\Implementation\" />
-    <Folder Include="Services\Implementation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace Rss.Services
 {
-    interface IFeedFormatter
+    public interface IFeedFormatter
     {
         /// <summary>
         /// Determines whether this instance can read the specified reader.

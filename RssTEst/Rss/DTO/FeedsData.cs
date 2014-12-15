@@ -19,7 +19,7 @@ namespace Rss.DTO
         /// <value>
         /// The launch time.
         /// </value>
-        public DateTime LaunchTime { get; set; }
+        public string LaunchTime { get; set; }
 
         /// <summary>
         /// Gets or sets the finished time.
@@ -27,7 +27,7 @@ namespace Rss.DTO
         /// <value>
         /// The finished time.
         /// </value>
-        public DateTime FinishedTime { get; set; }
+        public string FinishedTime { get; set; }
 
         /// <summary>
         /// Gets or sets the feed data.

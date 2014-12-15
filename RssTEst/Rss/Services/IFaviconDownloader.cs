@@ -9,6 +9,6 @@ namespace Rss.Services
         /// </summary>
         /// <param name="url">The URL</param>
         /// <returns>The Favicon</returns>
-        Favicon GetFaviconFromUrl(string url);
+        Favicon GetFaviconFromFeedUrl(string url);
     }
 }
