@@ -11,16 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Readers", "..\Readers\Reade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssEntity", "RssEntity\RssEntity.csproj", "{C222F80E-66CC-4888-9283-EF440C8973A8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{DEE13E56-AEB3-426C-90A9-A36136322C4B}"
-	ProjectSection(SolutionItems) = preProject
-		lib\MongoDB.Bson.dll = lib\MongoDB.Bson.dll
-		lib\MongoDB.Bson.pdb = lib\MongoDB.Bson.pdb
-		lib\MongoDB.Bson.xml = lib\MongoDB.Bson.xml
-		lib\MongoDB.Driver.dll = lib\MongoDB.Driver.dll
-		lib\MongoDB.Driver.pdb = lib\MongoDB.Driver.pdb
-		lib\MongoDB.Driver.xml = lib\MongoDB.Driver.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Older", "Older", "{1A04D37E-56C8-4D8B-989E-A3DB4031C90C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rss", "Rss\Rss.csproj", "{C7FDB862-E667-4B96-98C6-3D6D1E53C0B8}"
