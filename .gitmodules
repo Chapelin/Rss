@@ -1,0 +1,3 @@
+[submodule "Chapelin"]
+	path = Chapelin
+	url = https://github.com/Chapelin/mongo-csharp-driver
