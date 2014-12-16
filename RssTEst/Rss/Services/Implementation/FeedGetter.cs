@@ -1,28 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel.Syndication;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Rss.DTO;
-
-namespace Rss.Services.Implementation
+﻿namespace Rss.Services.Implementation
 {
+    using System;
+    using System.ServiceModel.Syndication;
+    using System.Xml;
+
+    using Rss.DTO;
+
     public class FeedGetter : IFeedGetter
     {
-        public FeedsData GetFeedsData(string url, IFeedFormatter feedFormatter)
+        private readonly IFaviconDownloader favDownloader;
+
+        private readonly INetDownloader downloader;
+
+        private readonly IFeedFormatterFactory formatterFactory;
+
+        public FeedGetter(IFaviconDownloader favDownloader, INetDownloader downloader, IFeedFormatterFactory formatterFactory)
+        {
+            this.favDownloader = favDownloader;
+            this.downloader = downloader;
+            this.formatterFactory = formatterFactory;
+        }
+
+        public FeedsData GetFeedsData(FeedSource source)
         {
             var result = new FeedsData();
             result.LaunchTime = DateTime.Now.ToString("s");
-            result.UrlFeed = url;
+            result.UrlFeed = source.FeedUrl;
 
             SyndicationFeed resultFeed = null;
-            var favDownloader = new FaviconDownloader();
-            var favicon = favDownloader.GetFaviconFromFeedUrl(url);
-            var downloader = new FeedDownloader();
-            var streamFeed = downloader.GetStreamFromUrl(url);
+            var favicon = favDownloader.GetFaviconFromFeedUrl(source.SiteUrl);
+            var streamFeed = downloader.GetStreamFromUrl(source.FeedUrl);
             var xmlReader = XmlReader.Create(streamFeed);
+            var feedFormatter = formatterFactory.GetFeedFormatter(source.FormatterName);
             if (feedFormatter.CanRead(xmlReader))
             {
                 resultFeed = this.GetFeed(xmlReader, feedFormatter);

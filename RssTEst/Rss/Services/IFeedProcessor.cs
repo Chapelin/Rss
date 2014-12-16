@@ -14,6 +14,6 @@ namespace Rss.Services
         ///     2 - Store in DB.
         /// </summary>
         /// <param name="url">The URLto parse</param>
-        void ProcessFeed(string url);
+        void ProcessFeed(FeedSource source);
     }
 }

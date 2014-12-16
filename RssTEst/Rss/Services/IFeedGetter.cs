@@ -10,6 +10,6 @@ namespace Rss.Services
         /// <param name="url">The URL to process</param>
         /// <param name="feedFormatter"></param>
         /// <returns>The FeedsData</returns>
-        FeedsData GetFeedsData(string url, IFeedFormatter feedFormatter);
+        FeedsData GetFeedsData(FeedSource source);
     }
 }

@@ -17,5 +17,7 @@ namespace Rss.DTO
         public string SiteUrl { get; set; }
 
         public int Delay { get; set; }
+
+        public string FormatterName { get; set; }
     }
 }
