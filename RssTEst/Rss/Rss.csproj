@@ -38,6 +38,9 @@
     <Reference Include="MongoDB.Driver">
       <HintPath>..\..\Chapelin\artifacts\bin\net45\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\..\Chapelin\artifacts\bin\net45\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
@@ -59,12 +62,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IFeedFormatter.cs" />
     <Compile Include="Services\IFaviconDownloader.cs" />
+    <Compile Include="Services\IFeedFormatterFactory.cs" />
     <Compile Include="Services\IFeedGetter.cs" />
     <Compile Include="Services\IFeedManager.cs" />
     <Compile Include="Services\IFeedProcessor.cs" />
     <Compile Include="Services\Implementation\FaviconDownloader.cs" />
     <Compile Include="Services\Implementation\FeedDownloader.cs" />
+    <Compile Include="Services\Implementation\FeedFormatterFactory.cs" />
     <Compile Include="Services\Implementation\FeedGetter.cs" />
+    <Compile Include="Services\Implementation\FeedProcessor.cs" />
     <Compile Include="Services\Implementation\Rss10FeedFormatter.cs" />
     <Compile Include="Services\Implementation\Rss20FeedFormatter.cs" />
     <Compile Include="Services\INetDownloader.cs" />

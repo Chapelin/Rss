@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Rss.Services
 {
+    using Rss.DTO;
+
     interface IFeedProcessor
     {
         /// <summary>
