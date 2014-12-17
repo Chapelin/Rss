@@ -14,7 +14,7 @@ namespace Rss.DTO
 
         public DateTime AddedOn { get; set; }
 
-        public DateTime UpdatedOn { get; set; }
+        public DateTime? UpdatedOn { get; set; }
 
         public string Content { get; set; }
 
