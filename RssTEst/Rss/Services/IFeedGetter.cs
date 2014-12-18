@@ -2,6 +2,8 @@
 
 namespace Rss.Services
 {
+    using System.Threading.Tasks;
+
     public interface IFeedGetter
     {
         /// <summary>
@@ -10,6 +12,6 @@ namespace Rss.Services
         /// <param name="url">The URL to process</param>
         /// <param name="feedFormatter"></param>
         /// <returns>The FeedsData</returns>
-        FeedsData GetFeedsData(FeedSource source);
+        Task<FeedsData> GetFeedsData(FeedSource source);
     }
 }

@@ -1,10 +1,14 @@
-﻿using System;
-using System.ServiceModel.Syndication;
-
-namespace Rss.DTO
+﻿namespace Rss.DTO
 {
+    using System.ServiceModel.Syndication;
+
     public class FeedsData
     {
+        public FeedsData(FeedSource source)
+        {
+            this.Source = source;
+        }
+
         /// <summary>
         /// Gets or sets the feed's url.
         /// </summary>
@@ -38,11 +42,8 @@ namespace Rss.DTO
         public SyndicationFeed FeedData { get; set; }
 
         /// <summary>
-        /// Gets or sets the favicon.
+        /// Gets or sets the source.
         /// </summary>
-        /// <value>
-        /// The favicon.
-        /// </value>
-        public Favicon Favicon { get; set; }
+        public FeedSource Source { get; set; }
     }
 }

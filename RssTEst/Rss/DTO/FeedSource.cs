@@ -19,5 +19,7 @@ namespace Rss.DTO
         public int Delay { get; set; }
 
         public string FormatterName { get; set; }
+
+        public Favicon Favicon { get; set; }
     }
 }
