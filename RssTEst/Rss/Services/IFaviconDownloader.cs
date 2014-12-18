@@ -7,8 +7,8 @@ namespace Rss.Services
         /// <summary>
         /// Gets the favicon from an URL.
         /// </summary>
-        /// <param name="url">The URL</param>
+        /// <param name="source"></param>
         /// <returns>The Favicon</returns>
-        Favicon GetFaviconFromFeedUrl(string url);
+        Favicon GetFaviconFromFeedSource(FeedSource source);
     }
 }

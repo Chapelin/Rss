@@ -10,6 +10,6 @@ namespace Rss.DTO
     {
         public FeedSource SourceAssociated { get; set; }
 
-        public int GridFSId { get; set; }
+        public string GridFSId { get; set; }
     }
 }

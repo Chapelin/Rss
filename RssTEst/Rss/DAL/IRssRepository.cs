@@ -1,4 +1,6 @@
-﻿namespace Rss.DAL
+﻿using MongoDB.Driver.GridFS;
+
+namespace Rss.DAL
 {
     using MongoDB.Driver;
 
@@ -28,6 +30,9 @@
         /// Gets the favicons.
         /// </summary>
         IMongoCollection<Favicon> Favicons { get; }
+
+       MongoGridFS GridFS { get; }
+        
 
 
     }

@@ -50,7 +50,7 @@
         {
             if (source.Favicon == null)
             {
-                source.Favicon = this.favDownloader.GetFaviconFromFeedUrl(source.SiteUrl);
+                source.Favicon = this.favDownloader.GetFaviconFromFeedSource(source);
             }
         }
 
