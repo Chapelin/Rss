@@ -1,4 +1,5 @@
-﻿using Rss.DTO;
+﻿using System.Collections.Generic;
+using Rss.DTO;
 
 namespace Rss.DAL
 {
@@ -6,7 +7,7 @@ namespace Rss.DAL
     {
         void InsertOne(FeedEntry entry);
 
-        void GetBySource(FeedSource source);
+        List<FeedEntry> GetBySource(FeedSource source);
 
     }
 }

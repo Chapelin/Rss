@@ -14,12 +14,14 @@ namespace Rss.Services.Implementation
     {
 
         private INetDownloader netdowloader;
-        private readonly IRssRepository _rssRepository;
+        private IGridFsRepository gridFsRepository;
+        private IFaviconRepository faviconRepository;
 
-        public FaviconDownloader(INetDownloader netdowloader, IRssRepository rssRepository)
+        public FaviconDownloader(INetDownloader netdowloader, IGridFsRepository gridFsRepository, IFaviconRepository faviconRepository)
         {
             this.netdowloader = netdowloader;
-            _rssRepository = rssRepository;
+            this.gridFsRepository = gridFsRepository;
+            this.faviconRepository = faviconRepository;
         }
 
         public Favicon GetFaviconFromFeedSource(FeedSource source)
@@ -64,10 +66,9 @@ namespace Rss.Services.Implementation
 
         public Favicon SaveToDB(Stream input, FeedSource source)
         {
-            var gridFsInfo = this._rssRepository.GridFS.Upload(input, source.Name);
-            var fileId = gridFsInfo.Id;
-            var fv = new Favicon {GridFSId = fileId.AsObjectId.ToString(),SourceAssociated = source};
-            this._rssRepository.Favicons.InsertOneAsync(fv);
+            var fileId = this.gridFsRepository.UploadFile(input, source.Name);
+            var fv = new Favicon {GridFSId = fileId,SourceAssociated = source};
+            this.faviconRepository.InsertOne(fv);
             return fv;
         }
     }

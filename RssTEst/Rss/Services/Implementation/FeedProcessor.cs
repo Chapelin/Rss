@@ -9,22 +9,25 @@
 
     using MongoDB.Driver.Builders;
 
-    using Rss.DAL;
+    using DAL;
     using Rss.DTO;
 
     public class FeedProcessor : IFeedProcessor
     {
         private readonly IFeedGetter getter;
 
-        private readonly IRssRepository rssRepository;
+        private IFaviconRepository faviconRepository;
 
-        private IFaviconDownloader favDownloader;
+        private IEntryRepository entryRepository;
 
-        public FeedProcessor(IFeedGetter getter, IRssRepository rssRepository, IFaviconDownloader favDownloader)
+        //private IFaviconDownloader favDownloader;
+
+        public FeedProcessor(IFeedGetter getter, IFaviconRepository faviconRepository, IEntryRepository entryRepository)
         {
             this.getter = getter;
-            this.rssRepository = rssRepository;
-            this.favDownloader = favDownloader;
+            this.faviconRepository = faviconRepository;
+            this.entryRepository = entryRepository;
+            //this.favDownloader = favDownloader;
         }
 
         /// <summary>
@@ -50,7 +53,7 @@
         {
             if (source.Favicon == null)
             {
-                source.Favicon = this.favDownloader.GetFaviconFromFeedSource(source);
+                source.Favicon = this.faviconRepository.GetFromFeedSource(source);
             }
         }
 
@@ -62,7 +65,10 @@
         /// </param>
         private void SaveFeeds(IEnumerable<FeedEntry> listFeed)
         {
-            Task.WaitAll(listFeed.Select(feedEntry => this.rssRepository.Entries.InsertOneAsync(feedEntry)).ToArray());
+            foreach (var feedEntry in listFeed)
+            {
+                this.entryRepository.InsertOne(feedEntry);
+            }
         }
 
         /// <summary>
@@ -76,18 +82,11 @@
         /// </returns>
         public async Task<IEnumerable<SyndicationItem>> SortFeeds(FeedsData feedsData)
         {
-            var lastDl = this.rssRepository.Entries.Find(Query<FeedEntry>.EQ(x => x.Source, feedsData.Source))
-                .Sort(SortBy<FeedEntry>.Descending(x => x.CreatedOn))
-                .Limit(1);
-            var limitDate = DateTime.MinValue;
-            if (await lastDl.CountAsync() > 0)
-            {
-                limitDate = (await lastDl.ToCursorAsync(new CancellationToken())).Current.First().CreatedOn;
-            }
-
+            var lastDL = this.entryRepository.GetBySource(feedsData.Source).Max(x => x.CreatedOn);
+           
             var listToAdd =
                 feedsData.FeedData.Items.Where(
-                    x => (x.LastUpdatedTime > limitDate));
+                    x => (x.LastUpdatedTime > lastDL));
 
             return listToAdd;
         }

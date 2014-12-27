@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Rss.DTO;
 
 namespace Rss.DAL.Implementation
@@ -17,7 +18,7 @@ namespace Rss.DAL.Implementation
             throw new NotImplementedException();
         }
 
-        public void GetBySource(FeedSource source)
+        public List<FeedEntry> GetBySource(FeedSource source)
         {
             throw new NotImplementedException();
         }

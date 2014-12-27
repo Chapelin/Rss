@@ -16,5 +16,10 @@ namespace Rss.DAL.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public Favicon GetFromFeedSource(FeedSource source)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

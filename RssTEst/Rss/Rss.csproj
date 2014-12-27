@@ -56,8 +56,10 @@
   <ItemGroup>
     <Compile Include="DAL\IEntryRepository.cs" />
     <Compile Include="DAL\IFaviconRepository.cs" />
+    <Compile Include="DAL\IGridFsRepository.cs" />
     <Compile Include="DAL\Implementation\EntryRepository.cs" />
     <Compile Include="DAL\Implementation\FaviconRepository.cs" />
+    <Compile Include="DAL\Implementation\GridFsRepository.cs" />
     <Compile Include="DAL\IRssRepository.cs" />
     <Compile Include="DTO\BaseDTO.cs" />
     <Compile Include="DTO\Favicon.cs" />
