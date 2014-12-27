@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <HintPath>..\ServiceRssToDB\lib\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\..\Chapelin\artifacts\bin\net45\MongoDB.Bson.dll</HintPath>
@@ -54,6 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\IEntryRepository.cs" />
+    <Compile Include="DAL\IFaviconRepository.cs" />
+    <Compile Include="DAL\Implementation\EntryRepository.cs" />
+    <Compile Include="DAL\Implementation\FaviconRepository.cs" />
     <Compile Include="DAL\IRssRepository.cs" />
     <Compile Include="DTO\BaseDTO.cs" />
     <Compile Include="DTO\Favicon.cs" />
@@ -82,9 +86,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DAL\Implementation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
